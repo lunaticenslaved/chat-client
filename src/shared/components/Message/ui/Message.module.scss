@@ -1,10 +1,21 @@
-$bottom-row-height: 40px;
+$message-padding: 20px;
+$date-row-height: 28px;
+
 $avatar-margin: 12px;
+$avatar-size: 32px;
+
 $bubble-border-radius: 12px;
+$bubble-padding: 16px;
+$bubble-text-line-height: 20px;
+
+$read-status-size: 16px;
+$read-status-margin: 8px;
 
 $attachments-h-margin: 4px;
 $attachments-top-margin: 8px;
 $attachment-size: 48px;
+
+$single-image-size: 150px;
 
 @mixin bubble-me {
   border: 1px solid #ececec;
@@ -21,6 +32,13 @@ $attachment-size: 48px;
     color: white;
   }
 }
+@mixin bubble-is-typing {
+  display: flex;
+  height: 44px;
+  align-items: center;
+  background-color: #e5edff !important;
+  box-shadow: 0 5px 5px rgba(54, 116, 255, 0.04) !important;
+}
 
 .root {
   display: flex;
@@ -29,11 +47,11 @@ $attachment-size: 48px;
 
   .avatar {
     font-size: inherit;
-    margin-bottom: $bottom-row-height;
+    margin-bottom: $date-row-height;
 
     img {
-      height: 32px;
-      width: 32px;
+      height: $avatar-size;
+      width: $avatar-size;
       border-radius: 100%;
     }
   }
@@ -43,23 +61,23 @@ $attachment-size: 48px;
     align-items: flex-end;
 
     .bubble {
-      padding: 16px;
+      padding: $bubble-padding;
       max-width: max-content;
 
       p {
         margin: 0;
-        line-height: 20px;
+        line-height: $bubble-text-line-height;
       }
     }
 
     .readStatus {
-      margin-right: 8px;
+      margin-right: $read-status-margin;
       flex-shrink: 0;
       flex-grow: 0;
 
       svg {
-        height: 16px;
-        width: 16px;
+        height: $read-status-size;
+        width: $read-status-size;
       }
     }
   }
@@ -82,8 +100,8 @@ $attachment-size: 48px;
     width: 100%;
     display: inline-block;
     vertical-align: baseline;
-    line-height: $bottom-row-height;
-    height: $bottom-row-height;
+    line-height: $date-row-height;
+    height: $date-row-height;
     font-size: inherit;
     opacity: 0.4;
   }
@@ -91,6 +109,7 @@ $attachment-size: 48px;
   &:not(.isMe) {
     flex-direction: row;
     margin-right: auto;
+    padding-left: $message-padding;
 
     .avatar {
       margin-right: $avatar-margin;
@@ -116,6 +135,7 @@ $attachment-size: 48px;
   &.isMe {
     flex-direction: row-reverse;
     margin-left: auto;
+    padding-right: $message-padding;
 
     .avatar {
       margin-left: $avatar-margin;
@@ -135,6 +155,55 @@ $attachment-size: 48px;
 
     .date {
       text-align: right;
+    }
+  }
+
+  &.isTyping {
+    .bubble {
+      @include bubble-is-typing;
+
+      .typingAnimation {
+        margin: auto 0;
+
+        span {
+          height: 10px;
+          width: 10px;
+          float: left;
+          margin: 0 4px;
+          background-color: #abb8c4;
+          display: block;
+          border-radius: 50%;
+          opacity: 0.2;
+          @for $i from 1 through 3 {
+            &:nth-of-type(#{$i}) {
+              animation: 1s blink infinite ($i * 0.3333s);
+            }
+          }
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes bulge {
+        50% {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+
+  .image {
+    height: $single-image-size;
+    width: $single-image-size;
+
+    img {
+      height: $single-image-size;
+      width: $single-image-size;
+      border-radius: $bubble-border-radius;
     }
   }
 }

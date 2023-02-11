@@ -34,9 +34,9 @@ export const validatePassword = (password: string) => {
   return { success: true };
 };
 
-export const validateLogin = (password: string) => {
-  if (password.length === 0) return { error: "Введите логин" };
-  if (password.length < 3)
+export const validateLogin = (login: string) => {
+  if (login.length === 0) return { error: "Введите логин" };
+  if (login.length < 3)
     return { error: "Длина логина должна не меньше 3-х символов" };
 
   return { success: true };

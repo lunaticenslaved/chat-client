@@ -6,7 +6,7 @@ export interface MessageModel {
   attachments: AttachmentModel[];
 }
 
-interface AttachmentModel {
+export interface AttachmentModel {
   id: number;
   filename: string;
   url: string;
