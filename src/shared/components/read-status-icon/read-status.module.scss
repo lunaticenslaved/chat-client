@@ -1,0 +1,8 @@
+$read-status-size: 16px;
+
+.icon {
+  svg {
+    height: $read-status-size;
+    width: $read-status-size;
+  }
+}

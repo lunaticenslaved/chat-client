@@ -1,5 +1,6 @@
 import dayjs from "shared/lib/dayjs";
 import { Message, MessageProps } from "shared/components/Message";
+import { DialogsList } from "widgets/messenger/dialogs-list";
 
 type HomePageProps = {};
 
@@ -120,10 +121,13 @@ const messages: MessageProps[] = [
 
 const HomePage = (props: HomePageProps) => {
   return (
+    // <div>
+    //   {messages.map((m, idx) => (
+    //     <Message key={idx} {...m} />
+    //   ))}
+    // </div>
     <div>
-      {messages.map((m, idx) => (
-        <Message key={idx} {...m} />
-      ))}
+      <DialogsList></DialogsList>
     </div>
   );
 };

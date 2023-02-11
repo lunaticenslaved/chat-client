@@ -7,6 +7,8 @@ import { ReactComponent as NotReadSvg } from "shared/img/noreaded.svg";
 import { AttachmentModel } from "../types";
 import classes from "./Message.module.scss";
 
+// FIXME: заменить статус icon на компонент
+
 export type MessageProps =
   | (TypingMessageProps & { isTyping: boolean })
   | TextMessageProps;
@@ -86,6 +88,7 @@ interface TextMessageProps {
   attachments: AttachmentModel[];
 }
 
+// FIXME: здесь нет статуса
 const TextMessage = (props: TextMessageProps) => {
   let rootClasses: string = "";
 
@@ -144,6 +147,7 @@ interface ImageMessageProps {
   image: AttachmentModel;
 }
 
+// FIXME: здесь нет статуса
 const ImageMessage = (props: ImageMessageProps) => {
   return (
     <div className={cn(classes.root, classes.isTyping)}>
