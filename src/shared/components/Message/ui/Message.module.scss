@@ -1,0 +1,140 @@
+$bottom-row-height: 40px;
+$avatar-margin: 12px;
+$bubble-border-radius: 12px;
+
+$attachments-h-margin: 4px;
+$attachments-top-margin: 8px;
+$attachment-size: 48px;
+
+@mixin bubble-me {
+  border: 1px solid #ececec;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.0220444);
+  border-radius: $bubble-border-radius $bubble-border-radius 0
+    $bubble-border-radius;
+}
+@mixin bubble-not-me {
+  background-color: #3674ff;
+  box-shadow: 0 5px 5px rgba(54, 116, 255, 0.196733);
+  border-radius: $bubble-border-radius $bubble-border-radius
+    $bubble-border-radius 0;
+  p {
+    color: white;
+  }
+}
+
+.root {
+  display: flex;
+  align-items: flex-end;
+  max-width: 440px;
+
+  .avatar {
+    font-size: inherit;
+    margin-bottom: $bottom-row-height;
+
+    img {
+      height: 32px;
+      width: 32px;
+      border-radius: 100%;
+    }
+  }
+
+  .content {
+    display: flex;
+    align-items: flex-end;
+
+    .bubble {
+      padding: 16px;
+      max-width: max-content;
+
+      p {
+        margin: 0;
+        line-height: 20px;
+      }
+    }
+
+    .readStatus {
+      margin-right: 8px;
+      flex-shrink: 0;
+      flex-grow: 0;
+
+      svg {
+        height: 16px;
+        width: 16px;
+      }
+    }
+  }
+
+  .attachments {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: $attachments-top-margin;
+
+    .attachmentItem {
+      img {
+        height: $attachment-size;
+        width: $attachment-size;
+        border-radius: $bubble-border-radius;
+      }
+    }
+  }
+
+  .date {
+    width: 100%;
+    display: inline-block;
+    vertical-align: baseline;
+    line-height: $bottom-row-height;
+    height: $bottom-row-height;
+    font-size: inherit;
+    opacity: 0.4;
+  }
+
+  &:not(.isMe) {
+    flex-direction: row;
+    margin-right: auto;
+
+    .avatar {
+      margin-right: $avatar-margin;
+    }
+
+    .content {
+      flex-direction: row;
+
+      .bubble {
+        @include bubble-not-me;
+      }
+    }
+
+    .attachments .attachmentItem:not(:last-child) {
+      margin-right: $attachments-h-margin;
+    }
+
+    .date {
+      text-align: left;
+    }
+  }
+
+  &.isMe {
+    flex-direction: row-reverse;
+    margin-left: auto;
+
+    .avatar {
+      margin-left: $avatar-margin;
+    }
+
+    .content {
+      flex-direction: row-reverse;
+
+      .bubble {
+        @include bubble-me;
+      }
+    }
+
+    .attachments .attachmentItem:not(:first-child) {
+      margin-left: $attachments-h-margin;
+    }
+
+    .date {
+      text-align: right;
+    }
+  }
+}

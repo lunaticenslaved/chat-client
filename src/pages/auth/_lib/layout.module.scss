@@ -1,0 +1,32 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  width: 430px;
+}
+
+.top {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.header {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.description {
+  font-size: 18px;
+  opacity: 0.35;
+  line-height: 21px;
+  letter-spacing: 0.1px;
+  text-align: center;
+}
