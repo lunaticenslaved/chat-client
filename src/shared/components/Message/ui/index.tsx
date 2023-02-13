@@ -1,13 +1,13 @@
+import React, { useCallback } from "react";
 import cn from "classnames";
 
-import dayjs from "shared/lib/dayjs";
-import { ReactComponent as ReadSvg } from "shared/img/readed.svg";
-import { ReactComponent as NotReadSvg } from "shared/img/noreaded.svg";
+import { ReactComponent as PlaySvg } from "shared/img/play.svg";
+import { ReactComponent as PauseSvg } from "shared/img/pause.svg";
+import { ReactComponent as WaveSvg } from "shared/img/wave.svg";
 
 import { AttachmentModel } from "../types";
+import { ContentMessage, ContentMessageProps } from "./context-message";
 import classes from "./Message.module.scss";
-
-// FIXME: заменить статус icon на компонент
 
 export type MessageProps =
   | (TypingMessageProps & { isTyping: boolean })
@@ -19,6 +19,11 @@ export const Message = (props: MessageProps) => {
       <TypingMessage userName={props.userName} avatarUrl={props.avatarUrl} />
     );
   }
+
+  const singleAttachment =
+    "attachments" in props && props.attachments.length === 1
+      ? props.attachments[0]
+      : null;
 
   if ("text" in props && !!props.text) {
     return (
@@ -32,10 +37,21 @@ export const Message = (props: MessageProps) => {
         text={props.text}
       />
     );
-  } else if ("attachments" in props && props.attachments.length === 1) {
+  } else if (singleAttachment?.type === "image") {
     return (
       <ImageMessage
-        image={props.attachments[0]}
+        image={singleAttachment}
+        userName={props.userName}
+        avatarUrl={props.avatarUrl}
+        createdAt={props.createdAt}
+        isRead={props.isRead}
+        isMe={props.isMe}
+      />
+    );
+  } else if (singleAttachment?.type === "audio") {
+    return (
+      <AudioMessage
+        audio={singleAttachment}
         userName={props.userName}
         avatarUrl={props.avatarUrl}
         createdAt={props.createdAt}
@@ -48,6 +64,7 @@ export const Message = (props: MessageProps) => {
   return null;
 };
 
+// Typing Message
 interface TypingMessageProps {
   avatarUrl: string;
   userName: string;
@@ -78,93 +95,142 @@ const TypingMessage = (props: TypingMessageProps) => {
   );
 };
 
-interface TextMessageProps {
-  avatarUrl: string;
-  userName: string;
-  createdAt: string;
+// Text Message
+type TextMessageProps = ContentMessageProps & {
   text: string;
-  isMe: boolean;
-  isRead: boolean;
-  attachments: AttachmentModel[];
-}
+};
 
-// FIXME: здесь нет статуса
-const TextMessage = (props: TextMessageProps) => {
-  let rootClasses: string = "";
-
-  rootClasses = cn(classes.root, { [classes.isMe]: props.isMe });
-
-  let icon: JSX.Element | null = null;
-  let attachments: JSX.Element | null = null;
-
-  if (props.isMe) {
-    icon = props.isRead ? <ReadSvg /> : <NotReadSvg />;
-  }
-
-  if (props.attachments.length) {
-    attachments = (
-      <>
-        {props.attachments.map((att) => (
-          <div key={att.id} className={classes.attachmentItem}>
-            <img src={att.url} alt={att.filename} />
-          </div>
-        ))}
-      </>
-    );
-  }
-
+const TextMessage = ({ text, ...props }: TextMessageProps) => {
   return (
-    <div className={rootClasses}>
-      <div className={classes.avatar}>
-        <img src={props.avatarUrl} alt={"Аватар " + props.userName} />
+    <ContentMessage {...props}>
+      <div className={classes.bubble}>
+        <p>{text}</p>
       </div>
-      <div>
-        <div className={classes.content}>
-          <div className={classes.bubble}>
-            <p>{props.text}</p>
-          </div>
-          {icon && <div className={classes.readStatus}>{icon}</div>}
-        </div>
-
-        {attachments && (
-          <div className={classes.attachments}>{attachments}</div>
-        )}
-
-        <time dateTime={props.createdAt} className={classes.date}>
-          {dayjs(props.createdAt).fromNow()}
-        </time>
-      </div>
-    </div>
+    </ContentMessage>
   );
 };
 
-interface ImageMessageProps {
-  avatarUrl: string;
-  userName: string;
-  createdAt: string;
-  isMe: boolean;
-  isRead: boolean;
+// Image Message
+type ImageMessageProps = Omit<ContentMessageProps, "attachments"> & {
   image: AttachmentModel;
+};
+
+const ImageMessage = ({ image, ...props }: ImageMessageProps) => {
+  return (
+    <ContentMessage {...props} attachments={[]}>
+      <div className={classes.image}>
+        <img src={image.url} alt={image.filename} />
+      </div>
+    </ContentMessage>
+  );
+};
+
+// Audio Message
+type AudioMessageProps = Omit<ContentMessageProps, "attachments"> & {
+  audio: AttachmentModel;
+};
+
+function secondsToHms(d: number) {
+  d = Number(d);
+  var h = Math.floor(d / 3600);
+  var m = Math.floor((d % 3600) / 60);
+  var s = Math.floor((d % 3600) % 60);
+
+  var hDisplay = h > 0 ? h.toString().padStart(2, "0") : "";
+  var mDisplay = m.toString().padStart(2, "0");
+  var sDisplay = s.toString().padStart(2, "0");
+
+  if (hDisplay) return `${hDisplay}:${mDisplay}:${sDisplay}`;
+  return `${mDisplay}:${sDisplay}`;
 }
 
-// FIXME: здесь нет статуса
-const ImageMessage = (props: ImageMessageProps) => {
-  return (
-    <div className={cn(classes.root, classes.isTyping)}>
-      <>
-        <div className={classes.avatar}>
-          <img src={props.avatarUrl} alt={"Аватар " + props.userName} />
-        </div>
-        <div>
-          <div className={classes.content}>
-            <div className={classes.image}>
-              <img src={props.image.url} alt={props.image.filename} />
-            </div>
-          </div>
+const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
+  const [isPlaying, _setPlaying] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const [currentTime, _setCurrentTime] = React.useState(0);
+  const audioElem = React.createRef<HTMLAudioElement>();
 
-          <time className={classes.date}></time>
+  const setCurrentTime = useCallback(() => {
+    if (isPlaying) {
+      const ct = audioElem.current?.currentTime || 0;
+      const d = audioElem.current?.duration || 0;
+
+      setProgress(Math.ceil((ct / d) * 100));
+      _setCurrentTime(audioElem.current?.currentTime || 0);
+    } else {
+      _setCurrentTime(audioElem.current?.duration || 0);
+    }
+  }, [audioElem, isPlaying]);
+
+  React.useEffect(() => {
+    const el = audioElem.current;
+    const setPlaying = () => _setPlaying(true);
+    const setPaused = () => _setPlaying(false);
+
+    if (el) {
+      el.addEventListener("playing", setPlaying);
+      el.addEventListener("pause", setPaused);
+      el.addEventListener("ended", setPaused);
+      el.addEventListener("timeupdate", setCurrentTime);
+    }
+    return () => {
+      if (el) {
+        el.removeEventListener("playing", setPlaying);
+        el.removeEventListener("pause", setPaused);
+        el.removeEventListener("ended", setPaused);
+        el.removeEventListener("timeupdate", setCurrentTime);
+      }
+    };
+  }, [audioElem, setCurrentTime]);
+
+  React.useEffect(() => {
+    const el = audioElem.current;
+
+    if (el) {
+      setCurrentTime();
+      el.addEventListener("onloadedmetadata ", setCurrentTime);
+    }
+    return () => {
+      if (el) {
+        el.removeEventListener("onloadedmetadata", setCurrentTime);
+      }
+    };
+  }, []);
+
+  const togglePlay = () => {
+    if (audioElem.current) {
+      if (audioElem.current.paused) {
+        audioElem.current.play();
+      } else {
+        audioElem.current.pause();
+      }
+    }
+  };
+
+  return (
+    <ContentMessage {...props} attachments={[]}>
+      <div className={classes.audioBubble}>
+        {isPlaying && (
+          <div
+            className={classes.audioProgress}
+            style={{ width: progress + "%" }}
+          />
+        )}
+
+        <div className={classes.audioContent}>
+          <audio ref={audioElem} src={audio.url} preload="auto">
+            <a href={audio.url}>Download audio</a>
+          </audio>
+
+          <button className={classes.audioButton} onClick={togglePlay}>
+            {isPlaying ? <PauseSvg /> : <PlaySvg />}
+          </button>
+          <div className={classes.audioDiagram}>
+            <WaveSvg />
+          </div>
+          <span className={classes.audioTime}>{secondsToHms(currentTime)}</span>
         </div>
-      </>
-    </div>
+      </div>
+    </ContentMessage>
   );
 };

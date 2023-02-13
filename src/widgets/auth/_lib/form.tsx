@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { Form as AntForm, FormInstance } from "antd";
 import { Link } from "react-router-dom";
 
-import { Button } from "shared/components/Button";
+import { Button } from "shared/components/button";
 
 import classes from "./form.module.scss";
 

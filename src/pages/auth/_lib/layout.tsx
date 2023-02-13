@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import cn from "classnames";
 
-import { Block } from "shared/components/Block";
+import { Block } from "shared/components/block";
 
 import classes from "./layout.module.scss";
 

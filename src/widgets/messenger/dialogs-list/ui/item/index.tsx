@@ -10,7 +10,7 @@ export interface DialogItemProps extends PropsWithChildren {
   user: {
     id: number;
     name: string;
-    avatar: string;
+    avatar?: string | null;
     isOnline: boolean;
   };
   message: {
@@ -42,7 +42,7 @@ export const DialogItem = (props: DialogItemProps) => {
       <Avatar
         className={classes.avatar}
         url={props.user.avatar}
-        alt={"Аватар " + props.user.name}
+        name={props.user.name}
         isOnline={props.user.isOnline}
       />
 

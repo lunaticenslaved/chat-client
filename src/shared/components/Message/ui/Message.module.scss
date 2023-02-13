@@ -1,5 +1,6 @@
 $message-padding: 20px;
 $date-row-height: 28px;
+$max-width: 440px;
 
 $avatar-margin: 12px;
 $avatar-size: 32px;
@@ -17,21 +18,57 @@ $attachment-size: 48px;
 
 $single-image-size: 150px;
 
+$audio-height: 60px;
+$audio-width: 320px;
+
+// FIXME: переписывать аватар через important - это плохо. поправь
+
 @mixin bubble-me {
+  background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid #ececec;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.0220444);
   border-radius: $bubble-border-radius $bubble-border-radius 0
     $bubble-border-radius;
+
+  .audioProgress {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .audioButton {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .audioContent {
+    opacity: 1;
+  }
+
+  .audioTime {
+    color: rgba(0, 0, 0, 0.5);
+  }
 }
 @mixin bubble-not-me {
   background-color: #3674ff;
   box-shadow: 0 5px 5px rgba(54, 116, 255, 0.196733);
   border-radius: $bubble-border-radius $bubble-border-radius
     $bubble-border-radius 0;
+
   p {
     color: white;
   }
+
+  .audioProgress {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .audioButton {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .audioTime {
+    color: white;
+  }
 }
+
 @mixin bubble-is-typing {
   display: flex;
   height: 44px;
@@ -43,16 +80,19 @@ $single-image-size: 150px;
 .root {
   display: flex;
   align-items: flex-end;
-  max-width: 440px;
+  max-width: $max-width;
 
   .avatar {
     font-size: inherit;
-    margin-bottom: $date-row-height;
+    margin: 0 !important;
+    margin-bottom: $date-row-height !important;
+    height: $avatar-size !important;
+    width: $avatar-size !important;
 
     img {
-      height: $avatar-size;
-      width: $avatar-size;
       border-radius: 100%;
+      height: $avatar-size !important;
+      width: $avatar-size !important;
     }
   }
 
@@ -112,7 +152,7 @@ $single-image-size: 150px;
     padding-left: $message-padding;
 
     .avatar {
-      margin-right: $avatar-margin;
+      margin-right: $avatar-margin !important;
     }
 
     .content {
@@ -138,7 +178,7 @@ $single-image-size: 150px;
     padding-right: $message-padding;
 
     .avatar {
-      margin-left: $avatar-margin;
+      margin-left: $avatar-margin !important;
     }
 
     .content {
@@ -204,6 +244,89 @@ $single-image-size: 150px;
       height: $single-image-size;
       width: $single-image-size;
       border-radius: $bubble-border-radius;
+    }
+  }
+
+  .audioBubble {
+    width: $audio-width;
+    max-width: $audio-width;
+    height: $audio-height;
+    min-height: $audio-height;
+    max-height: $audio-height;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+
+    .audioProgress {
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .audioContent {
+      position: relative;
+      z-index: 2;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+
+      .audioButton {
+        cursor: pointer;
+        flex: 0 0 auto;
+        display: block;
+        border-radius: 50%;
+        z-index: 2;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 24px;
+        width: 24px;
+        padding: 0;
+
+        svg {
+          height: 60%;
+          width: 60%;
+        }
+      }
+
+      .audioDiagram {
+        display: block;
+        flex: 1 1 auto;
+        z-index: 2;
+
+        svg {
+          width: 100%;
+        }
+      }
+
+      .audioTime {
+        display: block;
+        text-align: right;
+        z-index: 2;
+        width: 75px;
+        min-width: 75px;
+        max-width: 75px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+    }
+  }
+
+  &.isMe {
+    .audioBubble {
+      @include bubble-me;
+    }
+  }
+
+  &:not(.isMe) {
+    .audioBubble {
+      @include bubble-not-me;
     }
   }
 }

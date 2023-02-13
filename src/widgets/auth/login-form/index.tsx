@@ -1,7 +1,7 @@
 import { Form as AntForm } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
-import { Input } from "shared/components/Input";
+import { Input } from "shared/components/input";
 
 import { Form } from "../_lib/form";
 

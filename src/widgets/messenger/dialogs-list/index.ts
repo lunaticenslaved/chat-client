@@ -1,1 +1,1 @@
-export { DialogsList } from "./ui";
+export { DialogsList, type DialogItemProps } from "./ui";

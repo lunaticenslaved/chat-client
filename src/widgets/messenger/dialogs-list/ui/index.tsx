@@ -1,68 +1,34 @@
-import { DialogItem, type DialogItemProps } from "./item";
+import React from "react";
 
-const dialogs: DialogItemProps[] = [
-  {
-    user: {
-      id: 1,
-      isOnline: true,
-      name: 'Федор Михайлович Достоевский',
-      avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Fyodor_Mikhailovich_Dostoyevsky_1876.jpg/274px-Fyodor_Mikhailovich_Dostoyevsky_1876.jpg'
-    },
-    message: {
-      isRead: false,
-      senderId: 1,
-      text: 'Мы все свидетельствуем Вам глубочайшее наше почтение и целуем Ваши ручки, дражайший папенька',
-      time: new Date().toISOString()
-    },
-    notReadMessages: 121222
-  }, 
-  {
-    user: {
-      id: 1,
-      isOnline: true,
-      name: 'Федор Михайлович Достоевский',
-      avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Fyodor_Mikhailovich_Dostoyevsky_1876.jpg/274px-Fyodor_Mikhailovich_Dostoyevsky_1876.jpg'
-    },
-    message: {
-      isRead: true,
-      senderId: 0,
-      text: 'Мы все свидетельствуем Вам глубочайшее наше почтение и целуем Ваши ручки, дражайший папенька',
-      time: new Date().toISOString()
-    },
-    notReadMessages: 0
-  },
-  
-  {
-    user: {
-      id: 1,
-      isOnline: false,
-      name: 'Федор Михайлович Достоевский',
-      avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Fyodor_Mikhailovich_Dostoyevsky_1876.jpg/274px-Fyodor_Mikhailovich_Dostoyevsky_1876.jpg'
-    },
-    message: {
-      isRead: true,
-      senderId: 1,
-      text: 'Мы все свидетельствуем Вам глубочайшее наше почтение и целуем Ваши ручки, дражайший папенька',
-      time: new Date().toISOString()
-    },
-    notReadMessages: 0
-  }, {
-    user: {
-      id: 1,
-      isOnline: false,
-      name: 'Федор Михайлович Достоевский',
-      avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Fyodor_Mikhailovich_Dostoyevsky_1876.jpg/274px-Fyodor_Mikhailovich_Dostoyevsky_1876.jpg'
-    },
-    message: {
-      isRead: false,
-      senderId: 2,
-      text: 'Мы все свидетельствуем Вам глубочайшее наше почтение и целуем Ваши ручки, дражайший папенька',
-      time: new Date().toISOString()
-    },
-    notReadMessages: 0
-  }
-];
+import dayjs from "shared/lib/dayjs";
 
-export const DialogsList = () => {
-  return <div>{dialogs.map((a, idx) => (<DialogItem key={idx} {...a} />))}</div>;
+import { DialogItem, DialogItemProps } from "./item";
+
+interface DialogsListProps {
+  dialogs: DialogItemProps[];
+  className?: string;
+}
+
+export type { DialogItemProps };
+
+export const DialogsList = (props: DialogsListProps) => {
+  const localDialogs = React.useMemo(() => {
+    const lds = [...props.dialogs];
+    lds.sort((a, b) => {
+      const at = dayjs(a.message.time);
+      const bt = dayjs(b.message.time);
+      if (at.isAfter(bt)) return -1;
+      if (at.isBefore(bt)) return 1;
+      return 0;
+    });
+    return lds;
+  }, [props.dialogs]);
+
+  return (
+    <div className={props.className}>
+      {localDialogs.map((a, idx) => (
+        <DialogItem key={idx} {...a} />
+      ))}
+    </div>
+  );
 };

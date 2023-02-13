@@ -10,4 +10,5 @@ export interface AttachmentModel {
   id: number;
   filename: string;
   url: string;
+  type: "image" | "audio";
 }

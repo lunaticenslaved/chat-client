@@ -1,7 +1,7 @@
 import { Form as AntForm, FormRule } from "antd";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 
-import { Input } from "shared/components/Input";
+import { Input } from "shared/components/input";
 import {
   validateEmail,
   validatePassword,

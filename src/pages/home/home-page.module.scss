@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+
+.sidebar {
+  max-width: 400px;
+  background-color: rgba($color: #f7f7f7ad, $alpha: 1);
+}
+
+.messages {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
