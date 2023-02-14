@@ -1,13 +1,13 @@
 import { OnlineStatus } from "shared/components/online-status";
 
-import classes from "./chat-header.module.scss";
+import classes from "./header.module.scss";
 
-interface ChatHeaderProps {
+interface HeaderProps {
   title: string;
   isOnline: boolean;
 }
 
-export const ChatHeader = (props: ChatHeaderProps) => {
+export const Header = (props: HeaderProps) => {
   return (
     <div className={classes.chatHeader}>
       <h3>{props.title}</h3>

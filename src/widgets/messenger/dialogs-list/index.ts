@@ -1,1 +1,0 @@
-export { DialogsList, type DialogItemProps } from "./ui";

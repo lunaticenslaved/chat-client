@@ -1,1 +1,2 @@
-export { Sidebar } from "./ui";
+export { Sidebar } from "./ui/sidebar";
+export type { DialogModel } from "./types";

@@ -5,23 +5,23 @@ import dayjs from "shared/lib/dayjs";
 import { ReadStatusIcon } from "shared/components/read-status-icon";
 import { Avatar } from "shared/components/avatar";
 
-import classes from "./Message.module.scss";
-import { AttachmentModel } from "../types";
+import classes from "./message.module.scss";
+import { AttachmentModel, MessageModel } from "../types";
 
-export interface ContentMessageProps extends PropsWithChildren {
-  avatarUrl: string;
-  userName: string;
-  createdAt: string;
+export interface MessageWrapperProps extends PropsWithChildren {
+  message: MessageModel;
   isMe: boolean;
-  isRead: boolean;
   attachments: AttachmentModel[];
 }
 
 const getStatus = ({ isRead, isMe }: { isRead: boolean; isMe: boolean }) =>
   isMe ? <ReadStatusIcon isRead={isRead} /> : null;
 
-export const ContentMessage = (props: ContentMessageProps) => {
-  const status = getStatus(props);
+export const MessageWrapper = (props: MessageWrapperProps) => {
+  const status = getStatus({
+    isMe: props.isMe,
+    isRead: props.message.isRead,
+  });
 
   let attachments: JSX.Element | null = null;
   if (props.attachments.length) {
@@ -41,12 +41,12 @@ export const ContentMessage = (props: ContentMessageProps) => {
   });
 
   return (
-    <div className={rootClassName}>
+    <li className={rootClassName}>
       <>
         <Avatar
           className={classes.avatar}
-          url={props.avatarUrl}
-          name={props.userName}
+          url={props.message.sender.avatar}
+          name={props.message.sender.name}
         />
         <div>
           <div className={classes.content}>
@@ -58,11 +58,11 @@ export const ContentMessage = (props: ContentMessageProps) => {
             <div className={classes.attachments}>{attachments}</div>
           )}
 
-          <time dateTime={props.createdAt} className={classes.date}>
-            {dayjs(props.createdAt).fromNow()}
+          <time dateTime={props.message.createdAt} className={classes.date}>
+            {dayjs(props.message.createdAt).fromNow()}
           </time>
         </div>
       </>
-    </div>
+    </li>
   );
 };

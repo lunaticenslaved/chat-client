@@ -1,6 +1,11 @@
 export interface MessageModel {
-  userName: string;
-  avatarUrl: string;
+  id: number;
+  sender: {
+    id: number;
+    name: string;
+    avatar: string;
+  };
+  isRead: boolean;
   text: string;
   createdAt: string;
   attachments: AttachmentModel[];
@@ -11,4 +16,12 @@ export interface AttachmentModel {
   filename: string;
   url: string;
   type: "image" | "audio";
+}
+
+export interface DialogModel {
+  id: number;
+  user: {
+    name: string;
+    isOnline: boolean;
+  };
 }

@@ -1,21 +1,17 @@
-import cn from "classnames";
-import { Divider, Button } from "antd";
-import {
-  AudioOutlined,
-  CameraOutlined,
-  SendOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import { Empty } from "antd";
 
-import { Input } from "shared/components/input";
-import { Message, MessageProps } from "./message";
 import dayjs from "shared/lib/dayjs";
+import { Divider } from "shared/components/divider";
+
+import { DialogModel, MessageModel } from "../types";
+import { Header } from "./header";
+import { MessagesList } from "./messages-list";
 
 import classes from "./chat.module.scss";
 
-const messages: MessageProps[] = [
+const messages: MessageModel[] = [
   {
-    isMe: false,
+    id: 1,
     isRead: true,
     attachments: [
       {
@@ -37,16 +33,18 @@ const messages: MessageProps[] = [
         type: "image",
       },
     ],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: "Лови!",
     createdAt: dayjs().subtract(30, "days").toISOString(),
   },
   {
-    isMe: true,
+    id: 2,
     isRead: true,
-
     attachments: [
       {
         id: 1,
@@ -67,42 +65,51 @@ const messages: MessageProps[] = [
         type: "image",
       },
     ],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: "Лови!",
     createdAt: dayjs().subtract(30, "days").toISOString(),
   },
   {
-    isMe: true,
+    id: 3,
     isRead: true,
-
     attachments: [],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: "Салам!",
     createdAt: dayjs().subtract(30, "days").toISOString(),
   },
   {
-    isMe: false,
+    id: 4,
     isRead: true,
-
     attachments: [],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: "Салам, Брут! Чё, как, уничтожил флот галлов?",
     createdAt: dayjs().subtract(2, "days").toISOString(),
   },
   {
-    isMe: true,
+    id: 5,
     isRead: false,
-
     attachments: [],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: `Салам, Брут! Чё, как, уничтожил флот галлов?
       Салам, Брут! Чё, как, уничтожил флот галлов?
       Салам, Брут! Чё, как, уничтожил флот галлов?
@@ -110,14 +117,16 @@ const messages: MessageProps[] = [
       Салам, Брут! Чё, как, уничтожил флот галлов?`,
     createdAt: dayjs().subtract(2, "minutes").toISOString(),
   },
+  // {
+  //   isTyping: true,
+  //   userName: "Гай Юлий Цезарь",
+  //   avatarUrl:
+  //     "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  // },
+
+  // image
   {
-    isTyping: true,
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-  },
-  {
-    isMe: true,
+    id: 6,
     isRead: false,
     attachments: [
       {
@@ -127,14 +136,39 @@ const messages: MessageProps[] = [
         type: "image",
       },
     ],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: ``,
     createdAt: dayjs().subtract(2, "minutes").toISOString(),
   },
   {
-    isMe: true,
+    id: 1222,
+    isRead: false,
+    attachments: [
+      {
+        id: 3,
+        filename: "image.jpg",
+        url: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+        type: "image",
+      },
+    ],
+    sender: {
+      id: 2,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
+    text: ``,
+    createdAt: dayjs().subtract(2, "minutes").toISOString(),
+  },
+
+  // audio
+  {
+    id: 8,
     isRead: false,
     attachments: [
       {
@@ -144,14 +178,17 @@ const messages: MessageProps[] = [
         type: "audio",
       },
     ],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 2,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: ``,
     createdAt: dayjs().subtract(2, "minutes").toISOString(),
   },
   {
-    isMe: false,
+    id: 9,
     isRead: false,
     attachments: [
       {
@@ -161,60 +198,40 @@ const messages: MessageProps[] = [
         type: "audio",
       },
     ],
-    userName: "Гай Юлий Цезарь",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    sender: {
+      id: 1,
+      name: "Гай Юлий Цезарь",
+      avatar:
+        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+    },
     text: ``,
     createdAt: dayjs().subtract(2, "minutes").toISOString(),
   },
 ];
 
 export interface ChatProps {
-  className?: string;
+  selectedDialog: DialogModel | null | undefined;
 }
 
 export const Chat = (props: ChatProps) => {
-  const rootClassName = cn(props.className, classes.root);
+  if (!props.selectedDialog) {
+    return (
+      <div className={classes.emptyRoot}>
+        <Empty description="Выберите диалог, чтобы начать общение" />
+      </div>
+    );
+  }
+
   return (
-    <div className={rootClassName}>
-      <div className={classes.messagesWrapper}>
-        {messages.map((m, idx) => (
-          <Message key={idx} {...m} />
-        ))}
-      </div>
+    <div className={classes.root}>
+      <Header
+        title={props.selectedDialog.user.name}
+        isOnline={props.selectedDialog.user.isOnline}
+      />
 
-      <Divider className={classes.divider} />
+      <Divider />
 
-      <div className={classes.inputsWrapper}>
-        <Button
-          className={classes.smileButton}
-          size="large"
-          shape="circle"
-          icon={<SmileOutlined />}
-        />
-        <Input
-          placeholder="Введите сообщение..."
-          suffix={
-            <div
-              className={classes.inputButtonsWrapper}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Button
-                size="large"
-                shape="circle"
-                type="text"
-                icon={<CameraOutlined className={classes.icon} />}
-              />
-              <Button
-                size="large"
-                shape="circle"
-                type="text"
-                icon={<AudioOutlined className={classes.icon} />}
-              />
-            </div>
-          }
-        />
-      </div>
+      <MessagesList messages={messages} />
     </div>
   );
 };

@@ -1,15 +1,21 @@
 import React from "react";
 import { UserOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
-import { Divider } from "antd";
+import { Empty } from "antd";
 
 import dayjs from "shared/lib/dayjs";
 import { Input } from "shared/components/input";
-import { DialogItemProps, DialogItem } from "./dialog-item";
+import { Divider } from "shared/components/divider";
 
+import { DialogItem } from "./dialog-item";
 import classes from "./sidebar.module.scss";
+import { DialogModel } from "../types";
+
+// FIXME: Input можно заменить на Search
 
 type SidebarProps = {
-  dialogs: DialogItemProps[];
+  dialogs: DialogModel[];
+  selectedDialog: DialogModel | null | undefined;
+  onDialogSelected: (dialog: DialogModel) => void;
 };
 
 export const Sidebar = (props: SidebarProps) => {
@@ -18,8 +24,8 @@ export const Sidebar = (props: SidebarProps) => {
   const sortedDialog = React.useMemo(() => {
     const lds = [...props.dialogs];
     lds.sort((a, b) => {
-      const at = dayjs(a.message.time);
-      const bt = dayjs(b.message.time);
+      const at = dayjs(a.lastMessage.time);
+      const bt = dayjs(b.lastMessage.time);
       if (at.isAfter(bt)) return -1;
       if (at.isBefore(bt)) return 1;
       return 0;
@@ -33,6 +39,33 @@ export const Sidebar = (props: SidebarProps) => {
     return sortedDialog.filter((d) => d.user.name.toLowerCase().includes(s));
   }, [searchQuery, sortedDialog]);
 
+  const onDialogSelect = (dialog: DialogModel) => {
+    props.onDialogSelected(dialog);
+  };
+
+  let content: JSX.Element | null = null;
+
+  if (filteredAndSortedDialogs.length > 0) {
+    content = (
+      <div className={classes.dialogsList}>
+        {filteredAndSortedDialogs.map((dialog, idx) => (
+          <DialogItem
+            dialog={dialog}
+            key={idx}
+            onSelect={onDialogSelect}
+            isSelected={dialog.id === props.selectedDialog?.id}
+          />
+        ))}
+      </div>
+    );
+  } else {
+    content = (
+      <div className={classes.emptyWrapper}>
+        <Empty description={"Нет диалогов"} />
+      </div>
+    );
+  }
+
   return (
     <section className={classes.sidebar}>
       <div className={classes.sidebarHeader}>
@@ -43,7 +76,7 @@ export const Sidebar = (props: SidebarProps) => {
         <EditOutlined className={classes.icon} />
       </div>
 
-      <Divider className={classes.divider} />
+      <Divider />
 
       <div className={classes.searchWrapper}>
         <Input
@@ -55,13 +88,9 @@ export const Sidebar = (props: SidebarProps) => {
         />
       </div>
 
-      <Divider className={classes.divider} />
+      <Divider />
 
-      <div className={classes.dialogsList}>
-        {filteredAndSortedDialogs.map((a, idx) => (
-          <DialogItem key={idx} {...a} />
-        ))}
-      </div>
+      {content}
     </section>
   );
 };

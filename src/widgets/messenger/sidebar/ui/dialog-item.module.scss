@@ -21,11 +21,22 @@ $counter-color: #fff;
   align-items: center;
   flex-wrap: nowrap;
   max-width: 100%;
+  cursor: pointer;
   height: $height;
   max-height: $height;
   min-height: $height;
   padding: $padding-v $padding-h;
   font-size: $font-size;
+  background-color: transparent;
+  transition: background-color 0.1s linear;
+
+  &:hover {
+    background-color: #fff;
+  }
+
+  &.isSelected {
+    background-color: #fff;
+  }
 }
 
 .avatarWrapper {

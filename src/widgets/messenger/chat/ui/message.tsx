@@ -6,12 +6,12 @@ import { ReactComponent as PauseSvg } from "shared/img/pause.svg";
 import { ReactComponent as WaveSvg } from "shared/img/wave.svg";
 
 import { AttachmentModel } from "../types";
-import { ContentMessage, ContentMessageProps } from "./context-message";
-import classes from "./Message.module.scss";
+import { MessageWrapper, MessageWrapperProps } from "./message-wrapper";
+import classes from "./message.module.scss";
 
 export type MessageProps =
   | (TypingMessageProps & { isTyping: boolean })
-  | TextMessageProps;
+  | Omit<MessageWrapperProps, "attachments">;
 
 export const Message = (props: MessageProps) => {
   if ("isTyping" in props) {
@@ -21,42 +21,33 @@ export const Message = (props: MessageProps) => {
   }
 
   const singleAttachment =
-    "attachments" in props && props.attachments.length === 1
-      ? props.attachments[0]
+    props.message.attachments.length === 1
+      ? props.message.attachments[0]
       : null;
 
-  if ("text" in props && !!props.text) {
+  if (!!props.message.text) {
     return (
       <TextMessage
-        attachments={props.attachments}
-        userName={props.userName}
-        avatarUrl={props.avatarUrl}
-        createdAt={props.createdAt}
-        isRead={props.isRead}
+        message={props.message}
         isMe={props.isMe}
-        text={props.text}
+        text={props.message.text}
+        attachments={props.message.attachments}
       />
     );
   } else if (singleAttachment?.type === "image") {
     return (
       <ImageMessage
-        image={singleAttachment}
-        userName={props.userName}
-        avatarUrl={props.avatarUrl}
-        createdAt={props.createdAt}
-        isRead={props.isRead}
+        message={props.message}
         isMe={props.isMe}
+        image={singleAttachment}
       />
     );
   } else if (singleAttachment?.type === "audio") {
     return (
       <AudioMessage
-        audio={singleAttachment}
-        userName={props.userName}
-        avatarUrl={props.avatarUrl}
-        createdAt={props.createdAt}
-        isRead={props.isRead}
+        message={props.message}
         isMe={props.isMe}
+        audio={singleAttachment}
       />
     );
   }
@@ -96,37 +87,37 @@ const TypingMessage = (props: TypingMessageProps) => {
 };
 
 // Text Message
-type TextMessageProps = ContentMessageProps & {
+type TextMessageProps = MessageWrapperProps & {
   text: string;
 };
 
 const TextMessage = ({ text, ...props }: TextMessageProps) => {
   return (
-    <ContentMessage {...props}>
+    <MessageWrapper {...props}>
       <div className={classes.bubble}>
         <p>{text}</p>
       </div>
-    </ContentMessage>
+    </MessageWrapper>
   );
 };
 
 // Image Message
-type ImageMessageProps = Omit<ContentMessageProps, "attachments"> & {
+type ImageMessageProps = Omit<MessageWrapperProps, "attachments"> & {
   image: AttachmentModel;
 };
 
 const ImageMessage = ({ image, ...props }: ImageMessageProps) => {
   return (
-    <ContentMessage {...props} attachments={[]}>
+    <MessageWrapper {...props} attachments={[]}>
       <div className={classes.image}>
         <img src={image.url} alt={image.filename} />
       </div>
-    </ContentMessage>
+    </MessageWrapper>
   );
 };
 
 // Audio Message
-type AudioMessageProps = Omit<ContentMessageProps, "attachments"> & {
+type AudioMessageProps = Omit<MessageWrapperProps, "attachments"> & {
   audio: AttachmentModel;
 };
 
@@ -208,7 +199,7 @@ const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
   };
 
   return (
-    <ContentMessage {...props} attachments={[]}>
+    <MessageWrapper {...props} attachments={[]}>
       <div className={classes.audioBubble}>
         {isPlaying && (
           <div
@@ -231,6 +222,6 @@ const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
           <span className={classes.audioTime}>{secondsToHms(currentTime)}</span>
         </div>
       </div>
-    </ContentMessage>
+    </MessageWrapper>
   );
 };
