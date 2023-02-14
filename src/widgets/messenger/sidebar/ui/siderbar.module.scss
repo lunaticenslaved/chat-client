@@ -1,14 +1,4 @@
-$headerHeight: 60px;
-$sidebarBackground: rgba(
-  $color: #f7f7f7ad,
-  $alpha: 1,
-);
-
-.root {
-  display: flex;
-  flex-wrap: nowrap;
-  height: 100%;
-}
+@import url("../../_variables.scss");
 
 .icon {
   svg {

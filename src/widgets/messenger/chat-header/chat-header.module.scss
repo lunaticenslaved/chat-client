@@ -1,0 +1,21 @@
+@import url("../_variables.scss");
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  justify-content: space-between;
+  opacity: 0.5;
+  flex: 0 0 $headerHeight;
+
+  div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  h2 {
+    margin-left: 12px;
+    margin-bottom: 0;
+  }
+}

@@ -1,5 +1,17 @@
-import { Message, MessageProps } from "shared/components/message";
+import cn from "classnames";
+import { Divider, Button } from "antd";
+import {
+  AudioOutlined,
+  CameraOutlined,
+  SendOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
+
+import { Input } from "shared/components/input";
+import { Message, MessageProps } from "./message";
 import dayjs from "shared/lib/dayjs";
+
+import classes from "./chat.module.scss";
 
 const messages: MessageProps[] = [
   {
@@ -157,16 +169,52 @@ const messages: MessageProps[] = [
   },
 ];
 
-export interface DialogProps {
+export interface ChatProps {
   className?: string;
 }
 
-export const Dialog = (props: DialogProps) => {
+export const Chat = (props: ChatProps) => {
+  const rootClassName = cn(props.className, classes.root);
   return (
-    <div className={props.className}>
-      {messages.map((m, idx) => (
-        <Message key={idx} {...m} />
-      ))}
+    <div className={rootClassName}>
+      <div className={classes.messagesWrapper}>
+        {messages.map((m, idx) => (
+          <Message key={idx} {...m} />
+        ))}
+      </div>
+
+      <Divider className={classes.divider} />
+
+      <div className={classes.inputsWrapper}>
+        <Button
+          className={classes.smileButton}
+          size="large"
+          shape="circle"
+          icon={<SmileOutlined />}
+        />
+        <Input
+          placeholder="Введите сообщение..."
+          suffix={
+            <div
+              className={classes.inputButtonsWrapper}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Button
+                size="large"
+                shape="circle"
+                type="text"
+                icon={<CameraOutlined className={classes.icon} />}
+              />
+              <Button
+                size="large"
+                shape="circle"
+                type="text"
+                icon={<AudioOutlined className={classes.icon} />}
+              />
+            </div>
+          }
+        />
+      </div>
     </div>
   );
 };
