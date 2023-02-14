@@ -3,7 +3,6 @@ import React from "react";
 import dayjs from "shared/lib/dayjs";
 import { Divider } from "shared/components/divider";
 import { Chat } from "widgets/messenger/chat";
-import { ChatHeader } from "widgets/messenger/chat-header";
 import { Sidebar, DialogModel } from "widgets/messenger/sidebar";
 
 import classes from "./home-page.module.scss";
