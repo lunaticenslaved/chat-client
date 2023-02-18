@@ -1,8 +1,7 @@
 Client:
 - React / React Router
-- Redux / Redux Thunk
+- Redux Toolkit
 - TypeScript
-- Axios
 - Socket.io
 - CSS Modules
 - Storybook

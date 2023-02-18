@@ -7,7 +7,7 @@ const ConfirmEmailPage = React.lazy(() => import("pages/auth/confirm-email"));
 const HomePage = React.lazy(() => import("pages/home"));
 const PageNotFound = React.lazy(() => import("pages/not-found"));
 
-export const Router = () => {
+export const Pages = () => {
   return (
     <BrowserRouter>
       <Suspense>

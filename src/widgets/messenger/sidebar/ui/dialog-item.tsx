@@ -1,11 +1,14 @@
 import cn from "classnames";
 
 import dayjs from "shared/lib/dayjs";
+import { useAppSelector } from "shared/hooks";
 import { ReadStatusIcon } from "shared/components/read-status-icon";
 import { Avatar } from "shared/components/avatar";
+import { DialogModel } from "features/dialogs/store";
+import { viewerSelectors } from "features/viewer";
 
 import classes from "./dialog-item.module.scss";
-import { DialogModel } from "../types";
+
 export interface DialogItemProps {
   isSelected?: boolean;
   onSelect: (item: DialogModel) => void;
@@ -13,12 +16,11 @@ export interface DialogItemProps {
 }
 
 export const DialogItem = (props: DialogItemProps) => {
-  const isMyMessage =
-    props.dialog.user.id !== props.dialog.lastMessage.senderId;
+  const viewer = useAppSelector(viewerSelectors.selectViewer);
 
   let status: JSX.Element | null = null;
 
-  if (isMyMessage) {
+  if (viewer.id === props.dialog.lastMessage.senderId) {
     status = <ReadStatusIcon isRead={props.dialog.lastMessage.isRead} />;
   } else if (props.dialog.notReadMessages > 0) {
     status = (
@@ -33,7 +35,6 @@ export const DialogItem = (props: DialogItemProps) => {
   const onClick = () => {
     props.onSelect(props.dialog);
   };
-
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
       props.onSelect(props.dialog);
@@ -65,15 +66,14 @@ export const DialogItem = (props: DialogItemProps) => {
           <h6 className={classes.name}>{props.dialog.user.name}</h6>
           <time
             className={classes.time}
-            dateTime={props.dialog.lastMessage.time}
+            dateTime={props.dialog.lastMessage.createdAt}
           >
-            {dayjs(props.dialog.lastMessage.time).fromNow()}
+            {dayjs(props.dialog.lastMessage.createdAt).fromNow()}
           </time>
         </div>
 
         <div className={classes.line2}>
           <p className={classes.text}>{props.dialog.lastMessage.text}</p>
-
           <div className={classes.status}>{status}</div>
         </div>
       </div>

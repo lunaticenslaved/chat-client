@@ -1,0 +1,19 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { axios } from "shared/api";
+
+import { DialogModel } from "./types";
+
+// FIXME: обработать ошибку
+
+export const fetchDialogs = createAsyncThunk(
+  "dialogs/fetchDialogs",
+  async () => {
+    try {
+      const response = await axios.get<DialogModel[]>("/myDialogs");
+      return response.data;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+);

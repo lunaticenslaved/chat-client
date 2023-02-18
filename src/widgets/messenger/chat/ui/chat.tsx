@@ -2,8 +2,10 @@ import { Empty } from "antd";
 
 import dayjs from "shared/lib/dayjs";
 import { Divider } from "shared/components/divider";
+import { useAppSelector } from "shared/hooks";
+import { dialogsSelectors } from "features/dialogs/store";
 
-import { DialogModel, MessageModel } from "../types";
+import { MessageModel } from "../types";
 import { Header } from "./header";
 import { MessagesList } from "./messages-list";
 
@@ -209,12 +211,10 @@ const messages: MessageModel[] = [
   },
 ];
 
-export interface ChatProps {
-  selectedDialog: DialogModel | null | undefined;
-}
+export const Chat = () => {
+  const currentDialog = useAppSelector(dialogsSelectors.selectCurrentDialog);
 
-export const Chat = (props: ChatProps) => {
-  if (!props.selectedDialog) {
+  if (!currentDialog) {
     return (
       <div className={classes.emptyRoot}>
         <Empty description="Выберите диалог, чтобы начать общение" />
@@ -225,8 +225,8 @@ export const Chat = (props: ChatProps) => {
   return (
     <div className={classes.root}>
       <Header
-        title={props.selectedDialog.user.name}
-        isOnline={props.selectedDialog.user.isOnline}
+        title={currentDialog.user.name}
+        isOnline={currentDialog.user.isOnline}
       />
 
       <Divider />

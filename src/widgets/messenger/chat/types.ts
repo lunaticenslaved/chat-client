@@ -17,11 +17,3 @@ export interface AttachmentModel {
   url: string;
   type: "image" | "audio";
 }
-
-export interface DialogModel {
-  id: number;
-  user: {
-    name: string;
-    isOnline: boolean;
-  };
-}
