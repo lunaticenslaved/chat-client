@@ -26,7 +26,7 @@ export const Sidebar = () => {
 
   React.useEffect(() => {
     dispatch(dialogsActions.fetchDialogs());
-  }, []);
+  });
 
   const sortedDialog = useSortedDialogs(dialogs);
   const filteredAndSortedDialogs = useFilteredDialogs(

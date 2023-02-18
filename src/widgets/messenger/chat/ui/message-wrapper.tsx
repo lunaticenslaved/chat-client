@@ -4,9 +4,9 @@ import cn from "classnames";
 import dayjs from "shared/lib/dayjs";
 import { ReadStatusIcon } from "shared/components/read-status-icon";
 import { Avatar } from "shared/components/avatar";
+import { MessageModel, AttachmentModel } from "features/messages/store";
 
 import classes from "./message.module.scss";
-import { AttachmentModel, MessageModel } from "../types";
 
 export interface MessageWrapperProps extends PropsWithChildren {
   message: MessageModel;
@@ -45,8 +45,8 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
       <>
         <Avatar
           className={classes.avatar}
-          url={props.message.sender.avatar}
-          name={props.message.sender.name}
+          url={props.message.author.avatar}
+          name={props.message.author.name}
         />
         <div>
           <div className={classes.content}>

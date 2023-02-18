@@ -4,8 +4,8 @@ import cn from "classnames";
 import { ReactComponent as PlaySvg } from "shared/img/play.svg";
 import { ReactComponent as PauseSvg } from "shared/img/pause.svg";
 import { ReactComponent as WaveSvg } from "shared/img/wave.svg";
+import { AttachmentModel } from "features/messages/store";
 
-import { AttachmentModel } from "../types";
 import { MessageWrapper, MessageWrapperProps } from "./message-wrapper";
 import classes from "./message.module.scss";
 
@@ -186,7 +186,7 @@ const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
         el.removeEventListener("onloadedmetadata", setCurrentTime);
       }
     };
-  }, []);
+  });
 
   const togglePlay = () => {
     if (audioElem.current) {

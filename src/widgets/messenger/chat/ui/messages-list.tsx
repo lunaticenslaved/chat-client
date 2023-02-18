@@ -6,11 +6,13 @@ import {
   SmileOutlined,
 } from "@ant-design/icons";
 
+import { useAppSelector } from "shared/hooks";
 import { Divider } from "shared/components/divider";
 import { Input } from "shared/components/input";
-import { Message } from "./message";
+import { MessageModel } from "features/messages/store/types";
+import { viewerSelectors } from "features/viewer";
 
-import { MessageModel } from "../types";
+import { Message } from "./message";
 import classes from "./messages-list.module.scss";
 
 // FIXME: заменить определение IsMe для сообщения
@@ -21,12 +23,13 @@ export interface MessagesListProps {
 
 export const MessagesList = (props: MessagesListProps) => {
   const rootClassName = cn(classes.root);
+  const viewer = useAppSelector(viewerSelectors.selectViewer);
 
   return (
     <div className={rootClassName}>
       <ul className={classes.messagesWrapper}>
         {props.messages.map((m) => (
-          <Message key={m.id} message={m} isMe={m.sender.id === 1} />
+          <Message key={m.id} message={m} isMe={m.author.id === viewer.id} />
         ))}
       </ul>
 
