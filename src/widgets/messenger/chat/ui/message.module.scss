@@ -52,7 +52,7 @@ $audio-width: 320px;
   border-radius: $bubble-border-radius $bubble-border-radius
     $bubble-border-radius 0;
 
-  p {
+  .text {
     color: white;
   }
 
@@ -104,7 +104,7 @@ $audio-width: 320px;
       padding: $bubble-padding;
       max-width: max-content;
 
-      p {
+      .text {
         margin: 0;
         line-height: $bubble-text-line-height;
       }

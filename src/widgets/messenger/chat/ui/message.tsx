@@ -61,30 +61,32 @@ interface TypingMessageProps {
   userName: string;
 }
 
-const TypingMessage = (props: TypingMessageProps) => {
-  return (
-    <div className={cn(classes.root, classes.isTyping)}>
-      <>
-        <div className={classes.avatar}>
-          <img src={props.avatarUrl} alt={"Аватар " + props.userName} />
-        </div>
-        <div>
-          <div className={classes.content}>
-            <div className={classes.bubble}>
-              <div className={classes.typingAnimation}>
-                <span></span>
-                <span></span>
-                <span></span>
+const TypingMessage = React.forwardRef<HTMLDivElement, TypingMessageProps>(
+  (props: TypingMessageProps, ref) => {
+    return (
+      <div ref={ref} className={cn(classes.root, classes.isTyping)}>
+        <>
+          <div className={classes.avatar}>
+            <img src={props.avatarUrl} alt={"Аватар " + props.userName} />
+          </div>
+          <div>
+            <div className={classes.content}>
+              <div className={classes.bubble}>
+                <div className={classes.typingAnimation}>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <time className={classes.date}></time>
-        </div>
-      </>
-    </div>
-  );
-};
+            <time className={classes.date}></time>
+          </div>
+        </>
+      </div>
+    );
+  }
+);
 
 // Text Message
 type TextMessageProps = MessageWrapperProps & {
@@ -95,7 +97,7 @@ const TextMessage = ({ text, ...props }: TextMessageProps) => {
   return (
     <MessageWrapper {...props}>
       <div className={classes.bubble}>
-        <p>{text}</p>
+        <p className={classes.text}>{text}</p>
       </div>
     </MessageWrapper>
   );
@@ -186,7 +188,7 @@ const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
         el.removeEventListener("onloadedmetadata", setCurrentTime);
       }
     };
-  });
+  }, []);
 
   const togglePlay = () => {
     if (audioElem.current) {

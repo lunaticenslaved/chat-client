@@ -8,11 +8,14 @@ import { messagesSelectors, messagesActions } from "features/messages/store";
 
 import { Header } from "./header";
 import { MessagesList } from "./messages-list";
+import { LoadingPlaceholder, NoMessagesPlaceholder } from "./placeholder";
+import { MessageInput } from "./input";
 import classes from "./chat.module.scss";
 
 export const Chat = () => {
   const currentDialog = useAppSelector(dialogsSelectors.selectCurrentDialog);
   const messages = useAppSelector(messagesSelectors.selectMessages);
+  const isFetching = useAppSelector(messagesSelectors.selectIsFetching);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -38,7 +41,17 @@ export const Chat = () => {
 
       <Divider />
 
-      <MessagesList messages={messages} />
+      {isFetching ? (
+        <LoadingPlaceholder />
+      ) : messages.length === 0 ? (
+        <NoMessagesPlaceholder />
+      ) : (
+        <>
+          <MessagesList messages={messages} />
+          <Divider />
+          <MessageInput />
+        </>
+      )}
     </div>
   );
 };

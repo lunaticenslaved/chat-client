@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import cn from "classnames";
 
 import dayjs from "shared/lib/dayjs";
@@ -41,7 +41,7 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
   });
 
   return (
-    <li className={rootClassName}>
+    <div className={rootClassName}>
       <>
         <Avatar
           className={classes.avatar}
@@ -63,6 +63,6 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
           </time>
         </div>
       </>
-    </li>
+    </div>
   );
 };

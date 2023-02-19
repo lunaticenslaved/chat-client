@@ -1,6 +1,6 @@
 import React from "react";
 import { UserOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
-import { Empty } from "antd";
+import { Empty, Spin } from "antd";
 
 import { Input } from "shared/components/input";
 import { Divider } from "shared/components/divider";
@@ -20,13 +20,14 @@ import classes from "./sidebar.module.scss";
 
 export const Sidebar = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const isFetching = useAppSelector(dialogsSelectors.selectIsFetching);
   const currentDialog = useAppSelector(dialogsSelectors.selectCurrentDialog);
   const dialogs = useAppSelector(dialogsSelectors.selectDialogs);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     dispatch(dialogsActions.fetchDialogs());
-  });
+  }, [dispatch]);
 
   const sortedDialog = useSortedDialogs(dialogs);
   const filteredAndSortedDialogs = useFilteredDialogs(
@@ -39,8 +40,13 @@ export const Sidebar = () => {
   };
 
   let content: JSX.Element | null = null;
-
-  if (filteredAndSortedDialogs.length > 0) {
+  if (isFetching) {
+    content = (
+      <div className={classes.emptyWrapper}>
+        <Spin tip="Загрузка диалогов " size="large" />
+      </div>
+    );
+  } else if (filteredAndSortedDialogs.length > 0) {
     content = (
       <div className={classes.dialogsList}>
         {filteredAndSortedDialogs.map((dialog, idx) => (
@@ -56,7 +62,7 @@ export const Sidebar = () => {
   } else {
     content = (
       <div className={classes.emptyWrapper}>
-        <Empty description={"Нет диалогов"} />
+        <Empty description="Нет диалогов" />
       </div>
     );
   }
