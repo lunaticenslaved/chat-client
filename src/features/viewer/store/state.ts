@@ -1,11 +1,10 @@
+import { ViewerModel } from "../types";
+import { decodeViewer } from "./_lib";
+
 export interface ViewerState {
-  viewer: {
-    id: number;
-  };
+  viewer: ViewerModel | null;
 }
 
 export const initialState: ViewerState = {
-  viewer: {
-    id: 0,
-  },
+  viewer: decodeViewer(),
 };

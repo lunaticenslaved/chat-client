@@ -2,7 +2,7 @@ import React from "react";
 
 import { useAppSelector } from "shared/hooks";
 import { MessageModel } from "features/messages/store/types";
-import { viewerSelectors } from "features/viewer";
+import { viewerSelectors } from "features/viewer/store";
 
 import { Message } from "./message";
 import classes from "./messages-list.module.scss";
@@ -27,7 +27,7 @@ export const MessagesList = (props: MessagesListProps) => {
       <ul>
         {props.messages.map((m) => (
           <li key={m.id}>
-            <Message message={m} isMe={m.author.id === viewer.id} />
+            <Message message={m} isMe={m.author.id === viewer?.id} />
           </li>
         ))}
       </ul>

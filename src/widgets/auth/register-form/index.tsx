@@ -1,5 +1,6 @@
-import { Form as AntForm, FormRule } from "antd";
+import { Form as AntForm, FormRule, message } from "antd";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import { Input } from "shared/components/input";
 import {
@@ -7,26 +8,32 @@ import {
   validatePassword,
   validateLogin,
 } from "shared/lib/validators";
+import { useAppDispatch } from "shared/hooks";
+import { viewerService } from "features/viewer/service";
+import { viewerActions } from "features/viewer/store";
 
 import { Form } from "../_lib/form";
 
-interface Values {
+export interface Values {
   email: string;
   name: string;
   password: string;
-  passwordRepeat: string;
 }
 
-interface RegisterFormProps {
-  onSuccess: () => void;
-}
-
-export const RegisterForm = (props: RegisterFormProps) => {
+export const RegisterForm = () => {
   const [formInstance] = AntForm.useForm<Values>();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const onFinish = (values: Values) => {
-    props.onSuccess();
-    console.log("Received values of form: ", values);
+  const onSubmit = (values: Values) => {
+    return viewerService.register({
+      data: values,
+      onSuccess: (authResponse) => {
+        dispatch(viewerActions.setAuthorized(authResponse));
+        navigate("/confirm-email", { replace: true });
+      },
+      onError: () => message.error("Что-то пошло не так при регистрации"),
+    });
   };
 
   const loginRule: FormRule = {
@@ -91,13 +98,13 @@ export const RegisterForm = (props: RegisterFormProps) => {
         buttonText="Зарегистрироваться"
         linkText="Войти в аккаунт"
         link="/login"
-        onFinish={onFinish}
+        onSubmit={onSubmit}
       >
         <AntForm.Item name="email" rules={[emailRule]} hasFeedback>
           <Input prefix={<MailOutlined />} placeholder="E-mail" />
         </AntForm.Item>
 
-        <AntForm.Item name="username" rules={[loginRule]} hasFeedback>
+        <AntForm.Item name="name" rules={[loginRule]} hasFeedback>
           <Input prefix={<UserOutlined />} placeholder="Логин" />
         </AntForm.Item>
 

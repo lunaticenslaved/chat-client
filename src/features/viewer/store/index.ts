@@ -13,4 +13,8 @@ export const viewerSlice = createSlice({
 
 export const viewerSelectors = {
   selectViewer: (state: RootState) => state.viewer.viewer,
+  selectIsAuthorized: (state: RootState) => !!state.viewer.viewer,
+  selectIsActivated: (state: RootState) => !!state.viewer.viewer?.isActivated,
 };
+
+export const viewerActions = viewerSlice.actions;

@@ -1,23 +1,31 @@
-import { Form as AntForm } from "antd";
+import React from "react";
+import { Form as AntForm, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import { Input } from "shared/components/input";
+import { useAppDispatch } from "shared/hooks";
+import { viewerService } from "features/viewer/service";
 
 import { Form } from "../_lib/form";
+import { viewerActions } from "features/viewer/store";
+
+// FIXME: обработать ошибку "неверный пароль"
 
 interface Values {
-  name: string;
+  email: string;
   password: string;
 }
 
-interface LoginFormProps {
-  onSubmit: () => void;
-}
+export const LoginForm = () => {
+  const dispatch = useAppDispatch();
 
-export const LoginForm = (props: LoginFormProps) => {
-  const onFinish = (values: Values) => {
-    props.onSubmit();
-    console.log("Received values of form: ", values);
+  const onSubmit = (values: Values) => {
+    return viewerService.login({
+      data: values,
+      onSuccess: (authResponse) =>
+        dispatch(viewerActions.setAuthorized(authResponse)),
+      onError: () => message.error("Что-то пошло не так при регистрации"),
+    });
   };
 
   return (
@@ -26,14 +34,14 @@ export const LoginForm = (props: LoginFormProps) => {
         buttonText="Войти в аккаунт"
         linkText="Зарегистрироваться"
         link="/register"
-        onFinish={onFinish}
+        onSubmit={onSubmit}
       >
         <AntForm.Item
-          name="username"
-          rules={[{ required: true, message: "Укажите имя пользователя" }]}
+          name="email"
+          rules={[{ required: true, message: "Укажите e-mail пользователя" }]}
           hasFeedback
         >
-          <Input prefix={<UserOutlined />} placeholder="Логин" />
+          <Input prefix={<UserOutlined />} placeholder="E-mail" />
         </AntForm.Item>
         <AntForm.Item
           name="password"

@@ -5,7 +5,7 @@ import { useAppSelector } from "shared/hooks";
 import { ReadStatusIcon } from "shared/components/read-status-icon";
 import { Avatar } from "shared/components/avatar";
 import { DialogModel } from "features/dialogs/store";
-import { viewerSelectors } from "features/viewer";
+import { viewerSelectors } from "features/viewer/store";
 
 import classes from "./dialog-item.module.scss";
 
@@ -20,7 +20,7 @@ export const DialogItem = (props: DialogItemProps) => {
 
   let status: JSX.Element | null = null;
 
-  if (viewer.id === props.dialog.lastMessage.senderId) {
+  if (viewer?.id === props.dialog.lastMessage.senderId) {
     status = <ReadStatusIcon isRead={props.dialog.lastMessage.isRead} />;
   } else if (props.dialog.notReadMessages > 0) {
     status = (
