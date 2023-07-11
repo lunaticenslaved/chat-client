@@ -1,11 +1,11 @@
-import React from "react";
+import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "shared/hooks";
-import { viewerService } from "features/viewer/service";
-import { viewerActions, viewerSelectors } from "features/viewer/store";
+import { useAppSelector } from "shared/hooks";
+import { viewerSelectors } from "features/viewer/store";
 import { SpinnerContainer } from "widgets/spinner-container";
+import { useRefresh } from "features/auth/use-refresh";
 
 import { store } from "./store";
 import { PrivatePages, PublicPages } from "./pages";
@@ -24,33 +24,30 @@ function App() {
 
 const PagesWithStore = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const isAuthorized = useAppSelector(viewerSelectors.selectIsAuthorized);
-  const [isCheckingAuth, setCheckingAuth] = React.useState(false);
+  const { refresh, isLoading: isCheckingAuth } = useRefresh();
 
-  React.useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setCheckingAuth(true);
-
-      viewerService
-        .refreshAuth({
-          onSuccess: (res) => dispatch(viewerActions.setAuthorized(res)),
-          onError: () => dispatch(viewerActions.setUnauthorized()),
-        })
-        .finally(() => setCheckingAuth(false));
-    }
+  useEffect(() => {
+    refresh();
   }, []);
 
-  React.useEffect(() => {
-    if (isAuthorized) navigate("/im", { replace: false });
-    else navigate("/login", { replace: false });
+  useEffect(() => {
+    if (isAuthorized) {
+      navigate("/im", { replace: false });
+    } else {
+      navigate("/login", { replace: false });
+    }
   }, [isAuthorized]);
 
   if (isCheckingAuth) {
     return <SpinnerContainer />;
   }
 
-  return isAuthorized ? <PrivatePages /> : <PublicPages />;
+  if (isAuthorized) {
+    return <PrivatePages />;
+  }
+
+  return <PublicPages />;
 };
 
 export default App;

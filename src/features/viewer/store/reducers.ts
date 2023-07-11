@@ -1,16 +1,14 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import { AuthResponse } from "../types";
+import { ViewerModel } from "../types";
 import { ViewerState } from "./state";
-import { decodeViewer } from "./_lib";
 
 export const reducers = {
-  setUnauthorized: (state: ViewerState) => {
-    state.viewer = null;
-    localStorage.removeItem("token");
-  },
-  setAuthorized: (state: ViewerState, action: PayloadAction<AuthResponse>) => {
-    state.viewer = decodeViewer(action.payload.accessToken);
-    localStorage.setItem("token", action.payload.accessToken);
+  // TODO: перенести в апи?
+  setViewer: (
+    state: ViewerState,
+    action: PayloadAction<ViewerModel | null>
+  ) => {
+    state.viewer = action.payload;
   },
 };

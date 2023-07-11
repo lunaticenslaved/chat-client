@@ -4,13 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 
 import { $api } from "shared/api";
-import { Button } from "shared/components/button";
+import { Button } from "shared/components/Button";
 
-import { Layout } from "../_lib/layout";
+import { AuthLayout } from "pages/_layouts/auth-layout";
 
 import classes from "./index.module.scss";
 
-const ConfirmedPage = () => {
+const ConfirmSuccessPage = () => {
   const { link } = useParams();
   const [isSubmitting, setSubmitting] = React.useState(false);
   const [errored, setErrored] = React.useState(false);
@@ -30,32 +30,32 @@ const ConfirmedPage = () => {
 
   if (isSubmitting) {
     return (
-      <Layout
+      <AuthLayout
         header="Подтверждение аккаунта"
         description="Пожалуйста, подождите"
       >
         <div className={classes.root}>
           <Spin tip="Подтверждение аккаунта" size="large" />
         </div>
-      </Layout>
+      </AuthLayout>
     );
   }
 
   if (errored) {
     return (
-      <Layout
+      <AuthLayout
         header="Ошибка"
         description="Что-то пошло не так при подтверждении аккаунта"
       >
         <div className={classes.root}>
           <Button onClick={activate}>Попробовать снова</Button>
         </div>
-      </Layout>
+      </AuthLayout>
     );
   }
 
   return (
-    <Layout
+    <AuthLayout
       header="E-mail адрес подтвержден"
       description="Теперь вы можете начать общаться"
     >
@@ -63,8 +63,8 @@ const ConfirmedPage = () => {
         <CheckCircleTwoTone className={classes.icon} />
         <Link to="/login">Перейти к авторизации</Link>
       </div>
-    </Layout>
+    </AuthLayout>
   );
 };
 
-export default ConfirmedPage;
+export default ConfirmSuccessPage;

@@ -1,0 +1,26 @@
+[
+    {
+        "type": "Directory",
+        "name": "/Users/tek-gal/Private/chat-client/src/api",
+        "parent_id": null,
+        "workspaceRoot": "/Users/tek-gal/Private/chat-client",
+        "workspacePath": "src/api",
+        "id": "oaE8ld6OKwL17me2"
+    },
+    {
+        "type": "Directory",
+        "name": "/Users/tek-gal/Private/chat-client/src/app",
+        "parent_id": null,
+        "workspaceRoot": "/Users/tek-gal/Private/chat-client",
+        "workspacePath": "src/app",
+        "id": "Kn31kaTmSJR5xPNy"
+    },
+    {
+        "type": "Directory",
+        "name": "/Users/tek-gal/Private/chat-client/src/features",
+        "parent_id": null,
+        "workspaceRoot": "/Users/tek-gal/Private/chat-client",
+        "workspacePath": "src/features",
+        "id": "DIbJjd6pravKWliq"
+    }
+]

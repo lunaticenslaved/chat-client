@@ -2,14 +2,14 @@ import React from "react";
 import { message } from "antd";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 
-import { Button } from "shared/components/button";
+import { Button } from "shared/components/Button";
 import { $api } from "shared/api";
 
-import { Layout, Description } from "../_lib/layout";
+import { AuthLayout, Description } from "pages/_layouts/auth-layout";
 
 import classes from "./index.module.scss";
 
-export const ConfirmEmailPage = () => {
+export const ConfirmRequiredPage = () => {
   const [isSubmitting, setSubmitting] = React.useState(false);
   const [isSent, setSent] = React.useState(false);
 
@@ -28,7 +28,7 @@ export const ConfirmEmailPage = () => {
   };
 
   return (
-    <Layout
+    <AuthLayout
       header="Подтвердите e-mail"
       description="Пожалуйста, подтвердите свой e-mail адрес"
     >
@@ -54,8 +54,8 @@ export const ConfirmEmailPage = () => {
           </Button>
         )}
       </div>
-    </Layout>
+    </AuthLayout>
   );
 };
 
-export default ConfirmEmailPage;
+export default ConfirmRequiredPage;
