@@ -13,10 +13,5 @@ export const Divider = (props: DividerProps) => {
     [classes.vertical]: !!props.vertical,
   });
 
-  return (
-    <AntDivider
-      className={className}
-      type={!!props.vertical ? "vertical" : "horizontal"}
-    />
-  );
+  return <AntDivider className={className} type={props.vertical ? "vertical" : "horizontal"} />;
 };

@@ -8,11 +8,7 @@ type ButtonProps = Omit<AntButtonProps, "type">;
 
 export const Button = (props: ButtonProps) => {
   return (
-    <AntButton
-      {...props}
-      type="primary"
-      className={cn("button", props.className)}
-    >
+    <AntButton {...props} type="primary" className={cn("button", props.className)}>
       {props.children}
     </AntButton>
   );

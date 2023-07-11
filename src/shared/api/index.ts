@@ -5,7 +5,7 @@ const options = {
   withCredentials: true,
 };
 
-const authInterceptor = (config: InternalAxiosRequestConfig<any>) => {
+const authInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;
 };

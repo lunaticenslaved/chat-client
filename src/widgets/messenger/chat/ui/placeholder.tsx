@@ -13,8 +13,7 @@ export const LoadingPlaceholder = () => {
 export const NoMessagesPlaceholder = () => {
   return (
     <div className={classes.root}>
-        <Empty description="Нет сообщений" />
+      <Empty description="Нет сообщений" />
     </div>
   );
-
-}
+};

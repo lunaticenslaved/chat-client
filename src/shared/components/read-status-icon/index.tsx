@@ -13,9 +13,5 @@ export interface ReadStatusIconProps {
 export const ReadStatusIcon = (props: ReadStatusIconProps) => {
   const className = cn(props.className, classes.icon);
 
-  return props.isRead ? (
-    <ReadSvg className={className} />
-  ) : (
-    <NotReadSvg className={className} />
-  );
+  return props.isRead ? <ReadSvg className={className} /> : <NotReadSvg className={className} />;
 };

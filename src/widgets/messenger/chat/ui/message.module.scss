@@ -27,8 +27,7 @@ $audio-width: 320px;
   background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid #ececec;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.0220444);
-  border-radius: $bubble-border-radius $bubble-border-radius 0
-    $bubble-border-radius;
+  border-radius: $bubble-border-radius $bubble-border-radius 0 $bubble-border-radius;
 
   .audioProgress {
     background-color: rgba(0, 0, 0, 0.1);
@@ -49,8 +48,7 @@ $audio-width: 320px;
 @mixin bubble-not-me {
   background-color: #3674ff;
   box-shadow: 0 5px 5px rgba(54, 116, 255, 0.196733);
-  border-radius: $bubble-border-radius $bubble-border-radius
-    $bubble-border-radius 0;
+  border-radius: $bubble-border-radius $bubble-border-radius $bubble-border-radius 0;
 
   .text {
     color: white;

@@ -25,9 +25,7 @@ export const DialogItem = (props: DialogItemProps) => {
   } else if (props.dialog.notReadMessages > 0) {
     status = (
       <span className={classes.count}>
-        {props.dialog.notReadMessages > 99
-          ? "99+"
-          : props.dialog.notReadMessages}
+        {props.dialog.notReadMessages > 99 ? "99+" : props.dialog.notReadMessages}
       </span>
     );
   }
@@ -46,12 +44,7 @@ export const DialogItem = (props: DialogItemProps) => {
   });
 
   return (
-    <div
-      className={className}
-      tabIndex={1}
-      onClick={onClick}
-      onKeyDown={onKeyDown}
-    >
+    <div className={className} tabIndex={1} onClick={onClick} onKeyDown={onKeyDown}>
       <div className={classes.avatarWrapper}>
         <Avatar
           className={classes.avatar}
@@ -64,10 +57,7 @@ export const DialogItem = (props: DialogItemProps) => {
       <div className={classes.body}>
         <div className={classes.line1}>
           <h6 className={classes.name}>{props.dialog.user.name}</h6>
-          <time
-            className={classes.time}
-            dateTime={props.dialog.lastMessage.createdAt}
-          >
+          <time className={classes.time} dateTime={props.dialog.lastMessage.createdAt}>
             {dayjs(props.dialog.lastMessage.createdAt).fromNow()}
           </time>
         </div>

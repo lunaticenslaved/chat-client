@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { forwardRef, useCallback } from "react";
 import cn from "classnames";
 
 import { ReactComponent as PlaySvg } from "shared/img/play.svg";
@@ -15,17 +15,13 @@ export type MessageProps =
 
 export const Message = (props: MessageProps) => {
   if ("isTyping" in props) {
-    return (
-      <TypingMessage userName={props.userName} avatarUrl={props.avatarUrl} />
-    );
+    return <TypingMessage userName={props.userName} avatarUrl={props.avatarUrl} />;
   }
 
   const singleAttachment =
-    props.message.attachments.length === 1
-      ? props.message.attachments[0]
-      : null;
+    props.message.attachments.length === 1 ? props.message.attachments[0] : null;
 
-  if (!!props.message.text) {
+  if (props.message.text) {
     return (
       <TextMessage
         message={props.message}
@@ -35,21 +31,9 @@ export const Message = (props: MessageProps) => {
       />
     );
   } else if (singleAttachment?.type === "image") {
-    return (
-      <ImageMessage
-        message={props.message}
-        isMe={props.isMe}
-        image={singleAttachment}
-      />
-    );
+    return <ImageMessage message={props.message} isMe={props.isMe} image={singleAttachment} />;
   } else if (singleAttachment?.type === "audio") {
-    return (
-      <AudioMessage
-        message={props.message}
-        isMe={props.isMe}
-        audio={singleAttachment}
-      />
-    );
+    return <AudioMessage message={props.message} isMe={props.isMe} audio={singleAttachment} />;
   }
 
   return null;
@@ -61,7 +45,8 @@ interface TypingMessageProps {
   userName: string;
 }
 
-const TypingMessage = React.forwardRef<HTMLDivElement, TypingMessageProps>(
+// eslint-disable-next-line react/display-name
+const TypingMessage = forwardRef<HTMLDivElement, TypingMessageProps>(
   (props: TypingMessageProps, ref) => {
     return (
       <div ref={ref} className={cn(classes.root, classes.isTyping)}>
@@ -125,13 +110,13 @@ type AudioMessageProps = Omit<MessageWrapperProps, "attachments"> & {
 
 function secondsToHms(d: number) {
   d = Number(d);
-  var h = Math.floor(d / 3600);
-  var m = Math.floor((d % 3600) / 60);
-  var s = Math.floor((d % 3600) % 60);
+  const h = Math.floor(d / 3600);
+  const m = Math.floor((d % 3600) / 60);
+  const s = Math.floor((d % 3600) % 60);
 
-  var hDisplay = h > 0 ? h.toString().padStart(2, "0") : "";
-  var mDisplay = m.toString().padStart(2, "0");
-  var sDisplay = s.toString().padStart(2, "0");
+  const hDisplay = h > 0 ? h.toString().padStart(2, "0") : "";
+  const mDisplay = m.toString().padStart(2, "0");
+  const sDisplay = s.toString().padStart(2, "0");
 
   if (hDisplay) return `${hDisplay}:${mDisplay}:${sDisplay}`;
   return `${mDisplay}:${sDisplay}`;
@@ -188,7 +173,7 @@ const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
         el.removeEventListener("onloadedmetadata", setCurrentTime);
       }
     };
-  }, []);
+  }, [audioElem, setCurrentTime]);
 
   const togglePlay = () => {
     if (audioElem.current) {
@@ -203,12 +188,7 @@ const AudioMessage = ({ audio, ...props }: AudioMessageProps) => {
   return (
     <MessageWrapper {...props} attachments={[]}>
       <div className={classes.audioBubble}>
-        {isPlaying && (
-          <div
-            className={classes.audioProgress}
-            style={{ width: progress + "%" }}
-          />
-        )}
+        {isPlaying && <div className={classes.audioProgress} style={{ width: progress + "%" }} />}
 
         <div className={classes.audioContent}>
           <audio ref={audioElem} src={audio.url} preload="auto">

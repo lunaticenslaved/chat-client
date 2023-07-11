@@ -47,7 +47,7 @@ export const authApi = createApi({
       transformErrorResponse: () => new Error("Sign up error"),
     }),
 
-    refresh: build.mutation<ViewerModel, void>({ 
+    refresh: build.mutation<ViewerModel, void>({
       query: () => ({ url: `/refresh` }),
       transformResponse: ({ data }: { data: SignInResponse }) => {
         localStorage.setItem("token", data.accessToken);
@@ -73,9 +73,5 @@ export const authApi = createApi({
   }),
 });
 
-export const {
-  useSignInMutation,
-  useSignUpMutation,
-  useRefreshMutation,
-  useLogoutMutation,
-} = authApi;
+export const { useSignInMutation, useSignUpMutation, useRefreshMutation, useLogoutMutation } =
+  authApi;

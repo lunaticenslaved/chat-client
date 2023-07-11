@@ -9,11 +9,7 @@ export const fetchMessagesForDialogId = createAsyncThunk(
   async (id: MessageModel["id"] | null) => {
     if (id === null) return [];
 
-    try {
-      const response = await $api.get<MessageModel[]>("/messages");
-      return response.data;
-    } catch (error: any) {
-      throw error;
-    }
+    const response = await $api.get<MessageModel[]>("/messages");
+    return response.data;
   }
 );

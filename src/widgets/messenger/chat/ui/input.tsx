@@ -1,14 +1,10 @@
 import React from "react";
 import { Button, Upload, UploadProps, message, Popover } from "antd";
-import {
-  AudioOutlined,
-  CameraOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import { AudioOutlined, CameraOutlined, SmileOutlined } from "@ant-design/icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { Input } from "shared/components/input";
+import { Input } from "shared/components/Input";
 
 import classes from "./input.module.scss";
 
@@ -36,10 +32,7 @@ export const MessageInput = () => {
   const [text, setText] = React.useState("");
 
   const textSuffix = (
-    <div
-      className={classes.buttonsWrapper}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className={classes.buttonsWrapper} onClick={(e) => e.stopPropagation()}>
       <Upload {...props} multiple showUploadList={false}>
         <Button
           size="large"
@@ -58,18 +51,14 @@ export const MessageInput = () => {
     </div>
   );
 
-  const onEmojiSelect = (emoji: any) => {
+  const onEmojiSelect = (emoji: { native: unknown }) => {
     if (!emoji) return;
     setText(text + emoji.native);
   };
 
   return (
     <div className={classes.root}>
-      <Popover
-        content={
-          <Picker data={data} locale="ru" onEmojiSelect={onEmojiSelect} />
-        }
-      >
+      <Popover content={<Picker data={data} locale="ru" onEmojiSelect={onEmojiSelect} />}>
         <Button
           className={classes.smileButton}
           size="large"

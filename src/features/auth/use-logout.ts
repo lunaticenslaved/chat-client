@@ -1,23 +1,23 @@
 import { useCallback } from "react";
 
-import { useRefreshMutation } from "api/auth-api";
+import { useLogoutMutation } from "api/auth-api";
 import { useAppDispatch } from "shared/hooks";
 
 import { Handlers } from "./_lib";
 import { viewerActions } from "features/viewer/store";
 
-export const useRefresh = ({ onError, onSuccess }: Handlers = {}) => {
-  const [makeRefresh, { isLoading }] = useRefreshMutation();
+export const useLogout = ({ onError, onSuccess }: Handlers = {}) => {
+  const [makeLogout, { isLoading }] = useLogoutMutation();
   const dispatch = useAppDispatch();
 
-  const refresh = useCallback(async () => {
+  const logout = useCallback(async () => {
     if (!localStorage.getItem("token")) return;
 
     try {
-      const viewer = await makeRefresh().unwrap();
+      await makeLogout().unwrap();
 
       if (onSuccess) {
-        dispatch(viewerActions.setViewer(viewer));
+        dispatch(viewerActions.setViewer(null));
 
         onSuccess();
       }
@@ -26,10 +26,10 @@ export const useRefresh = ({ onError, onSuccess }: Handlers = {}) => {
         onError(error as Error);
       }
     }
-  }, [dispatch, makeRefresh, onError, onSuccess]);
+  }, [dispatch, makeLogout, onError, onSuccess]);
 
   return {
-    refresh,
+    logout,
     isLoading,
   };
 };

@@ -5,11 +5,7 @@ import { Empty, Spin } from "antd";
 import { Input } from "shared/components/input";
 import { Divider } from "shared/components/divider";
 import { useAppDispatch, useAppSelector } from "shared/hooks";
-import {
-  DialogModel,
-  dialogsActions,
-  dialogsSelectors,
-} from "features/dialogs/store";
+import { DialogModel, dialogsActions, dialogsSelectors } from "features/dialogs/store";
 
 import { DialogItem } from "./dialog-item";
 import { useSortedDialogs, useFilteredDialogs } from "../hooks";
@@ -30,10 +26,7 @@ export const Sidebar = () => {
   }, [dispatch]);
 
   const sortedDialog = useSortedDialogs(dialogs);
-  const filteredAndSortedDialogs = useFilteredDialogs(
-    sortedDialog,
-    searchQuery
-  );
+  const filteredAndSortedDialogs = useFilteredDialogs(sortedDialog, searchQuery);
 
   const onDialogSelect = (dialog: DialogModel) => {
     dispatch(dialogsActions.setCurrentDialog(dialog));

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import cn from "classnames";
 
 import dayjs from "shared/lib/dayjs";
@@ -54,9 +54,7 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
             {status && <div className={classes.readStatus}>{status}</div>}
           </div>
 
-          {attachments && (
-            <div className={classes.attachments}>{attachments}</div>
-          )}
+          {attachments && <div className={classes.attachments}>{attachments}</div>}
 
           <time dateTime={props.message.createdAt} className={classes.date}>
             {dayjs(props.message.createdAt).fromNow()}

@@ -7,12 +7,7 @@ type InputProps = Omit<AntInputProps, "size">;
 
 export const Input = (props: InputProps) => {
   return (
-    <AntInput
-      {...props}
-      type="primary"
-      size="large"
-      className={cn("input", props.className)}
-    >
+    <AntInput {...props} type="primary" size="large" className={cn("input", props.className)}>
       {props.children}
     </AntInput>
   );

@@ -33,12 +33,7 @@ export const SignInPage = () => {
         rules={[{ required: true, message: "Введите пароль" }]}
         hasFeedback
       >
-        <Input
-          autoComplete=""
-          prefix={<LockOutlined />}
-          type="password"
-          placeholder="Пароль"
-        />
+        <Input autoComplete="" prefix={<LockOutlined />} type="password" placeholder="Пароль" />
       </Form.Item>
     </AuthLayout>
   );

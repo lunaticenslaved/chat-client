@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useMemo, useState } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import cn from "classnames";
 import { Form as AntForm, FormInstance } from "antd";
 import { Link } from "react-router-dom";
@@ -34,21 +34,10 @@ export function AuthLayout<T>({
 }: AuthLayoutProps<T>) {
   const content = useMemo(() => {
     if ("formInstance" in otherProps) {
-      const {
-        formInstance,
-        buttonText,
-        linkText,
-        link,
-        onSubmit,
-        isSubmitting,
-      } = otherProps;
+      const { formInstance, buttonText, linkText, link, onSubmit, isSubmitting } = otherProps;
 
       return (
-        <AntForm
-          form={formInstance}
-          onFinish={onSubmit}
-          disabled={isSubmitting}
-        >
+        <AntForm form={formInstance} onFinish={onSubmit} disabled={isSubmitting}>
           {children}
 
           <AntForm.Item className={classes.buttonWrapper}>
@@ -72,7 +61,7 @@ export function AuthLayout<T>({
     } else {
       return children;
     }
-  }, []);
+  }, [children, otherProps]);
 
   return (
     <section className={classes.page}>

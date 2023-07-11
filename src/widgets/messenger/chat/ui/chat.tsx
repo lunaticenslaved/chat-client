@@ -19,9 +19,7 @@ export const Chat = () => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    dispatch(
-      messagesActions.fetchMessagesForDialogId(currentDialog?.id ?? null)
-    );
+    dispatch(messagesActions.fetchMessagesForDialogId(currentDialog?.id ?? null));
   }, [currentDialog, dispatch]);
 
   if (!currentDialog) {
@@ -34,10 +32,7 @@ export const Chat = () => {
 
   return (
     <div className={classes.root}>
-      <Header
-        title={currentDialog.user.name}
-        isOnline={currentDialog.user.isOnline}
-      />
+      <Header title={currentDialog.user.name} isOnline={currentDialog.user.isOnline} />
 
       <Divider />
 

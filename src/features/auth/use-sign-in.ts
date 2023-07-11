@@ -10,21 +10,24 @@ export const useSignIn = ({ onError, onSuccess }: Handlers = {}) => {
   const [makeSignIn, { isLoading }] = useSignInMutation();
   const dispatch = useAppDispatch();
 
-  const signIn = useCallback(async (data: SignInRequest) => {
-    try {
-      const viewer = await makeSignIn(data).unwrap();
+  const signIn = useCallback(
+    async (data: SignInRequest) => {
+      try {
+        const viewer = await makeSignIn(data).unwrap();
 
-      if (onSuccess) {
-        dispatch(viewerActions.setViewer(viewer));
+        if (onSuccess) {
+          dispatch(viewerActions.setViewer(viewer));
 
-        onSuccess();
+          onSuccess();
+        }
+      } catch (error) {
+        if (onError) {
+          onError(error as Error);
+        }
       }
-    } catch (error) {
-      if (onError) {
-        onError(error as Error);
-      }
-    }
-  }, []);
+    },
+    [dispatch, makeSignIn, onError, onSuccess]
+  );
 
   return {
     signIn,

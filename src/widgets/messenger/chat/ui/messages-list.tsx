@@ -1,4 +1,4 @@
-import React from "react";
+import { createRef, useEffect } from "react";
 
 import { useAppSelector } from "shared/hooks";
 import { MessageModel } from "features/messages/store/types";
@@ -13,14 +13,14 @@ export interface MessagesListProps {
 
 export const MessagesList = (props: MessagesListProps) => {
   const viewer = useAppSelector(viewerSelectors.selectViewer);
-  const wrapperRef = React.createRef<HTMLDivElement>();
+  const wrapperRef = createRef<HTMLDivElement>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     wrapperRef.current?.scrollTo({
       top: Number.MAX_SAFE_INTEGER,
       behavior: "auto",
     });
-  }, []);
+  }, [wrapperRef]);
 
   return (
     <div className={classes.root} ref={wrapperRef}>

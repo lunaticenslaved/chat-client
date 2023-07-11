@@ -12,7 +12,7 @@ export interface AvatarProps {
   className?: string;
 }
 
-var stringToColor = function (str: string) {
+const stringToColor = function (str: string) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);

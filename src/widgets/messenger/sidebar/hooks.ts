@@ -22,10 +22,7 @@ export const useSortedDialogs = (dialogs: DialogModel[]) => {
   }, [dialogs]);
 };
 
-export const useFilteredDialogs = (
-  dialogs: DialogModel[],
-  searchQuery: string
-) => {
+export const useFilteredDialogs = (dialogs: DialogModel[], searchQuery: string) => {
   return React.useMemo(() => {
     if (!searchQuery) return dialogs;
     const s = searchQuery.toLowerCase();

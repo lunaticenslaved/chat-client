@@ -16,13 +16,10 @@ export const messagesSlice = createSlice({
       state.items = [];
       state.isFetching = true;
     });
-    build.addCase(
-      thunks.fetchMessagesForDialogId.fulfilled,
-      (state, action) => {
-        state.isFetching = false;
-        state.items = action.payload;
-      }
-    );
+    build.addCase(thunks.fetchMessagesForDialogId.fulfilled, (state, action) => {
+      state.isFetching = false;
+      state.items = action.payload;
+    });
     build.addCase(thunks.fetchMessagesForDialogId.rejected, (state) => {
       state.isFetching = false;
       state.items = [];

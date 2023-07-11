@@ -28,28 +28,18 @@ export const ConfirmRequiredPage = () => {
   };
 
   return (
-    <AuthLayout
-      header="Подтвердите e-mail"
-      description="Пожалуйста, подтвердите свой e-mail адрес"
-    >
+    <AuthLayout header="Подтвердите e-mail" description="Пожалуйста, подтвердите свой e-mail адрес">
       <div className={classes.root}>
         <InfoCircleTwoTone className={classes.icon} />
         <h3 className={classes.header}>Подтвердите свой аккаунт</h3>
         <Description className={classes.description}>
-          На Вашу почту было отправлено письмо с ссылкой на подтверждение
-          аккаунта
+          На Вашу почту было отправлено письмо с ссылкой на подтверждение аккаунта
         </Description>
 
         {isSent ? (
-          <Description className={classes.description}>
-            Письмо было отправлено повторно
-          </Description>
+          <Description className={classes.description}>Письмо было отправлено повторно</Description>
         ) : (
-          <Button
-            disabled={isSubmitting}
-            loading={isSubmitting}
-            onClick={sendMailAgain}
-          >
+          <Button disabled={isSubmitting} loading={isSubmitting} onClick={sendMailAgain}>
             Отправить снова
           </Button>
         )}

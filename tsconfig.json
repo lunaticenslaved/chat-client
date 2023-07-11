@@ -16,11 +16,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
-    "paths": {
-      "app": ["app"],
-      "app/*": ["app/*"]
-    }
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "files": ["./node_modules/@types/node/index.d.ts"],
   "include": ["src", "custom.d.ts"]

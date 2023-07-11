@@ -13,8 +13,7 @@ export const validateEmail = (email: string) => {
 
 export const validatePassword = (password: string) => {
   if (password.length === 0) return { error: "Введите пароль" };
-  if (password.length < 6)
-    return { error: "Длина пароля должна не меньше 6-ти символов" };
+  if (password.length < 6) return { error: "Длина пароля должна не меньше 6-ти символов" };
 
   if (password.match(/[а-яА-ЯЁё]/))
     return { error: "Пароль должен содержать только латинские символы" };
@@ -36,8 +35,7 @@ export const validatePassword = (password: string) => {
 
 export const validateLogin = (login: string) => {
   if (login.length === 0) return { error: "Введите логин" };
-  if (login.length < 1)
-    return { error: "Длина логина должна не меньше 1-го символа" };
+  if (login.length < 1) return { error: "Длина логина должна не меньше 1-го символа" };
 
   return { success: true };
 };
