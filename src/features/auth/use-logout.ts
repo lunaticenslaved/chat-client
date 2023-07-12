@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
-import { useLogoutMutation } from "api/auth-api";
-import { useAppDispatch } from "shared/hooks";
+import { useAppDispatch } from "store";
+import { useLogoutMutation } from "entities/viewer/api";
+import { viewerActions } from "entities/viewer/store";
 
 import { Handlers } from "./_lib";
-import { viewerActions } from "features/viewer/store";
 
 export const useLogout = ({ onError, onSuccess }: Handlers = {}) => {
   const [makeLogout, { isLoading }] = useLogoutMutation();

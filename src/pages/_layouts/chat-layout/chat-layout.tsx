@@ -4,10 +4,10 @@ import { Divider } from "shared/components/divider";
 
 export interface ChatLayoutProps {
   sidebar: JSX.Element;
-  chat: JSX.Element;
+  content: JSX.Element;
 }
 
-export const ChatLayout = ({ chat, sidebar }: ChatLayoutProps) => {
+export const ChatLayout = ({ content, sidebar }: ChatLayoutProps) => {
   return (
     <div>
       <div className={classes.root}>
@@ -15,7 +15,7 @@ export const ChatLayout = ({ chat, sidebar }: ChatLayoutProps) => {
 
         <Divider vertical />
 
-        <div className={classes.chat}>{chat}</div>
+        <div className={classes.content}>{content}</div>
       </div>
     </div>
   );

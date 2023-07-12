@@ -1,9 +1,9 @@
-import { Chat } from "widgets/messenger/chat";
-import { Sidebar } from "widgets/messenger/sidebar";
 import { ChatLayout } from "pages/_layouts/chat-layout";
+import { ChatArea } from "widgets/messenger/chat-area";
+import { Dialogs } from "widgets/messenger/dialogs";
 
 const ChatPage = () => {
-  return <ChatLayout chat={<Chat />} sidebar={<Sidebar />} />;
+  return <ChatLayout content={<ChatArea />} sidebar={<Dialogs />} />;
 };
 
 export default ChatPage;

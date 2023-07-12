@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
-import { SpinnerContainer } from "widgets/spinner-container";
 import { useRefresh } from "features/auth/use-refresh";
+import { PageLoader } from "shared/components/page-loader";
 
 import { store } from "store";
 
@@ -20,7 +20,7 @@ const PagesWithStore = () => {
     refresh();
   }, [refresh]);
 
-  return isLoading ? <SpinnerContainer /> : <Router />;
+  return isLoading ? <PageLoader /> : <Router />;
 };
 
 export function App() {

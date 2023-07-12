@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
-import { useRefreshMutation } from "api/auth-api";
-import { useAppDispatch } from "shared/hooks";
+import { useAppDispatch } from "store";
+import { viewerActions } from "entities/viewer/store";
+import { useRefreshMutation } from "entities/viewer/api";
 
 import { Handlers } from "./_lib";
-import { viewerActions } from "features/viewer/store";
 
 export const useRefresh = ({ onError, onSuccess }: Handlers = {}) => {
   const [makeRefresh, { isLoading }] = useRefreshMutation();

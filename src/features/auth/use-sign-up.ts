@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
-import { SignUpRequest, useSignUpMutation } from "api/auth-api";
+import { useAppDispatch } from "store";
+import { viewerActions } from "entities/viewer/store";
+import { SignUpRequest, useSignUpMutation } from "entities/viewer/api";
 
 import { Handlers } from "./_lib";
-import { useAppDispatch } from "shared/hooks";
-import { viewerActions } from "features/viewer/store";
 
 export const useSignUp = ({ onError, onSuccess }: Handlers = {}) => {
   const [makeSignUp, { isLoading }] = useSignUpMutation();
