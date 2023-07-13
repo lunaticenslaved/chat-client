@@ -1,3 +1,4 @@
+import { ROUTES } from "config/routes";
 import { lazy } from "react";
 
 const SignInPage = lazy(() => import("pages/auth/sign-in"));
@@ -16,32 +17,32 @@ export enum PageAccessType {
 
 export const PAGES = [
   {
-    path: "/",
+    path: ROUTES.home,
     component: ChatPage,
     accessType: PageAccessType.PrivateConfirmed,
   },
   {
-    path: "/sign-in",
+    path: ROUTES.auth.signIn,
     component: SignInPage,
     accessType: PageAccessType.Public,
   },
   {
-    path: "/sign-up",
+    path: ROUTES.auth.signUp,
     component: SignUpPage,
     accessType: PageAccessType.Public,
   },
   {
-    path: "/confirm-email",
+    path: ROUTES.auth.confirmEmailRequired,
     component: SignUpConfirmRequiredPage,
     accessType: PageAccessType.PrivateCommon,
   },
   {
-    path: "/activate/:link",
+    path: ROUTES.auth.confirmEmailActivate,
     component: SignUpConfirmSuccessPage,
     accessType: PageAccessType.PrivateCommon,
   },
   {
-    path: "/*",
+    path: ROUTES.error404,
     component: PageNotFound,
     accessType: PageAccessType.Common,
   },

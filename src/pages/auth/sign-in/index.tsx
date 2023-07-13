@@ -1,7 +1,9 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Input, Form } from "antd";
+import { ROUTES } from "config/routes";
 import { useSignIn } from "features/auth/use-sign-in";
 import { AuthLayout } from "pages/_layouts/auth-layout";
+import { createAntdValidator, isRequired, validateEmail } from "shared/lib/validators";
 
 interface Values {
   email: string;
@@ -10,6 +12,7 @@ interface Values {
 
 export const SignInPage = () => {
   const { signIn, isLoading } = useSignIn();
+  const [form] = Form.useForm<Values>();
 
   return (
     <AuthLayout<Values>
@@ -17,20 +20,21 @@ export const SignInPage = () => {
       description="Пожалуйста, войдите в свой аккаунт"
       buttonText="Войти в аккаунт"
       linkText="Зарегистрироваться"
-      link="/register"
+      link={ROUTES.auth.signUp}
       onSubmit={signIn}
       isSubmitting={isLoading}
+      formInstance={form}
     >
       <Form.Item
         name="email"
-        rules={[{ required: true, message: "Укажите e-mail пользователя" }]}
+        rules={[{ validator: createAntdValidator(validateEmail) }]}
         hasFeedback
       >
         <Input prefix={<UserOutlined />} placeholder="E-mail" />
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ required: true, message: "Введите пароль" }]}
+        rules={[{ validator: createAntdValidator(isRequired) }]}
         hasFeedback
       >
         <Input autoComplete="" prefix={<LockOutlined />} type="password" placeholder="Пароль" />

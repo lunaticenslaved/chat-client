@@ -25,7 +25,7 @@ export interface SignUpResponse {
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     signIn: build.mutation<ViewerModel, SignInRequest>({
-      query: (body) => ({ url: `/login`, body }),
+      query: (body) => ({ url: "/auth/login", body, method: "POST" }),
       transformResponse: ({ data }: { data: SignInResponse }) => {
         localStorage.setItem("token", data.accessToken);
 

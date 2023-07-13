@@ -6,7 +6,7 @@ import Picker from "@emoji-mart/react";
 
 import { Input } from "shared/components/Input";
 
-import classes from "./input.module.scss";
+import classes from "./message-input.module.scss";
 
 // FIXME: устанавливать у
 

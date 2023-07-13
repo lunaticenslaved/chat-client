@@ -1,4 +1,4 @@
-@import "../../_variables.scss";
+@import "shared/styles/index.scss";
 
 .icon {
   svg {
@@ -11,7 +11,7 @@
   max-width: 400px;
   min-width: 400px;
   width: 400px;
-  background-color: $sidebarBackground;
+  background-color: $sidebar-background;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
   padding: 0 24px;
   justify-content: space-between;
   opacity: 0.5;
-  flex: 0 0 $headerHeight;
+  flex: 0 0 $header-height;
 
   div {
     display: flex;

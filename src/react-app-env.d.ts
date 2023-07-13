@@ -2,6 +2,6 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    BASE_URL: string;
+    REACT_APP_BASE_URL: string;
   }
 }

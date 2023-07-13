@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useAppDispatch } from "store";
+import { useAppDispatch } from "config/store";
 import { viewerActions } from "entities/viewer/store";
 import { SignInRequest, useSignInMutation } from "entities/viewer/api";
 

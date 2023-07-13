@@ -1,6 +1,6 @@
 import { PropsWithChildren, useMemo } from "react";
 import cn from "classnames";
-import { Form as AntForm, FormInstance } from "antd";
+import { Form, FormInstance } from "antd";
 import { Link } from "react-router-dom";
 
 import { Block } from "shared/components/Block";
@@ -37,10 +37,10 @@ export function AuthLayout<T>({
       const { formInstance, buttonText, linkText, link, onSubmit, isSubmitting } = otherProps;
 
       return (
-        <AntForm form={formInstance} onFinish={onSubmit} disabled={isSubmitting}>
+        <Form form={formInstance} onFinish={onSubmit} disabled={isSubmitting}>
           {children}
 
-          <AntForm.Item className={classes.buttonWrapper}>
+          <Form.Item className={classes.buttonWrapper}>
             <Button
               size="large"
               htmlType="submit"
@@ -49,14 +49,14 @@ export function AuthLayout<T>({
             >
               {buttonText}
             </Button>
-          </AntForm.Item>
+          </Form.Item>
 
-          <AntForm.Item>
+          <Form.Item>
             <Link to={link} className={classes.registerLink}>
               {linkText}
             </Link>
-          </AntForm.Item>
-        </AntForm>
+          </Form.Item>
+        </Form>
       );
     } else {
       return children;

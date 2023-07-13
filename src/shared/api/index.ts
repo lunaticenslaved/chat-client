@@ -3,7 +3,7 @@ import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 import { BASE_URL } from "shared/config";
 
 const options = {
-  baseURL: "http://localhost:5000/",
+  baseURL: BASE_URL,
   withCredentials: true,
 };
 
@@ -41,7 +41,7 @@ $apiWithoutErrorInterceptor.interceptors.request.use(authInterceptor);
 export { $api, $apiWithoutErrorInterceptor };
 
 export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}` }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: () => ({}),
   reducerPath: "api",
 });

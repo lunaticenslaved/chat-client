@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "store";
+import { RootState } from "config/store";
 
 import { initialState } from "./state";
 import { DialogModel } from "./types";

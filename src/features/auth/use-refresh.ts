@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useAppDispatch } from "store";
+import { useAppDispatch } from "config/store";
 import { viewerActions } from "entities/viewer/store";
 import { useRefreshMutation } from "entities/viewer/api";
 

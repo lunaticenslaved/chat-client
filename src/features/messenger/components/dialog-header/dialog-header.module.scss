@@ -1,11 +1,11 @@
-@import "../../variables";
+@import "shared/styles/index.scss";
 
 .chatHeader {
-  background-color: $sidebarBackground;
+  background-color: $sidebar-background;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 $headerHeight;
+  flex: 0 0 $header-height;
   flex-direction: column;
 
   * {

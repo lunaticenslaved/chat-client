@@ -13,4 +13,4 @@
 
 TODO: fix imports between store and api
 
-shared → entities → store → features → widgets → pages → app
+shared → entities → config → features → widgets → pages → app

@@ -4,12 +4,12 @@ import { Empty, Spin } from "antd";
 
 import { Input } from "shared/components/Input";
 import { Divider } from "shared/components/divider";
+import { DialogModel } from "entities/dialog/store";
 
 import { DialogItem } from "./components/dialog-item";
 import { useSortedDialogs, useFilteredDialogs } from "./hooks";
 
-import classes from "./sidebar.module.scss";
-import { DialogModel } from "entities/dialog/store";
+import classes from "./dialogs-list.module.scss";
 
 // FIXME: Input можно заменить на Search
 

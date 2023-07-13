@@ -1,6 +1,6 @@
 import { viewerSelectors } from "entities/viewer/store";
 import { useMemo } from "react";
-import { useAppSelector } from "store";
+import { useAppSelector } from "config/store";
 
 export const useViewer = () => {
   const viewer = useAppSelector(viewerSelectors.selectViewer);
