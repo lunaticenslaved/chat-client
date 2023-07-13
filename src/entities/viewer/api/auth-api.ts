@@ -26,10 +26,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     signIn: build.mutation<ViewerModel, SignInRequest>({
       query: (body) => ({ url: "/auth/login", body, method: "POST" }),
-      transformResponse: ({ data }: { data: SignInResponse }) => {
-        localStorage.setItem("token", data.accessToken);
+      transformResponse: (res: SignInResponse) => {
+        localStorage.setItem("token", res.accessToken);
 
-        return jwtDecode(data.accessToken) as ViewerModel;
+        return jwtDecode(res.accessToken) as ViewerModel;
       },
       transformErrorResponse: () => new Error("Sign in error"),
     }),

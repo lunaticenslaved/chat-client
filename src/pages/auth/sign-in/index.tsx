@@ -3,6 +3,7 @@ import { Input, Form } from "antd";
 import { ROUTES } from "config/routes";
 import { useSignIn } from "features/auth/use-sign-in";
 import { AuthLayout } from "pages/_layouts/auth-layout";
+import { useNavigate } from "react-router-dom";
 import { createAntdValidator, isRequired, validateEmail } from "shared/lib/validators";
 
 interface Values {
@@ -11,8 +12,11 @@ interface Values {
 }
 
 export const SignInPage = () => {
-  const { signIn, isLoading } = useSignIn();
   const [form] = Form.useForm<Values>();
+  const navigate = useNavigate();
+  const { signIn, isLoading } = useSignIn({
+    onSuccess: () => navigate(ROUTES.home),
+  });
 
   return (
     <AuthLayout<Values>
