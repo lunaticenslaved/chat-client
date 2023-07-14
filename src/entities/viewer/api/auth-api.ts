@@ -9,7 +9,7 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
-  accessToken: string;
+  user: ViewerModel;
 }
 
 export interface SignUpRequest {
@@ -19,57 +19,46 @@ export interface SignUpRequest {
 }
 
 export interface SignUpResponse {
-  accessToken: string;
+  user: ViewerModel;
 }
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     signIn: build.mutation<ViewerModel, SignInRequest>({
       query: (body) => ({ url: "/auth/login", body, method: "POST" }),
-      transformResponse: (res: SignInResponse) => {
-        localStorage.setItem("token", res.accessToken);
-
-        return jwtDecode(res.accessToken) as ViewerModel;
-      },
-      transformErrorResponse: () => new Error("Sign in error"),
+      transformResponse: (res: SignInResponse) => res.user,
     }),
 
     // TODO: return access token, not user
     signUp: build.mutation<ViewerModel, SignUpRequest>({
-      query: (body) => ({ url: `/register`, body }),
-      transformResponse: ({ data }: { data: SignUpResponse }) => {
-        localStorage.setItem("token", data.accessToken);
-
-        return jwtDecode(data.accessToken) as ViewerModel;
-      },
-      transformErrorResponse: () => new Error("Sign up error"),
+      query: (body) => ({ url: `/auth/register`, body, method: "POST" }),
+      transformResponse: (res: SignUpResponse) => res.user,
     }),
 
     refresh: build.mutation<ViewerModel, void>({
-      query: () => ({ url: `/refresh` }),
-      transformResponse: ({ data }: { data: SignInResponse }) => {
-        localStorage.setItem("token", data.accessToken);
-
-        return jwtDecode(data.accessToken) as ViewerModel;
-      },
-      transformErrorResponse: () => {
-        localStorage.removeItem("token");
-
-        return new Error("Refresh error");
-      },
+      query: () => ({ url: `/auth/refresh`, method: "POST" }),
+      transformResponse: (res: SignInResponse) => res.user,
     }),
 
     logout: build.mutation<void, void>({
-      query: () => ({ url: `/logout` }),
-      transformResponse: () => {
-        localStorage.removeItem("token");
-      },
-      transformErrorResponse: () => {
-        return new Error("Logout error");
-      },
+      query: () => ({ url: `/auth/logout`, method: "POST" }),
+    }),
+
+    repeatConfirmMail: build.mutation<void, void>({
+      query: () => ({ url: `/auth/repeat-confirm-email`, method: "POST" }),
+    }),
+
+    activateAccount: build.mutation<void, void>({
+      query: () => ({ url: `/auth/activate/:link`, method: "POST" }),
     }),
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation, useRefreshMutation, useLogoutMutation } =
-  authApiSlice;
+export const {
+  useSignInMutation,
+  useSignUpMutation,
+  useRefreshMutation,
+  useLogoutMutation,
+  useRepeatConfirmMailMutation,
+  useActivateAccountMutation,
+} = authApiSlice;

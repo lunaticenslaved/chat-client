@@ -11,8 +11,6 @@ export const useLogout = ({ onError, onSuccess }: Handlers = {}) => {
   const dispatch = useAppDispatch();
 
   const logout = useCallback(async () => {
-    if (!localStorage.getItem("token")) return;
-
     try {
       await makeLogout().unwrap();
 

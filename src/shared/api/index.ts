@@ -41,7 +41,7 @@ $apiWithoutErrorInterceptor.interceptors.request.use(authInterceptor);
 export { $api, $apiWithoutErrorInterceptor };
 
 export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: "include" }),
   endpoints: () => ({}),
   reducerPath: "api",
 });

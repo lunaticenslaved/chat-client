@@ -11,8 +11,6 @@ export const useRefresh = ({ onError, onSuccess }: Handlers = {}) => {
   const dispatch = useAppDispatch();
 
   const refresh = useCallback(async () => {
-    if (!localStorage.getItem("token")) return;
-
     try {
       const viewer = await makeRefresh().unwrap();
 

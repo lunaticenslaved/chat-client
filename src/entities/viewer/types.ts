@@ -3,7 +3,3 @@ export interface ViewerModel {
   email: string;
   isActivated: boolean;
 }
-
-export interface AuthResponse {
-  accessToken: string;
-}

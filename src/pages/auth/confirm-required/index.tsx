@@ -3,29 +3,19 @@ import { message } from "antd";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 
 import { Button } from "shared/components/Button";
-import { $api } from "shared/api";
-
+import { useRepeatConfirmMail } from "features/auth/use-repeat-confirm-mail";
 import { AuthLayout, Description } from "pages/_layouts/auth-layout";
 
 import classes from "./index.module.scss";
 
 export const ConfirmRequiredPage = () => {
-  const [isSubmitting, setSubmitting] = React.useState(false);
   const [isSent, setSent] = React.useState(false);
-
-  const sendMailAgain = async () => {
-    setSubmitting(true);
-
-    try {
-      await $api.post("/repeat-confirm-email");
-      setSent(true);
-    } catch (error) {
-      console.error(error);
+  const { repeat: repeatConfirmMail, isLoading: isSubmitting } = useRepeatConfirmMail({
+    onSuccess: () => setSent(true),
+    onError: () => {
       message.error("Что-то пошло не так при повторной отправке письма");
-    }
-
-    setSubmitting(false);
-  };
+    },
+  });
 
   return (
     <AuthLayout header="Подтвердите e-mail" description="Пожалуйста, подтвердите свой e-mail адрес">
@@ -39,7 +29,7 @@ export const ConfirmRequiredPage = () => {
         {isSent ? (
           <Description className={classes.description}>Письмо было отправлено повторно</Description>
         ) : (
-          <Button disabled={isSubmitting} loading={isSubmitting} onClick={sendMailAgain}>
+          <Button disabled={isSubmitting} loading={isSubmitting} onClick={repeatConfirmMail}>
             Отправить снова
           </Button>
         )}
