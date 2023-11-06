@@ -1,5 +1,5 @@
-import { useDialogs } from "features/messenger/api/use-dialogs";
-import { DialogsList } from "features/messenger/components/dialogs-list";
+import { useDialogs } from "@/features/messenger/api/use-dialogs";
+import { DialogsList } from "@/features/messenger/components/dialogs-list";
 
 export const Dialogs = () => {
   const { isError, isLoading, dialogs, currentDialog, selectDialog } = useDialogs();

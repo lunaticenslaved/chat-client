@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useRepeatConfirmMailMutation } from "entities/viewer/api";
+import { useRepeatConfirmMailMutation } from "@/entities/viewer/api";
 
 import { Handlers } from "./_lib";
 

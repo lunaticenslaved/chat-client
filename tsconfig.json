@@ -1,8 +1,8 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "baseUrl": "./src",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,8 +16,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+
+    /* Paths */
+    "outDir": "./dist",
+    "rootDir": "./src",
   },
-  "files": ["./node_modules/@types/node/index.d.ts"],
   "include": ["src", "custom.d.ts"]
 }

@@ -1,7 +1,7 @@
-import { useGetDialogsQuery } from "entities/dialog/api";
-import { DialogModel, dialogsActions, dialogsSelectors } from "entities/dialog/store";
+import { useGetDialogsQuery } from "@/entities/dialog/api";
+import { DialogModel, dialogsActions, dialogsSelectors } from "@/entities/dialog/store";
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "config/store";
+import { useAppDispatch, useAppSelector } from "@/config/store";
 
 export const useDialogs = () => {
   const { data: dialogs, isFetching: isLoading, isError } = useGetDialogsQuery();

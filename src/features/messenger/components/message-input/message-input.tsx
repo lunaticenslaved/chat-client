@@ -4,7 +4,7 @@ import { AudioOutlined, CameraOutlined, SmileOutlined } from "@ant-design/icons"
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import { Input } from "shared/components/Input";
+import { Input } from "@/shared/components/Input";
 
 import classes from "./message-input.module.scss";
 

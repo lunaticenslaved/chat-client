@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import cn from "classnames";
 
 import classes from "./Block.module.scss";
-import { SizeType } from "shared/types";
+import { SizeType } from "@/shared/types";
 
 interface BlockProps extends PropsWithChildren {
   className?: string;

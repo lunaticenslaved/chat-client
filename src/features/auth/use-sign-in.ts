@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 
-import { useAppDispatch } from "config/store";
-import { viewerActions } from "entities/viewer/store";
-import { SignInRequest, useSignInMutation } from "entities/viewer/api";
-import { ViewerModel } from "entities/viewer/types";
+import { useAppDispatch } from "@/config/store";
+import { viewerActions } from "@/entities/viewer/store";
+import { SignInRequest, useSignInMutation } from "@/entities/viewer/api";
+import { ViewerModel } from "@/entities/viewer/types";
 
 import { Handlers } from "./_lib";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "config/routes";
+import { ROUTES } from "@/config/routes";
 
 export const useSignIn = ({ onError, onSuccess }: Handlers<ViewerModel> = {}) => {
   const [makeSignIn, { isLoading }] = useSignInMutation();

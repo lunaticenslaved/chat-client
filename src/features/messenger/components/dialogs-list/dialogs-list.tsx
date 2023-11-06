@@ -2,9 +2,9 @@ import { useState } from "react";
 import { UserOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { Empty, Spin } from "antd";
 
-import { Input } from "shared/components/Input";
-import { Divider } from "shared/components/divider";
-import { DialogModel } from "entities/dialog/store";
+import { Input } from "@/shared/components/Input";
+import { Divider } from "@/shared/components/divider";
+import { DialogModel } from "@/entities/dialog/store";
 
 import { DialogItem } from "./components/dialog-item";
 import { useSortedDialogs, useFilteredDialogs } from "./hooks";

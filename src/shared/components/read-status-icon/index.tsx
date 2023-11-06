@@ -1,7 +1,7 @@
 import cn from "classnames";
 
-import { ReactComponent as ReadSvg } from "shared/img/readed.svg";
-import { ReactComponent as NotReadSvg } from "shared/img/noreaded.svg";
+import { ReactComponent as ReadSvg } from "@/shared/img/readed.svg";
+import { ReactComponent as NotReadSvg } from "@/shared/img/noreaded.svg";
 
 import classes from "./read-status.module.scss";
 

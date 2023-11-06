@@ -1,16 +1,16 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Input, Form } from "antd";
 import { RuleObject } from "antd/es/form";
-import { ROUTES } from "config/routes";
-import { useSignUp } from "features/auth/use-sign-up";
-import { AuthLayout } from "pages/_layouts/auth-layout";
+import { ROUTES } from "@/config/routes";
+import { useSignUp } from "@/features/auth/use-sign-up";
+import { AuthLayout } from "@/pages/_layouts/auth-layout";
 import { useMemo } from "react";
 import {
   createAntdValidator,
   validateEmail,
   validateLogin,
   validateNewPassword,
-} from "shared/lib/validators";
+} from "@/shared/lib/validators";
 
 interface Values {
   email: string;

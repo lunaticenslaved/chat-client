@@ -1,4 +1,4 @@
-import { apiSlice } from "shared/api";
+import { apiSlice } from "@/shared/api";
 import { MessageModel } from "../store";
 
 export const dialogsApi = apiSlice.injectEndpoints({

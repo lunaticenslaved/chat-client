@@ -1,12 +1,12 @@
 import cn from "classnames";
 
-import dayjs from "shared/lib/dayjs";
-import { ReadStatusIcon } from "shared/components/read-status-icon";
-import { Avatar } from "shared/components/avatar";
-import { DialogModel } from "entities/dialog/store";
+import dayjs from "@/shared/lib/dayjs";
+import { ReadStatusIcon } from "@/shared/components/read-status-icon";
+import { Avatar } from "@/shared/components/avatar";
+import { DialogModel } from "@/entities/dialog/store";
 
 import classes from "./dialog-item.module.scss";
-import { useViewer } from "features/auth/use-viewer";
+import { useViewer } from "@/features/auth/use-viewer";
 
 export interface DialogItemProps {
   isSelected?: boolean;

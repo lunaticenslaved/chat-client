@@ -2,14 +2,14 @@ import { Suspense, useEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
-import { useRefresh } from "features/auth/use-refresh";
-import { PageLoader } from "shared/components/page-loader";
+import { useRefresh } from "@/features/auth/use-refresh";
+import { PageLoader } from "@/shared/components/page-loader";
 
-import { store } from "config/store";
+import { store } from "@/config/store";
 
 import { Router } from "./router";
 
-import "shared/styles/index.scss";
+import "@/shared/styles/index.scss";
 
 import "./App.scss";
 

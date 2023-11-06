@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
 import cn from "classnames";
 
-import dayjs from "shared/lib/dayjs";
-import { ReadStatusIcon } from "shared/components/read-status-icon";
-import { Avatar } from "shared/components/avatar";
-import { MessageModel, AttachmentModel } from "entities/message/store";
+import dayjs from "@/shared/lib/dayjs";
+import { ReadStatusIcon } from "@/shared/components/read-status-icon";
+import { Avatar } from "@/shared/components/avatar";
+import { MessageModel, AttachmentModel } from "@/entities/message/store";
 
 import classes from "./message.module.scss";
 

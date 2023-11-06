@@ -3,8 +3,8 @@ import cn from "classnames";
 import { Form, FormInstance } from "antd";
 import { Link } from "react-router-dom";
 
-import { Block } from "shared/components/Block";
-import { Button } from "shared/components/Button";
+import { Block } from "@/shared/components/Block";
+import { Button } from "@/shared/components/Button";
 
 import classes from "./auth-layout.module.scss";
 

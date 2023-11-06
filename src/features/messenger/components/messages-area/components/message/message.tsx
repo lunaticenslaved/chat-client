@@ -1,10 +1,10 @@
 import React, { forwardRef, useCallback } from "react";
 import cn from "classnames";
 
-import { ReactComponent as PlaySvg } from "shared/img/play.svg";
-import { ReactComponent as PauseSvg } from "shared/img/pause.svg";
-import { ReactComponent as WaveSvg } from "shared/img/wave.svg";
-import { AttachmentModel } from "entities/message/store";
+import { ReactComponent as PlaySvg } from "@/shared/img/play.svg";
+import { ReactComponent as PauseSvg } from "@/shared/img/pause.svg";
+import { ReactComponent as WaveSvg } from "@/shared/img/wave.svg";
+import { AttachmentModel } from "@/entities/message/store";
 
 import { MessageWrapper, MessageWrapperProps } from "./message-wrapper";
 import classes from "./message.module.scss";

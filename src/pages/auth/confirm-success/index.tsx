@@ -2,10 +2,10 @@ import { Spin } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 
-import { $api } from "shared/api";
-import { Button } from "shared/components/Button";
+import { $api } from "@/shared/api";
+import { Button } from "@/shared/components/Button";
 
-import { AuthLayout } from "pages/_layouts/auth-layout";
+import { AuthLayout } from "@/pages/_layouts/auth-layout";
 
 import classes from "./index.module.scss";
 import { useCallback, useEffect, useState } from "react";

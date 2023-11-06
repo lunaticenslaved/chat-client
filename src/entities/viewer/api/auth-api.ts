@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 
-import { ViewerModel } from "entities/viewer/types";
-import { apiSlice } from "shared/api";
+import { ViewerModel } from "@/entities/viewer/types";
+import { apiSlice } from "@/shared/api";
 
 export interface SignInRequest {
   email: string;

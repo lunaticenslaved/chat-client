@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
-import { BASE_URL } from "shared/config";
+import { BASE_URL } from "@/shared/config";
 
 const options = {
   baseURL: BASE_URL,

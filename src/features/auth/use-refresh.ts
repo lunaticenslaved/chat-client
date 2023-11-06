@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
-import { useAppDispatch } from "config/store";
-import { viewerActions } from "entities/viewer/store";
-import { useRefreshMutation } from "entities/viewer/api";
+import { useAppDispatch } from "@/config/store";
+import { viewerActions } from "@/entities/viewer/store";
+import { useRefreshMutation } from "@/entities/viewer/api";
 
 import { Handlers } from "./_lib";
 

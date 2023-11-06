@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "config/store";
+import { RootState } from "@/config/store";
 
 import { initialState } from "./state";
 import { reducers } from "./reducers";

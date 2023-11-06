@@ -1,7 +1,7 @@
 import React from "react";
 
-import dayjs from "shared/lib/dayjs";
-import { DialogModel } from "entities/dialog/store";
+import dayjs from "@/shared/lib/dayjs";
+import { DialogModel } from "@/entities/dialog/store";
 
 export const useSortedDialogs = (dialogs: DialogModel[]) => {
   return React.useMemo(() => {

@@ -1,7 +1,7 @@
 import { createRef, useEffect } from "react";
 
-import { MessageModel } from "entities/message/store/types";
-import { useViewer } from "features/auth/use-viewer";
+import { MessageModel } from "@/entities/message/store/types";
+import { useViewer } from "@/features/auth/use-viewer";
 
 import { Message } from "../../components/message";
 

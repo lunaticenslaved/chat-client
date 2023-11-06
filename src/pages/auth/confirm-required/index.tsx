@@ -2,9 +2,9 @@ import React from "react";
 import { message } from "antd";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 
-import { Button } from "shared/components/Button";
-import { useRepeatConfirmMail } from "features/auth/use-repeat-confirm-mail";
-import { AuthLayout, Description } from "pages/_layouts/auth-layout";
+import { Button } from "@/shared/components/Button";
+import { useRepeatConfirmMail } from "@/features/auth/use-repeat-confirm-mail";
+import { AuthLayout, Description } from "@/pages/_layouts/auth-layout";
 
 import classes from "./index.module.scss";
 

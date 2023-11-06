@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { $api } from "shared/api";
+import { $api } from "@/shared/api";
 
 import { MessageModel } from "./types";
 

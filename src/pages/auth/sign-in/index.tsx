@@ -1,9 +1,9 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Input, Form } from "antd";
-import { ROUTES } from "config/routes";
-import { useSignIn } from "features/auth/use-sign-in";
-import { AuthLayout } from "pages/_layouts/auth-layout";
-import { createAntdValidator, isRequired, validateEmail } from "shared/lib/validators";
+import { ROUTES } from "@/config/routes";
+import { useSignIn } from "@/features/auth/use-sign-in";
+import { AuthLayout } from "@/pages/_layouts/auth-layout";
+import { createAntdValidator, isRequired, validateEmail } from "@/shared/lib/validators";
 
 interface Values {
   email: string;
