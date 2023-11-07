@@ -3,7 +3,7 @@ import { LoadingMessagesView } from "./views/loading-messages";
 import { NoMessagesView } from "./views/no-messages";
 import { NoDialogView } from "./views/no-dialog";
 import { MessageModel } from "@/entities/message";
-import { DialogModel } from "@/entities/dialog/store";
+import { DialogModel } from "@/entities/dialog";
 import { HasErrorView } from "./views/has-error/has-error";
 
 export interface MessageAreaProps {

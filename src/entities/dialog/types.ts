@@ -1,8 +1,8 @@
 export interface DialogModel {
   id: number;
-  user: UserModel;
   notReadMessages: number;
   lastMessage: LastMessage;
+  user: UserModel;
 }
 
 export interface UserModel {

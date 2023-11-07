@@ -1,0 +1,40 @@
+@import "@/shared/styles/index.scss";
+
+.icon {
+  svg {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.sidebar {
+  max-width: 400px;
+  min-width: 400px;
+  width: 400px;
+  background-color: $sidebar-background;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  justify-content: space-between;
+  opacity: 0.5;
+  flex: 0 0 $header-height;
+
+  div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  h2 {
+    margin-left: 12px;
+    margin-bottom: 0;
+  }
+}
+
+

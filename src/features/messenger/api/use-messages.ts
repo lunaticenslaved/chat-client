@@ -1,8 +1,8 @@
-import { dialogsSelectors } from "@/entities/dialog/store";
+import { DialogsStore } from "@/entities/dialog";
 import { useAppSelector } from "@/config/store";
 
 export const useMessages = () => {
-  const currentDialog = useAppSelector(dialogsSelectors.selectCurrentDialog);
+  const currentDialog = useAppSelector(DialogsStore.selectors.selectCurrentDialog);
 
   return { currentDialog, messages: [], isLoading: false, isError: false };
 };

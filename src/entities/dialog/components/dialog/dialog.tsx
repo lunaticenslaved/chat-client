@@ -3,18 +3,19 @@ import cn from "classnames";
 import dayjs from "@/shared/lib/dayjs";
 import { ReadStatusIcon } from "@/shared/components/read-status-icon";
 import { Avatar } from "@/shared/components/avatar";
-import { DialogModel } from "@/entities/dialog/store";
-
-import classes from "./dialog-item.module.scss";
 import { useViewer } from "@/features/auth/use-viewer";
 
-export interface DialogItemProps {
+import { DialogModel } from "../../types";
+
+import classes from "./dialog-item.module.scss";
+
+export interface DialogProps {
   isSelected?: boolean;
-  onSelect: (item: DialogModel) => void;
   dialog: DialogModel;
+  onSelect: (item: DialogModel) => void;
 }
 
-export const DialogItem = (props: DialogItemProps) => {
+export const Dialog = (props: DialogProps) => {
   const { viewer } = useViewer();
 
   let status: JSX.Element | null = null;
