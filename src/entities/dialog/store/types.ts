@@ -13,7 +13,7 @@ export interface UserModel {
 }
 
 export interface LastMessage {
-  senderId: number;
+  senderId: string;
   createdAt: string;
   text: string;
   isRead: boolean;

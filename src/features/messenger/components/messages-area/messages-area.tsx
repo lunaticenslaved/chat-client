@@ -2,7 +2,7 @@ import { MessagesList } from "./views/messages-list";
 import { LoadingMessagesView } from "./views/loading-messages";
 import { NoMessagesView } from "./views/no-messages";
 import { NoDialogView } from "./views/no-dialog";
-import { MessageModel } from "@/entities/message/store";
+import { MessageModel } from "@/entities/message";
 import { DialogModel } from "@/entities/dialog/store";
 import { HasErrorView } from "./views/has-error/has-error";
 

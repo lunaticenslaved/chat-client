@@ -1,10 +1,14 @@
 export interface MessageModel {
   id: number;
-  author: UserModel;
   isRead: boolean;
   text: string;
   createdAt: string;
   attachments: AttachmentModel[];
+  author: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
 }
 
 export interface AttachmentModel {
@@ -12,10 +16,4 @@ export interface AttachmentModel {
   filename: string;
   url: string;
   type: "image" | "audio";
-}
-
-export interface UserModel {
-  id: number;
-  name: string;
-  avatar: string | null;
 }

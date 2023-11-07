@@ -1,9 +1,7 @@
 import { createRef, useEffect } from "react";
 
-import { MessageModel } from "@/entities/message/store/types";
+import { MessageModel, Message } from "@/entities/message";
 import { useViewer } from "@/features/auth/use-viewer";
-
-import { Message } from "../../components/message";
 
 import classes from "./messages-list.module.scss";
 
@@ -27,7 +25,12 @@ export const MessagesList = (props: MessagesListProps) => {
       <ul>
         {props.messages.map((m) => (
           <li key={m.id}>
-            <Message message={m} isMe={m.author.id === viewer?.id} />
+            <Message
+              {...m}
+              avatarSrc={m.author.avatar}
+              ownerName={m.author.name}
+              isMe={m.author.id === viewer?.id}
+            />
           </li>
         ))}
       </ul>

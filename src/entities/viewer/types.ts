@@ -1,5 +1,5 @@
 export interface ViewerModel {
-  id: number;
+  id: string;
   email: string;
   isActivated: boolean;
 }

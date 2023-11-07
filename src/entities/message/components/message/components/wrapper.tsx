@@ -1,26 +1,19 @@
-import { PropsWithChildren } from "react";
 import cn from "classnames";
 
 import dayjs from "@/shared/lib/dayjs";
 import { ReadStatusIcon } from "@/shared/components/read-status-icon";
 import { Avatar } from "@/shared/components/avatar";
-import { MessageModel, AttachmentModel } from "@/entities/message/store";
 
-import classes from "./message.module.scss";
-
-export interface MessageWrapperProps extends PropsWithChildren {
-  message: MessageModel;
-  isMe: boolean;
-  attachments: AttachmentModel[];
-}
+import { MessageProps } from "../types";
+import classes from "../wrapper.module.scss";
 
 const getStatus = ({ isRead, isMe }: { isRead: boolean; isMe: boolean }) =>
   isMe ? <ReadStatusIcon isRead={isRead} /> : null;
 
-export const MessageWrapper = (props: MessageWrapperProps) => {
+export const MessageWrapper = (props: MessageProps) => {
   const status = getStatus({
     isMe: props.isMe,
-    isRead: props.message.isRead,
+    isRead: !!props.isRead,
   });
 
   let attachments: JSX.Element | null = null;
@@ -43,11 +36,7 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
   return (
     <div className={rootClassName}>
       <>
-        <Avatar
-          className={classes.avatar}
-          url={props.message.author.avatar}
-          name={props.message.author.name}
-        />
+        <Avatar className={classes.avatar} url={props.avatarSrc} name={props.ownerName} />
         <div>
           <div className={classes.content}>
             {props.children}
@@ -56,8 +45,8 @@ export const MessageWrapper = (props: MessageWrapperProps) => {
 
           {attachments && <div className={classes.attachments}>{attachments}</div>}
 
-          <time dateTime={props.message.createdAt} className={classes.date}>
-            {dayjs(props.message.createdAt).fromNow()}
+          <time dateTime={props.createdAt} className={classes.date}>
+            {dayjs(props.createdAt).fromNow()}
           </time>
         </div>
       </>

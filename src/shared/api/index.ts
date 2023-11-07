@@ -45,3 +45,27 @@ export const apiSlice = createApi({
   endpoints: () => ({}),
   reducerPath: "api",
 });
+
+export type FetchRequest<TBody> = {
+  url: string;
+  body?: TBody;
+  method: "POST" | "GET" | "PATCH";
+};
+
+export const API = {
+  request: async <TBody>(input: RequestInfo | URL, init?: RequestInit | undefined) => {
+    const contentType = init?.body instanceof FormData ? undefined : "application/json";
+
+    const response = await fetch(input, {
+      ...init,
+      headers: {
+        ...(contentType ? { "Content-Type": contentType } : {}),
+        ...init?.headers,
+      },
+    });
+
+    const data = await response.json();
+
+    return data as TBody;
+  },
+};

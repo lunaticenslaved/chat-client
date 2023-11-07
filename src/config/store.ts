@@ -3,14 +3,15 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { dialogsSlice } from "@/entities/dialog/store";
 import { viewerSlice } from "@/entities/viewer/store";
-import { messagesSlice } from "@/entities/message/store";
+import { MessagesStore } from "@/entities/message/store";
 import { apiSlice } from "@/shared/api";
 
 export const store = configureStore({
   reducer: {
+    [MessagesStore.slice.name]: MessagesStore.slice.reducer,
+
     [dialogsSlice.name]: dialogsSlice.reducer,
     [viewerSlice.name]: viewerSlice.reducer,
-    [messagesSlice.name]: messagesSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),

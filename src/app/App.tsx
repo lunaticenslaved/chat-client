@@ -9,10 +9,6 @@ import { store } from "@/config/store";
 
 import { Router } from "./router";
 
-import "@/shared/styles/index.scss";
-
-import "./App.scss";
-
 const PagesWithStore = () => {
   const { refresh, isLoading } = useRefresh();
 
