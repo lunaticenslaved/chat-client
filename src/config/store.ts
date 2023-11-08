@@ -2,12 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { DialogsStore } from "@/entities/dialog";
-import { viewerSlice } from "@/entities/viewer/store";
+import { ViewerStore } from "@/entities/viewer";
 
 export const store = configureStore({
   reducer: {
     [DialogsStore.slice.name]: DialogsStore.slice.reducer,
-    [viewerSlice.name]: viewerSlice.reducer,
+    [ViewerStore.slice.name]: ViewerStore.slice.reducer,
   },
 });
 

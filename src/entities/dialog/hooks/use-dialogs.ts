@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useQuery } from "react-query";
 
 import dayjs from "@/shared/lib/dayjs";
@@ -61,6 +61,10 @@ export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsRespon
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    dispatch(DialogsStore.actions.setDialogs(data?.dialogs || []));
+  }, [data?.dialogs, dispatch]);
 
   return {
     dialogs: filtered,

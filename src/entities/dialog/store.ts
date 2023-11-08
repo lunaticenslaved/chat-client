@@ -18,8 +18,11 @@ const slice = createSlice({
   name: "dialogs",
   initialState,
   reducers: {
-    setCurrentDialogId: (state, action: PayloadAction<DialogModel["id"] | undefined>) => {
+    setCurrentDialogId(state, action: PayloadAction<DialogModel["id"] | undefined>) {
       state.currentDialogId = action.payload;
+    },
+    setDialogs(state, action: PayloadAction<DialogModel[]>) {
+      state.dialogs = action.payload;
     },
   },
 });

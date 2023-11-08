@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useAppDispatch } from "@/config/store";
-import { viewerActions } from "@/entities/viewer/store";
+import { ViewerStore } from "@/entities/viewer";
 import { SignInRequest, useSignInMutation } from "@/entities/viewer/api";
 import { ViewerModel } from "@/entities/viewer/types";
 
@@ -19,7 +19,7 @@ export const useSignIn = ({ onError, onSuccess }: Handlers<ViewerModel> = {}) =>
       try {
         const viewer = await makeSignIn(data).unwrap();
 
-        dispatch(viewerActions.setViewer(viewer));
+        dispatch(ViewerStore.actions.setViewer(viewer));
 
         if (viewer.isActivated) {
           navigate(ROUTES.home, {});

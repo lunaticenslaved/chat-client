@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { useAppDispatch } from "@/config/store";
 import { useLogoutMutation } from "@/entities/viewer/api";
-import { viewerActions } from "@/entities/viewer/store";
+import { ViewerStore } from "@/entities/viewer";
 
 import { Handlers } from "./_lib";
 
@@ -15,7 +15,7 @@ export const useLogout = ({ onError, onSuccess }: Handlers = {}) => {
       await makeLogout().unwrap();
 
       if (onSuccess) {
-        dispatch(viewerActions.setViewer(null));
+        dispatch(ViewerStore.actions.setViewer(null));
 
         onSuccess();
       }

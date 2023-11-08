@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Button, Upload, UploadProps, message, Popover } from "antd";
 import { AudioOutlined, CameraOutlined, SmileOutlined } from "@ant-design/icons";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
+import { useMessage } from "@/entities/message";
 import { Input } from "@/shared/components/Input";
 
 import classes from "./message-input.module.scss";
@@ -30,31 +31,19 @@ const props: UploadProps = {
 
 export const MessageInput = () => {
   const [text, setText] = React.useState("");
+  const { createMessage } = useMessage();
 
-  const textSuffix = (
-    <div className={classes.buttonsWrapper} onClick={(e) => e.stopPropagation()}>
-      <Upload {...props} multiple showUploadList={false}>
-        <Button
-          size="large"
-          shape="circle"
-          type="text"
-          icon={<CameraOutlined className={classes.icon} />}
-        />
-      </Upload>
-
-      <Button
-        size="large"
-        shape="circle"
-        type="text"
-        icon={<AudioOutlined className={classes.icon} />}
-      />
-    </div>
+  const onEmojiSelect = useCallback(
+    (emoji: { native: unknown }) => {
+      if (!emoji) return;
+      setText(text + emoji.native);
+    },
+    [text]
   );
 
-  const onEmojiSelect = (emoji: { native: unknown }) => {
-    if (!emoji) return;
-    setText(text + emoji.native);
-  };
+  const sendMessage = useCallback(() => {
+    createMessage({ text });
+  }, [createMessage, text]);
 
   return (
     <div className={classes.root}>
@@ -70,8 +59,27 @@ export const MessageInput = () => {
       <Input
         value={text}
         onChange={(e) => setText(e.currentTarget.value)}
+        onKeyDown={sendMessage}
         placeholder="Введите сообщение..."
-        suffix={textSuffix}
+        suffix={
+          <div className={classes.buttonsWrapper} onClick={(e) => e.stopPropagation()}>
+            <Upload {...props} multiple showUploadList={false}>
+              <Button
+                size="large"
+                shape="circle"
+                type="text"
+                icon={<CameraOutlined className={classes.icon} />}
+              />
+            </Upload>
+
+            <Button
+              size="large"
+              shape="circle"
+              type="text"
+              icon={<AudioOutlined className={classes.icon} />}
+            />
+          </div>
+        }
       />
     </div>
   );
