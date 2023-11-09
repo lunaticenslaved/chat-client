@@ -6,12 +6,10 @@ export type GetDialogsResponse = {
   dialogs: DialogModel[];
 };
 
-function getDialogs() {
-  return API.request<GetDialogsResponse>("/api/dialogs", {
-    method: "GET",
-  });
-}
-
 export const DialogsAPI = {
-  getDialogs,
+  getDialogs() {
+    return API.request<GetDialogsResponse>("/api/dialogs", {
+      method: "GET",
+    });
+  },
 };

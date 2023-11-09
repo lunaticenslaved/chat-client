@@ -1,64 +1,63 @@
-import jwtDecode from "jwt-decode";
+import { API } from "@/shared/api";
 
-import { ViewerModel } from "@/entities/viewer/types";
-import { apiSlice } from "@/shared/api";
+import { ViewerModel } from "./types";
 
-export interface SignInRequest {
-  email: string;
-  password: string;
+export namespace ViewerAPI {
+  export interface SignInRequest {
+    email: string;
+    password: string;
+  }
+
+  export interface SignInResponse {
+    user: ViewerModel;
+  }
+
+  export interface SignUpRequest {
+    name: string;
+    email: string;
+    password: string;
+  }
+
+  export interface SignUpResponse {
+    user: ViewerModel;
+  }
+
+  export interface RefreshResponse {
+    user: ViewerModel;
+  }
 }
 
-export interface SignInResponse {
-  user: ViewerModel;
-}
-
-export interface SignUpRequest {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export interface SignUpResponse {
-  user: ViewerModel;
-}
-
-export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: (build) => ({
-    signIn: build.mutation<ViewerModel, SignInRequest>({
-      query: (body) => ({ url: "/auth/login", body, method: "POST" }),
-      transformResponse: (res: SignInResponse) => res.user,
-    }),
-
-    // TODO: return access token, not user
-    signUp: build.mutation<ViewerModel, SignUpRequest>({
-      query: (body) => ({ url: `/auth/register`, body, method: "POST" }),
-      transformResponse: (res: SignUpResponse) => res.user,
-    }),
-
-    refresh: build.mutation<ViewerModel, void>({
-      query: () => ({ url: `/auth/refresh`, method: "POST" }),
-      transformResponse: (res: SignInResponse) => res.user,
-    }),
-
-    logout: build.mutation<void, void>({
-      query: () => ({ url: `/auth/logout`, method: "POST" }),
-    }),
-
-    repeatConfirmMail: build.mutation<void, void>({
-      query: () => ({ url: `/auth/repeat-confirm-email`, method: "POST" }),
-    }),
-
-    activateAccount: build.mutation<void, void>({
-      query: () => ({ url: `/auth/activate/:link`, method: "POST" }),
-    }),
-  }),
-});
-
-export const {
-  useSignInMutation,
-  useSignUpMutation,
-  useRefreshMutation,
-  useLogoutMutation,
-  useRepeatConfirmMailMutation,
-  useActivateAccountMutation,
-} = authApiSlice;
+export const ViewerAPI = {
+  signIn(data: ViewerAPI.SignInRequest) {
+    return API.request<ViewerAPI.SignInResponse>("/auth/sign-in", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  signUp(data: ViewerAPI.SignUpRequest) {
+    return API.request<ViewerAPI.SignUpResponse>("/auth/sign-up", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  refresh() {
+    return API.request<ViewerAPI.RefreshResponse>("/auth/refresh", {
+      method: "POST",
+    });
+  },
+  logout() {
+    return API.request("/auth/logout", {
+      method: "POST",
+    });
+  },
+  repeatConfirmMail() {
+    return API.request("/auth/repeat-confirm-email", {
+      method: "POST",
+    });
+  },
+  activateAccount() {
+    return API.request("/auth/activate/:link", {
+      method: "POST",
+    });
+  },
+};

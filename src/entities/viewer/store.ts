@@ -4,19 +4,16 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { ViewerModel } from "./types";
 
 const reducers = {
-  // TODO: перенести в апи?
-  setViewer: (state: ViewerState, action: PayloadAction<ViewerModel | null>) => {
-    state.viewer = action.payload;
+  setViewer: (state: ViewerState, action: PayloadAction<ViewerModel | undefined>) => {
+    state.viewer = action.payload || undefined;
   },
 };
 
 interface ViewerState {
-  viewer: ViewerModel | null;
+  viewer?: ViewerModel;
 }
 
-const initialState: ViewerState = {
-  viewer: null,
-};
+const initialState: ViewerState = {};
 
 const slice = createSlice({
   name: "viewer",
