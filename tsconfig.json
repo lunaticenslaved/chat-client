@@ -19,7 +19,7 @@
 
     /* Paths */
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "."
   },
-  "include": ["src", "custom.d.ts"]
+  "include": ["src", "custom.d.ts", "craco.config.js"]
 }

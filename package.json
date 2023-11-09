@@ -7,10 +7,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --check '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}'",
-    "format:fix": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}'"
+    "lint": "eslint . --ext ts,tsx && npx stylelint",
+    "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}' && npx stylelint fix"
   },
   "eslintConfig": {
     "extends": [
@@ -80,7 +78,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.3",
     "prop-types": "^15.8.1",
-    "typescript": "^5.2.2",
+    "stylelint": "^15.11.0",
+    "typescript": "5.1",
     "webpack": "^5.89.0"
   }
 }
