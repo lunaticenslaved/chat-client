@@ -1,7 +1,7 @@
 import { createRef, useEffect } from "react";
 
 import { MessageModel, Message } from "@/entities/message";
-import { useViewer } from "@/features/auth/use-viewer";
+import { useViewer } from "@/entities/viewer";
 
 import classes from "./messages-list.module.scss";
 

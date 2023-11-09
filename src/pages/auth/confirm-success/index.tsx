@@ -4,8 +4,7 @@ import { CheckCircleTwoTone } from "@ant-design/icons";
 
 import { $api } from "@/shared/api";
 import { Button } from "@/shared/components/Button";
-
-import { AuthLayout } from "@/pages/_layouts/auth-layout";
+import { Layout } from "@/widgets/layouts";
 
 import classes from "./index.module.scss";
 import { useCallback, useEffect, useState } from "react";
@@ -30,31 +29,31 @@ const ConfirmSuccessPage = () => {
 
   if (isSubmitting) {
     return (
-      <AuthLayout header="Подтверждение аккаунта" description="Пожалуйста, подождите">
+      <Layout.Auth header="Подтверждение аккаунта" description="Пожалуйста, подождите">
         <div className={classes.root}>
           <Spin tip="Подтверждение аккаунта" size="large" />
         </div>
-      </AuthLayout>
+      </Layout.Auth>
     );
   }
 
   if (errored) {
     return (
-      <AuthLayout header="Ошибка" description="Что-то пошло не так при подтверждении аккаунта">
+      <Layout.Auth header="Ошибка" description="Что-то пошло не так при подтверждении аккаунта">
         <div className={classes.root}>
           <Button onClick={activate}>Попробовать снова</Button>
         </div>
-      </AuthLayout>
+      </Layout.Auth>
     );
   }
 
   return (
-    <AuthLayout header="E-mail адрес подтвержден" description="Теперь вы можете начать общаться">
+    <Layout.Auth header="E-mail адрес подтвержден" description="Теперь вы можете начать общаться">
       <div className={classes.root}>
         <CheckCircleTwoTone className={classes.icon} />
         <Link to="/login">Перейти к авторизации</Link>
       </div>
-    </AuthLayout>
+    </Layout.Auth>
   );
 };
 

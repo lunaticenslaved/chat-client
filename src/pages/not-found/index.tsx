@@ -1,7 +1,7 @@
-import { ErrorLayout } from "@/pages/_layouts/error-layout";
+import { Layout } from "@/widgets/layouts";
 
 export const NotFoundPage = () => {
-  return <ErrorLayout title="Not found" />;
+  return <Layout.Error title="Not found" />;
 };
 
 export default NotFoundPage;

@@ -1,12 +1,13 @@
+import { useCallback } from "react";
 import { message } from "antd";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 
 import { useToggle } from "@/shared/hooks";
 import { RepeatConfirmEmailButton } from "@/features/auth/repeat-confirm-email";
-import { AuthLayout, Description } from "@/pages/_layouts/auth-layout";
+import { Layout } from "@/widgets/layouts";
+import { AuthFormDescription } from "@/entities/viewer";
 
 import classes from "./index.module.scss";
-import { useCallback } from "react";
 
 export const ConfirmRequiredPage = () => {
   const isEmailSent = useToggle();
@@ -15,21 +16,26 @@ export const ConfirmRequiredPage = () => {
   }, []);
 
   return (
-    <AuthLayout header="Подтвердите e-mail" description="Пожалуйста, подтвердите свой e-mail адрес">
+    <Layout.Auth
+      header="Подтвердите e-mail"
+      description="Пожалуйста, подтвердите свой e-mail адрес"
+    >
       <div className={classes.root}>
         <InfoCircleTwoTone className={classes.icon} />
         <h3 className={classes.header}>Подтвердите свой аккаунт</h3>
-        <Description className={classes.description}>
+        <AuthFormDescription className={classes.description}>
           На Вашу почту было отправлено письмо с ссылкой на подтверждение аккаунта
-        </Description>
+        </AuthFormDescription>
 
         {isEmailSent.isTrue ? (
-          <Description className={classes.description}>Письмо было отправлено повторно</Description>
+          <AuthFormDescription className={classes.description}>
+            Письмо было отправлено повторно
+          </AuthFormDescription>
         ) : (
           <RepeatConfirmEmailButton onSuccess={isEmailSent.setTrue} onError={showError} />
         )}
       </div>
-    </AuthLayout>
+    </Layout.Auth>
   );
 };
 

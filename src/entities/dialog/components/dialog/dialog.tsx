@@ -3,7 +3,7 @@ import cn from "classnames";
 import dayjs from "@/shared/lib/dayjs";
 import { ReadStatusIcon } from "@/shared/components/read-status-icon";
 import { Avatar } from "@/shared/components/avatar";
-import { useViewer } from "@/features/auth/use-viewer";
+import { useViewer } from "@/entities/viewer";
 
 import { DialogModel } from "../../types";
 

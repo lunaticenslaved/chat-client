@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import { ChatLayout } from "@/pages/_layouts/chat-layout";
+import { Layout } from "@/widgets/layouts";
 import { SearchableDialogs } from "@/widgets/searchable-dialogs";
 import { MessageAreaHeader } from "@/widgets/messages-area-header";
 import { MessagesArea } from "@/widgets/messages-area";
@@ -13,7 +13,7 @@ const ChatPage = () => {
   const { messages, isError: isErrorMessages, isFetching: isLoadingMessages } = useMessages();
 
   return (
-    <ChatLayout
+    <Layout.Chat
       sidebar={<SearchableDialogs />}
       content={
         <Fragment>
