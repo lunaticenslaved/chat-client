@@ -1,1 +1,1 @@
-export * from "./loading-messages-view";
+export * from './loading-messages-view';

@@ -1,7 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
 
-import { RouteGuard } from "./route-guard";
-import { PAGES } from "./pages";
+import { PAGES } from './pages';
+import { RouteGuard } from './route-guard';
 
 export const Router = () => {
   return (

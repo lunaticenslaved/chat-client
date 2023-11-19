@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { useMutation } from "react-query";
+import { useCallback, useEffect, useMemo } from 'react';
+import { useMutation } from 'react-query';
 
-import { useAppDispatch, useAppSelector } from "@/config/store";
-import { ViewerAPI } from "@/entities/viewer/api";
-import { Handlers } from "@/shared/types";
-
-import { ViewerModel } from "./types";
-import { ViewerStore } from "./store";
+import { ViewerStore } from './store';
+import { ViewerModel } from './types';
+import { useAppDispatch, useAppSelector } from '@/config/store';
+import { ViewerAPI } from '@/entities/viewer/api';
+import { Handlers } from '@/shared/types';
 
 export type UseViewerRequest = {
-  onRefreshSuccess: Handlers["onSuccess"];
-  onRefreshError: Handlers["onError"];
+  onRefreshSuccess: Handlers['onSuccess'];
+  onRefreshError: Handlers['onError'];
 };
 
 export type UseViewerResponse = {
@@ -31,7 +30,7 @@ export function useViewer(data?: UseViewerRequest): UseViewerResponse {
   const dispatch = useAppDispatch();
 
   const refreshMutation = useMutation({
-    mutationKey: "refresh",
+    mutationKey: 'refresh',
     mutationFn: ViewerAPI.refresh,
   });
 
@@ -39,7 +38,7 @@ export function useViewer(data?: UseViewerRequest): UseViewerResponse {
     (viewer?: ViewerModel) => {
       dispatch(ViewerStore.actions.setViewer(viewer));
     },
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
@@ -74,6 +73,6 @@ export function useViewer(data?: UseViewerRequest): UseViewerResponse {
       refreshMutation.mutate,
       setViewer,
       viewer,
-    ]
+    ],
   );
 }

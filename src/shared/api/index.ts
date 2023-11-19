@@ -1,6 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
-import { BASE_URL } from "@/shared/config";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+
+import { BASE_URL } from '@/shared/config';
 
 const options = {
   baseURL: BASE_URL,
@@ -8,7 +9,7 @@ const options = {
 };
 
 const authInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
   return config;
 };
 
@@ -21,19 +22,20 @@ const errorInterceptor = async (error: AxiosError) => {
 
   if (res.status === 401) {
     try {
-      const r = await $api.post<{ accessToken: string }>("/refresh");
-      localStorage.setItem("token", r.data.accessToken);
+      const r = await $api.post<{ accessToken: string }>('/refresh');
+      localStorage.setItem('token', r.data.accessToken);
       // FIXME: сейчас если во постоянно будет возвращаться ошибка, то запрос будет зациклен. надо исправить
       return $api.request(originalRequest);
     } catch (error) {
-      console.error("Не авторизован!");
+      // eslint-disable-next-line no-console
+      console.error('Не авторизован!');
     }
   }
 };
 
 const $api = axios.create(options);
 $api.interceptors.request.use(authInterceptor);
-$api.interceptors.response.use((c) => c, errorInterceptor);
+$api.interceptors.response.use(c => c, errorInterceptor);
 
 const $apiWithoutErrorInterceptor = axios.create(options);
 $apiWithoutErrorInterceptor.interceptors.request.use(authInterceptor);
@@ -41,25 +43,25 @@ $apiWithoutErrorInterceptor.interceptors.request.use(authInterceptor);
 export { $api, $apiWithoutErrorInterceptor };
 
 export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: "include" }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: () => ({}),
-  reducerPath: "api",
+  reducerPath: 'api',
 });
 
 export type FetchRequest<TBody> = {
   url: string;
   body?: TBody;
-  method: "POST" | "GET" | "PATCH";
+  method: 'POST' | 'GET' | 'PATCH';
 };
 
 export const API = {
   request: async <TBody>(input: RequestInfo | URL, init?: RequestInit | undefined) => {
-    const contentType = init?.body instanceof FormData ? undefined : "application/json";
+    const contentType = init?.body instanceof FormData ? undefined : 'application/json';
 
     const response = await fetch(input, {
       ...init,
       headers: {
-        ...(contentType ? { "Content-Type": contentType } : {}),
+        ...(contentType ? { 'Content-Type': contentType } : {}),
         ...init?.headers,
       },
     });

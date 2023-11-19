@@ -1,7 +1,8 @@
-import { ViewerAPI } from "@/entities/viewer";
-import { Handlers } from "@/shared/types";
-import { useCallback, useMemo } from "react";
-import { useMutation } from "react-query";
+import { useCallback, useMemo } from 'react';
+import { useMutation } from 'react-query';
+
+import { ViewerAPI } from '@/entities/viewer';
+import { Handlers } from '@/shared/types';
 
 export type UseRepeatConfirmEmailRequest = Handlers;
 
@@ -15,7 +16,7 @@ export function useRepeatConfirmEmail({
   onSuccess,
 }: UseRepeatConfirmEmailRequest): UseRepeatConfirmEmailResponse {
   const { mutateAsync, isLoading } = useMutation({
-    mutationKey: "repeat-confirm-email",
+    mutationKey: 'repeat-confirm-email',
     mutationFn: ViewerAPI.repeatConfirmMail,
   });
 
@@ -38,6 +39,6 @@ export function useRepeatConfirmEmail({
       isLoading,
       repeatEmail,
     }),
-    [isLoading, repeatEmail]
+    [isLoading, repeatEmail],
   );
 }

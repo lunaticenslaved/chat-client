@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { Form, FormInstance } from "antd";
-import { Link } from "react-router-dom";
+import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Button } from "@/shared/components/Button";
+import { Form, FormInstance } from 'antd';
 
-import classes from "./auth-form.module.scss";
+import classes from './auth-form.module.scss';
+import { Button } from '@/shared/components/Button';
 
 export type AuthFormProps<T> = {
   formInstance?: FormInstance<T>;

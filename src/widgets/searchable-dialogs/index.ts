@@ -1,1 +1,1 @@
-export { SearchableDialogs } from "./searchable-dialogs";
+export { SearchableDialogs } from './searchable-dialogs';

@@ -1,9 +1,8 @@
-import { API } from "@/shared/api";
-import { Operation } from "@lunaticenslaved/schema";
+import { Operation } from '@lunaticenslaved/schema';
 
-import { client } from "@/shared/client";
-
-import { ViewerModel } from "./types";
+import { ViewerModel } from './types';
+import { API } from '@/shared/api';
+import { client } from '@/shared/client';
 
 export namespace ViewerAPI {
   export type SignInRequest = Operation.Auth.SignInRequest;
@@ -37,23 +36,23 @@ export const ViewerAPI = {
     return response;
   },
   refresh() {
-    return API.request<ViewerAPI.RefreshResponse>("/auth/refresh", {
-      method: "POST",
+    return API.request<ViewerAPI.RefreshResponse>('/auth/refresh', {
+      method: 'POST',
     });
   },
   logout() {
-    return API.request("/auth/logout", {
-      method: "POST",
+    return API.request('/auth/logout', {
+      method: 'POST',
     });
   },
   repeatConfirmMail() {
-    return API.request("/auth/repeat-confirm-email", {
-      method: "POST",
+    return API.request('/auth/repeat-confirm-email', {
+      method: 'POST',
     });
   },
   activateAccount() {
-    return API.request("/auth/activate/:link", {
-      method: "POST",
+    return API.request('/auth/activate/:link', {
+      method: 'POST',
     });
   },
 };

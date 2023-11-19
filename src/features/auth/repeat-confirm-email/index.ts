@@ -1,1 +1,1 @@
-export { RepeatConfirmEmailButton } from "./ui/button";
+export { RepeatConfirmEmailButton } from './ui/button';

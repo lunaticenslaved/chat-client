@@ -1,7 +1,7 @@
-import { useMutation } from "react-query";
+import { useMemo } from 'react';
+import { useMutation } from 'react-query';
 
-import { MessageAPI } from "../api";
-import { useMemo } from "react";
+import { MessageAPI } from '../api';
 
 export type UseMessageResponse = {
   isLoading: boolean;
@@ -11,7 +11,7 @@ export type UseMessageResponse = {
 
 export function useMessage(): UseMessageResponse {
   const { mutate, isLoading, isError } = useMutation({
-    mutationKey: "create-message",
+    mutationKey: 'create-message',
     mutationFn: MessageAPI.createMessage,
   });
 
@@ -21,6 +21,6 @@ export function useMessage(): UseMessageResponse {
       isError,
       createMessage: mutate,
     }),
-    [isError, isLoading, mutate]
+    [isError, isLoading, mutate],
   );
 }

@@ -1,8 +1,9 @@
-import { forwardRef } from "react";
-import cn from "classnames";
+import { forwardRef } from 'react';
 
-import { TypingMessageProps } from "../types";
-import classes from "../styles.module.scss";
+import cn from 'classnames';
+
+import classes from '../styles.module.scss';
+import { TypingMessageProps } from '../types';
 
 export const TypingMessage = forwardRef<HTMLDivElement, TypingMessageProps>(
   (props: TypingMessageProps, ref) => {
@@ -10,7 +11,7 @@ export const TypingMessage = forwardRef<HTMLDivElement, TypingMessageProps>(
       <div ref={ref} className={cn(classes.root, classes.isTyping)}>
         <>
           <div className={classes.avatar}>
-            <img src={props.avatarSrc} alt={"Аватар " + props.ownerName} />
+            <img src={props.avatarSrc} alt={'Аватар ' + props.ownerName} />
           </div>
           <div>
             <div className={classes.content}>
@@ -28,7 +29,7 @@ export const TypingMessage = forwardRef<HTMLDivElement, TypingMessageProps>(
         </>
       </div>
     );
-  }
+  },
 );
 
-TypingMessage.displayName = "TypingMessage";
+TypingMessage.displayName = 'TypingMessage';

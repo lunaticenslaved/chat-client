@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from 'react';
 
 export type UseToggleResponse = {
   value: boolean;
@@ -24,6 +24,6 @@ export function useToggle(): UseToggleResponse {
       isTrue: value === true,
       isFalse: value === false,
     }),
-    [setFalse, setTrue, value]
+    [setFalse, setTrue, value],
   );
 }

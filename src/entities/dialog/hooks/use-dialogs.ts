@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { useQuery } from "react-query";
+import { useCallback, useEffect, useMemo } from 'react';
+import { useQuery } from 'react-query';
 
-import dayjs from "@/shared/lib/dayjs";
-import { DialogModel } from "@/entities/dialog";
-import { useAppDispatch, useAppSelector } from "@/config/store";
+import { DialogsAPI } from '../api';
+import { DialogsStore } from '../store';
 
-import { DialogsAPI } from "../api";
-import { DialogsStore } from "../store";
+import { useAppDispatch, useAppSelector } from '@/config/store';
+import { DialogModel } from '@/entities/dialog';
+import dayjs from '@/shared/lib/dayjs';
 
 export type UseDialogsRequest = {
   searchQuery?: string;
@@ -22,7 +22,7 @@ export type UseDialogsResponse = {
 
 export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsResponse => {
   const { data, isFetching, isError } = useQuery({
-    queryKey: ["dialogs"],
+    queryKey: ['dialogs'],
     queryFn: DialogsAPI.getDialogs,
   });
 
@@ -52,14 +52,14 @@ export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsRespon
 
     const s = searchQuery.toLowerCase();
 
-    return sorted.filter((d) => d.user.name.toLowerCase().includes(s));
+    return sorted.filter(d => d.user.name.toLowerCase().includes(s));
   }, [searchQuery, sorted]);
 
   const selectDialog = useCallback(
     (dialog: DialogModel) => {
       dispatch(DialogsStore.actions.setCurrentDialogId(dialog.id));
     },
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {

@@ -1,5 +1,6 @@
-import { Validation } from "@lunaticenslaved/schema";
-import { RuleObject } from "antd/es/form";
+import { RuleObject } from 'antd/es/form';
+
+import { Validation } from '@lunaticenslaved/schema';
 
 export function createAntdValidator<T>(fn: Validation.Validator<T>) {
   return async (_: RuleObject, value: T) => {

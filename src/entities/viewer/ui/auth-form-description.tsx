@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
-import { Typography } from "antd";
+import { ReactNode } from 'react';
+
+import { Typography } from 'antd';
 
 export type AuthFormDescriptionProps = {
   children: ReactNode;
@@ -8,7 +9,7 @@ export type AuthFormDescriptionProps = {
 
 export const AuthFormDescription = ({ children, className }: AuthFormDescriptionProps) => {
   return (
-    <Typography.Paragraph style={{ textAlign: "center" }} className={className}>
+    <Typography.Paragraph style={{ textAlign: 'center' }} className={className}>
       {children}
     </Typography.Paragraph>
   );

@@ -1,6 +1,6 @@
-import { Empty } from "antd";
+import { Empty } from 'antd';
 
-import classes from "./no-messages-view.module.scss";
+import classes from './no-messages-view.module.scss';
 
 export const NoMessagesView = () => {
   return (

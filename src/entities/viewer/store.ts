@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-import { ViewerModel } from "./types";
+import { ViewerModel } from './types';
 
 const reducers = {
   setViewer: (state: ViewerState, action: PayloadAction<ViewerModel | undefined>) => {
@@ -16,7 +16,7 @@ interface ViewerState {
 const initialState: ViewerState = {};
 
 const slice = createSlice({
-  name: "viewer",
+  name: 'viewer',
   initialState,
   reducers,
 });

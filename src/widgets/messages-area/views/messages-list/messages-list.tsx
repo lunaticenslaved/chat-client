@@ -1,9 +1,8 @@
-import { createRef, useEffect } from "react";
+import { createRef, useEffect } from 'react';
 
-import { MessageModel, Message } from "@/entities/message";
-import { useViewer } from "@/entities/viewer";
-
-import classes from "./messages-list.module.scss";
+import classes from './messages-list.module.scss';
+import { Message, MessageModel } from '@/entities/message';
+import { useViewer } from '@/entities/viewer';
 
 export interface MessagesListProps {
   messages: MessageModel[];
@@ -16,14 +15,14 @@ export const MessagesList = (props: MessagesListProps) => {
   useEffect(() => {
     wrapperRef.current?.scrollTo({
       top: Number.MAX_SAFE_INTEGER,
-      behavior: "auto",
+      behavior: 'auto',
     });
   }, [wrapperRef]);
 
   return (
     <div className={classes.root} ref={wrapperRef}>
       <ul>
-        {props.messages.map((m) => (
+        {props.messages.map(m => (
           <li key={m.id}>
             <Message
               {...m}

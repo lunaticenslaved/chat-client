@@ -1,14 +1,12 @@
-import { Suspense, useEffect } from "react";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { Suspense, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import { PageLoader } from "@/shared/components/page-loader";
-
-import { store } from "@/config/store";
-
-import { Router } from "./router";
-import { useViewer } from "@/entities/viewer";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { Router } from './router';
+import { store } from '@/config/store';
+import { useViewer } from '@/entities/viewer';
+import { PageLoader } from '@/shared/components/page-loader';
 
 const PagesWithStore = () => {
   const { refresh, isRefreshing } = useViewer();

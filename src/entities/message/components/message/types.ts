@@ -1,8 +1,9 @@
-import { AttachmentModel, MessageModel } from "@/entities/message/types";
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-export type MessageProps = Pick<MessageModel, "createdAt" | "attachments"> &
-  Partial<Pick<MessageModel, "text" | "isRead">> & {
+import { AttachmentModel, MessageModel } from '@/entities/message/types';
+
+export type MessageProps = Pick<MessageModel, 'createdAt' | 'attachments'> &
+  Partial<Pick<MessageModel, 'text' | 'isRead'>> & {
     children?: ReactNode;
     isMe: boolean;
     ownerName: string;
@@ -10,11 +11,11 @@ export type MessageProps = Pick<MessageModel, "createdAt" | "attachments"> &
     isTyping?: boolean;
   };
 
-export type AudioMessageProps = Omit<MessageProps, "attachments"> & {
+export type AudioMessageProps = Omit<MessageProps, 'attachments'> & {
   audio: AttachmentModel;
 };
 
-export type ImageMessageProps = Omit<MessageProps, "attachments"> & {
+export type ImageMessageProps = Omit<MessageProps, 'attachments'> & {
   image: AttachmentModel;
 };
 

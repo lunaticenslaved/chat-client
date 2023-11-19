@@ -1,14 +1,16 @@
-import { useMemo } from "react";
-import { Form, Input } from "antd";
-import { RuleObject } from "antd/es/form";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import Schema from "@lunaticenslaved/schema";
+import { useMemo } from 'react';
 
-import { ROUTES } from "@/config/routes";
-import { AuthForm } from "@/entities/viewer";
-import { createAntdValidator } from "@/shared/lib/validators";
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Form, Input } from 'antd';
+import { RuleObject } from 'antd/es/form';
 
-import { useSignUp } from "../hooks";
+import Schema from '@lunaticenslaved/schema';
+
+import { useSignUp } from '../hooks';
+
+import { ROUTES } from '@/config/routes';
+import { AuthForm } from '@/entities/viewer';
+import { createAntdValidator } from '@/shared/lib/validators';
 
 interface Values {
   login: string;
@@ -30,10 +32,10 @@ export function SignUpForm() {
       repeatPassword: [
         {
           validator: (_: RuleObject, value: string) => {
-            const password = form.getFieldValue("password");
+            const password = form.getFieldValue('password');
 
             if (password !== value) {
-              return Promise.reject("Пароли не совпадают");
+              return Promise.reject('Пароли не совпадают');
             }
 
             return Promise.resolve();
@@ -41,7 +43,7 @@ export function SignUpForm() {
         },
       ],
     }),
-    [form]
+    [form],
   );
   return (
     <AuthForm<Values>
@@ -50,8 +52,7 @@ export function SignUpForm() {
       link={ROUTES.auth.signIn}
       onSubmit={signUp}
       isSubmitting={isLoading}
-      formInstance={form}
-    >
+      formInstance={form}>
       <Form.Item name="login" rules={validators.login} hasFeedback>
         <Input prefix={<UserOutlined />} placeholder="Логин" />
       </Form.Item>

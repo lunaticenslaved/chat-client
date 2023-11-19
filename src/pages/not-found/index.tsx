@@ -1,4 +1,4 @@
-import { Layout } from "@/widgets/layouts";
+import { Layout } from '@/widgets/layouts';
 
 export const NotFoundPage = () => {
   return <Layout.Error title="Not found" />;

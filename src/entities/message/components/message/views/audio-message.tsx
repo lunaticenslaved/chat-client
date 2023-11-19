@@ -1,13 +1,13 @@
-import { createRef, useCallback, useEffect, useState } from "react";
+import { createRef, useCallback, useEffect, useState } from 'react';
 
-import PlaySvg from "@/shared/img/play.svg";
-import PauseSvg from "@/shared/img/pause.svg";
-import WaveSvg from "@/shared/img/wave.svg";
+import { MessageWrapper } from '../components/wrapper';
+import classes from '../styles.module.scss';
+import { AudioMessageProps } from '../types';
+import { secondsToHms } from '../utils';
 
-import { MessageWrapper } from "../components/wrapper";
-import { AudioMessageProps } from "../types";
-import { secondsToHms } from "../utils";
-import classes from "../styles.module.scss";
+import PauseSvg from '@/shared/img/pause.svg';
+import PlaySvg from '@/shared/img/play.svg';
+import WaveSvg from '@/shared/img/wave.svg';
 
 export function AudioMessage({ audio, ...props }: AudioMessageProps) {
   const [isPlaying, _setPlaying] = useState(false);
@@ -33,17 +33,17 @@ export function AudioMessage({ audio, ...props }: AudioMessageProps) {
     const setPaused = () => _setPlaying(false);
 
     if (el) {
-      el.addEventListener("playing", setPlaying);
-      el.addEventListener("pause", setPaused);
-      el.addEventListener("ended", setPaused);
-      el.addEventListener("timeupdate", setCurrentTime);
+      el.addEventListener('playing', setPlaying);
+      el.addEventListener('pause', setPaused);
+      el.addEventListener('ended', setPaused);
+      el.addEventListener('timeupdate', setCurrentTime);
     }
     return () => {
       if (el) {
-        el.removeEventListener("playing", setPlaying);
-        el.removeEventListener("pause", setPaused);
-        el.removeEventListener("ended", setPaused);
-        el.removeEventListener("timeupdate", setCurrentTime);
+        el.removeEventListener('playing', setPlaying);
+        el.removeEventListener('pause', setPaused);
+        el.removeEventListener('ended', setPaused);
+        el.removeEventListener('timeupdate', setCurrentTime);
       }
     };
   }, [audioElem, setCurrentTime]);
@@ -53,11 +53,11 @@ export function AudioMessage({ audio, ...props }: AudioMessageProps) {
 
     if (el) {
       setCurrentTime();
-      el.addEventListener("onloadedmetadata ", setCurrentTime);
+      el.addEventListener('onloadedmetadata ', setCurrentTime);
     }
     return () => {
       if (el) {
-        el.removeEventListener("onloadedmetadata", setCurrentTime);
+        el.removeEventListener('onloadedmetadata', setCurrentTime);
       }
     };
   }, [audioElem, setCurrentTime]);
@@ -75,7 +75,7 @@ export function AudioMessage({ audio, ...props }: AudioMessageProps) {
   return (
     <MessageWrapper {...props} attachments={[]}>
       <div className={classes.audioBubble}>
-        {isPlaying && <div className={classes.audioProgress} style={{ width: progress + "%" }} />}
+        {isPlaying && <div className={classes.audioProgress} style={{ width: progress + '%' }} />}
 
         <div className={classes.audioContent}>
           <audio ref={audioElem} src={audio.url} preload="auto">

@@ -1,10 +1,10 @@
-import { useCallback, useMemo } from "react";
-import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useMemo } from 'react';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
-import { ViewerAPI, useViewer } from "@/entities/viewer";
-import { Handlers } from "@/shared/types";
-import { ROUTES } from "@/config/routes";
+import { ROUTES } from '@/config/routes';
+import { ViewerAPI, useViewer } from '@/entities/viewer';
+import { Handlers } from '@/shared/types';
 
 export type UseSignInRequest = Handlers;
 
@@ -17,7 +17,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
   const viewerHook = useViewer();
   const navigate = useNavigate();
   const { mutateAsync, isLoading } = useMutation({
-    mutationKey: "sign-in",
+    mutationKey: 'sign-in',
     mutationFn: ViewerAPI.signIn,
   });
 
@@ -46,7 +46,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
         }
       }
     },
-    [mutateAsync, navigate, onError, onSuccess, viewerHook]
+    [mutateAsync, navigate, onError, onSuccess, viewerHook],
   );
 
   return useMemo(
@@ -54,6 +54,6 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
       isLoading,
       signIn,
     }),
-    [isLoading, signIn]
+    [isLoading, signIn],
   );
 }

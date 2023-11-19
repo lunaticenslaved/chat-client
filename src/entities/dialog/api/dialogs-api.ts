@@ -1,10 +1,11 @@
-import { apiSlice } from "@/shared/api";
-import { DialogModel } from "../types";
+import { DialogModel } from '../types';
+
+import { apiSlice } from '@/shared/api';
 
 export const dialogsApi = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getDialogs: builder.query<DialogModel[], void>({
-      query: () => ({ url: "/my-dialogs" }),
+      query: () => ({ url: '/my-dialogs' }),
     }),
   }),
 });

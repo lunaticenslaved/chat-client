@@ -1,2 +1,2 @@
-export { Message } from "./message";
-export type { MessageProps } from "./types";
+export { Message } from './message';
+export type { MessageProps } from './types';

@@ -1,25 +1,24 @@
-import { useCallback } from "react";
-import { message } from "antd";
-import { InfoCircleTwoTone } from "@ant-design/icons";
+import { useCallback } from 'react';
 
-import { useToggle } from "@/shared/hooks";
-import { RepeatConfirmEmailButton } from "@/features/auth/repeat-confirm-email";
-import { Layout } from "@/widgets/layouts";
-import { AuthFormDescription } from "@/entities/viewer";
+import { InfoCircleTwoTone } from '@ant-design/icons';
+import { message } from 'antd';
 
-import classes from "./index.module.scss";
+import classes from './index.module.scss';
+import { AuthFormDescription } from '@/entities/viewer';
+import { RepeatConfirmEmailButton } from '@/features/auth/repeat-confirm-email';
+import { useToggle } from '@/shared/hooks';
+import { Layout } from '@/widgets/layouts';
 
 export const ConfirmRequiredPage = () => {
   const isEmailSent = useToggle();
   const showError = useCallback(() => {
-    message.error("Что-то пошло не так при повторной отправке письма");
+    message.error('Что-то пошло не так при повторной отправке письма');
   }, []);
 
   return (
     <Layout.Auth
       header="Подтвердите e-mail"
-      description="Пожалуйста, подтвердите свой e-mail адрес"
-    >
+      description="Пожалуйста, подтвердите свой e-mail адрес">
       <div className={classes.root}>
         <InfoCircleTwoTone className={classes.icon} />
         <h3 className={classes.header}>Подтвердите свой аккаунт</h3>

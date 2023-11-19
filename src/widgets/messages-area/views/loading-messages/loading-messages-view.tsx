@@ -1,6 +1,6 @@
-import { Spin } from "antd";
+import { Spin } from 'antd';
 
-import classes from "./loading-messages-view.module.scss";
+import classes from './loading-messages-view.module.scss';
 
 export const LoadingMessagesView = () => {
   return (

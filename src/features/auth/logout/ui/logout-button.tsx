@@ -1,7 +1,7 @@
-import { Button } from "@/shared/components/Button";
-import { useViewer } from "@/entities/viewer";
+import { useLogout } from '../hooks';
 
-import { useLogout } from "../hooks";
+import { useViewer } from '@/entities/viewer';
+import { Button } from '@/shared/components/Button';
 
 export function LogoutButton() {
   const { logout } = useLogout();

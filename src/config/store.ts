@@ -1,8 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import { DialogsStore } from "@/entities/dialog";
-import { ViewerStore } from "@/entities/viewer";
+import { configureStore } from '@reduxjs/toolkit';
+
+import { DialogsStore } from '@/entities/dialog';
+import { ViewerStore } from '@/entities/viewer';
 
 export const store = configureStore({
   reducer: {

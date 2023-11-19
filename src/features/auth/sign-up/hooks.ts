@@ -1,8 +1,9 @@
-import { useViewer } from "@/entities/viewer";
-import { ViewerAPI } from "@/entities/viewer/api";
-import { Handlers } from "@/shared/types";
-import { useCallback, useMemo } from "react";
-import { useMutation } from "react-query";
+import { useCallback, useMemo } from 'react';
+import { useMutation } from 'react-query';
+
+import { useViewer } from '@/entities/viewer';
+import { ViewerAPI } from '@/entities/viewer/api';
+import { Handlers } from '@/shared/types';
 
 export type UseSignUpRequest = Handlers;
 
@@ -14,7 +15,7 @@ export type UseSignUpResponse = {
 export function useSignUp({ onError, onSuccess }: UseSignUpRequest = {}): UseSignUpResponse {
   const viewerHook = useViewer();
   const { isLoading, mutateAsync } = useMutation({
-    mutationKey: "sign-up",
+    mutationKey: 'sign-up',
     mutationFn: ViewerAPI.signUp,
   });
 
@@ -34,7 +35,7 @@ export function useSignUp({ onError, onSuccess }: UseSignUpRequest = {}): UseSig
         }
       }
     },
-    [mutateAsync, onError, onSuccess, viewerHook]
+    [mutateAsync, onError, onSuccess, viewerHook],
   );
 
   return useMemo(
@@ -42,6 +43,6 @@ export function useSignUp({ onError, onSuccess }: UseSignUpRequest = {}): UseSig
       isLoading,
       signUp,
     }),
-    [isLoading, signUp]
+    [isLoading, signUp],
   );
 }

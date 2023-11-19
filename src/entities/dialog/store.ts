@@ -1,11 +1,11 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { DialogModel } from "./types";
+import { DialogModel } from './types';
 
 interface DialogsState {
   dialogs: DialogModel[];
   isFetching: boolean;
-  currentDialogId?: DialogModel["id"];
+  currentDialogId?: DialogModel['id'];
 }
 
 const initialState: DialogsState = {
@@ -15,10 +15,10 @@ const initialState: DialogsState = {
 };
 
 const slice = createSlice({
-  name: "dialogs",
+  name: 'dialogs',
   initialState,
   reducers: {
-    setCurrentDialogId(state, action: PayloadAction<DialogModel["id"] | undefined>) {
+    setCurrentDialogId(state, action: PayloadAction<DialogModel['id'] | undefined>) {
       state.currentDialogId = action.payload;
     },
     setDialogs(state, action: PayloadAction<DialogModel[]>) {
@@ -29,9 +29,9 @@ const slice = createSlice({
 
 const selectors = {
   selectCurrentDialog: (state: { dialogs: DialogsState }) =>
-    state.dialogs.dialogs.find((d) => d.id === state.dialogs.currentDialogId),
-  selectDialog: (state: { dialogs: DialogsState }) => (dialogId: DialogModel["id"] | undefined) =>
-    state.dialogs.dialogs.find((d) => d.id === dialogId),
+    state.dialogs.dialogs.find(d => d.id === state.dialogs.currentDialogId),
+  selectDialog: (state: { dialogs: DialogsState }) => (dialogId: DialogModel['id'] | undefined) =>
+    state.dialogs.dialogs.find(d => d.id === dialogId),
 };
 
 export const DialogsStore = {

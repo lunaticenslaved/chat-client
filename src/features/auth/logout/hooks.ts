@@ -1,12 +1,12 @@
-import { useCallback } from "react";
-import { useMutation } from "react-query";
+import { useCallback } from 'react';
+import { useMutation } from 'react-query';
 
-import { ViewerAPI, useViewer } from "@/entities/viewer";
-import { Handlers } from "@/shared/types";
+import { ViewerAPI, useViewer } from '@/entities/viewer';
+import { Handlers } from '@/shared/types';
 
 export const useLogout = ({ onError, onSuccess }: Handlers = {}) => {
   const { mutate: callLogout, isLoading } = useMutation({
-    mutationKey: "logout",
+    mutationKey: 'logout',
     mutationFn: ViewerAPI.logout,
   });
   const viewerHook = useViewer();

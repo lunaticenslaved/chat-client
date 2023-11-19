@@ -1,9 +1,8 @@
-import cn from "classnames";
-import tinycolor from "tinycolor2";
+import cn from 'classnames';
+import tinycolor from 'tinycolor2';
 
-import { OnlineStatus } from "@/shared/components/online-status";
-
-import classes from "./avatar.module.scss";
+import classes from './avatar.module.scss';
+import { OnlineStatus } from '@/shared/components/online-status';
 
 export interface AvatarProps {
   name: string;
@@ -17,10 +16,10 @@ const stringToColor = function (str: string) {
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  let color = "#";
+  let color = '#';
   for (let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff;
-    const valueString = "00" + value.toString(16);
+    const valueString = '00' + value.toString(16);
     color += valueString.substring(valueString.length - 2);
   }
   return tinycolor(color);
@@ -30,22 +29,21 @@ export const Avatar = (props: AvatarProps) => {
   let image: JSX.Element | null = null;
 
   if (props.url) {
-    image = <img src={props.url} alt={"Аватар " + props.name} />;
+    image = <img src={props.url} alt={'Аватар ' + props.name} />;
   } else {
     const color = stringToColor(props.name);
     const c1 = color.toHex();
     const c2 = color.lighten().toHex();
 
     const [l1, l2] = props.name
-      .split(" ")
+      .split(' ')
       .slice(0, 2)
-      .map((w) => w[0]);
+      .map(w => w[0]);
 
     image = (
       <div
         className={classes.gradientContainer}
-        style={{ background: `linear-gradient(135deg, #${c1}, #${c2})` }}
-      >
+        style={{ background: `linear-gradient(135deg, #${c1}, #${c2})` }}>
         <span>
           {l1}
           {l2}

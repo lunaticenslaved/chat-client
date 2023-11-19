@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { UserOutlined, EditOutlined } from "@ant-design/icons";
+import { useState } from 'react';
 
-import { useDialogs, DialogsList, DialogsSearch } from "@/entities/dialog";
-import { Divider } from "@/shared/components/divider";
+import { EditOutlined, UserOutlined } from '@ant-design/icons';
 
-import classes from "./searchable-dialogs.module.scss";
+import classes from './searchable-dialogs.module.scss';
+import { DialogsList, DialogsSearch, useDialogs } from '@/entities/dialog';
+import { Divider } from '@/shared/components/divider';
 
 export const SearchableDialogs = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const { isError, isFetching, dialogs, currentDialog, selectDialog } = useDialogs({
     searchQuery,
   });

@@ -1,6 +1,6 @@
-import { MessageWrapper } from "../components/wrapper";
-import { ImageMessageProps } from "../types";
-import classes from "../styles.module.scss";
+import { MessageWrapper } from '../components/wrapper';
+import classes from '../styles.module.scss';
+import { ImageMessageProps } from '../types';
 
 export function ImageMessage({ image, ...props }: ImageMessageProps) {
   return (

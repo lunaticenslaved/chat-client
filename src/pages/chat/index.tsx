@@ -1,15 +1,15 @@
-import { Fragment } from "react";
+import { Fragment } from 'react';
 
-import { Layout } from "@/widgets/layouts";
-import { SearchableDialogs } from "@/widgets/searchable-dialogs";
-import { MessageAreaHeader } from "@/widgets/messages-area-header";
-import { MessagesArea } from "@/widgets/messages-area";
-import { MessageInput } from "@/features/message-input";
-import { useDialogs } from "@/entities/dialog";
-import { useMessages } from "@/entities/message";
+import { useDialogs } from '@/entities/dialog';
+import { useMessages } from '@/entities/message';
+import { MessageInput } from '@/features/message-input';
+import { Layout } from '@/widgets/layouts';
+import { MessagesArea } from '@/widgets/messages-area';
+import { MessageAreaHeader } from '@/widgets/messages-area-header';
+import { SearchableDialogs } from '@/widgets/searchable-dialogs';
 
 const ChatPage = () => {
-  const { currentDialog } = useDialogs({ searchQuery: "" });
+  const { currentDialog } = useDialogs({ searchQuery: '' });
   const { messages, isError: isErrorMessages, isFetching: isLoadingMessages } = useMessages();
 
   return (

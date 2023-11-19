@@ -1,13 +1,12 @@
-import cn from "classnames";
+import cn from 'classnames';
 
-import dayjs from "@/shared/lib/dayjs";
-import { ReadStatusIcon } from "@/shared/components/read-status-icon";
-import { Avatar } from "@/shared/components/avatar";
-import { useViewer } from "@/entities/viewer";
+import { DialogModel } from '../../types';
 
-import { DialogModel } from "../../types";
-
-import classes from "./dialog.module.scss";
+import classes from './dialog.module.scss';
+import { useViewer } from '@/entities/viewer';
+import { Avatar } from '@/shared/components/avatar';
+import { ReadStatusIcon } from '@/shared/components/read-status-icon';
+import dayjs from '@/shared/lib/dayjs';
 
 export interface DialogProps {
   isSelected?: boolean;
@@ -25,7 +24,7 @@ export const Dialog = (props: DialogProps) => {
   } else if (props.dialog.notReadMessages > 0) {
     status = (
       <span className={classes.count}>
-        {props.dialog.notReadMessages > 99 ? "99+" : props.dialog.notReadMessages}
+        {props.dialog.notReadMessages > 99 ? '99+' : props.dialog.notReadMessages}
       </span>
     );
   }
@@ -34,7 +33,7 @@ export const Dialog = (props: DialogProps) => {
     props.onSelect(props.dialog);
   };
   const onKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       props.onSelect(props.dialog);
     }
   };

@@ -1,18 +1,19 @@
-import { ROUTES } from "@/config/routes";
-import { lazy } from "react";
+import { lazy } from 'react';
 
-const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
-const SignUpPage = lazy(() => import("@/pages/auth/sign-up"));
-const SignUpConfirmRequiredPage = lazy(() => import("@/pages/auth/confirm-required"));
-const SignUpConfirmSuccessPage = lazy(() => import("@/pages/auth/confirm-success"));
-const ChatPage = lazy(() => import("@/pages/chat"));
-const PageNotFound = lazy(() => import("@/pages/not-found"));
+import { ROUTES } from '@/config/routes';
+
+const SignInPage = lazy(() => import('@/pages/auth/sign-in'));
+const SignUpPage = lazy(() => import('@/pages/auth/sign-up'));
+const SignUpConfirmRequiredPage = lazy(() => import('@/pages/auth/confirm-required'));
+const SignUpConfirmSuccessPage = lazy(() => import('@/pages/auth/confirm-success'));
+const ChatPage = lazy(() => import('@/pages/chat'));
+const PageNotFound = lazy(() => import('@/pages/not-found'));
 
 export enum PageAccessType {
-  PrivateCommon = "private-common",
-  PrivateConfirmed = "private-confirmed",
-  Public = "public",
-  Common = "common",
+  PrivateCommon = 'private-common',
+  PrivateConfirmed = 'private-confirmed',
+  Public = 'public',
+  Common = 'common',
 }
 
 export const PAGES = [

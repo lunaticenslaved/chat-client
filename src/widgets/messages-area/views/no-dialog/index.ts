@@ -1,1 +1,1 @@
-export * from "./no-dialog-view";
+export * from './no-dialog-view';

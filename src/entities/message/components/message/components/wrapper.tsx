@@ -1,11 +1,11 @@
-import cn from "classnames";
+import cn from 'classnames';
 
-import dayjs from "@/shared/lib/dayjs";
-import { ReadStatusIcon } from "@/shared/components/read-status-icon";
-import { Avatar } from "@/shared/components/avatar";
+import classes from '../styles.module.scss';
+import { MessageProps } from '../types';
 
-import { MessageProps } from "../types";
-import classes from "../styles.module.scss";
+import { Avatar } from '@/shared/components/avatar';
+import { ReadStatusIcon } from '@/shared/components/read-status-icon';
+import dayjs from '@/shared/lib/dayjs';
 
 const getStatus = ({ isRead, isMe }: { isRead: boolean; isMe: boolean }) =>
   isMe ? <ReadStatusIcon isRead={isRead} /> : null;
@@ -20,7 +20,7 @@ export const MessageWrapper = (props: MessageProps) => {
   if (props.attachments.length) {
     attachments = (
       <>
-        {props.attachments.map((att) => (
+        {props.attachments.map(att => (
           <div key={att.id} className={classes.attachmentItem}>
             <img src={att.url} alt={att.filename} />
           </div>

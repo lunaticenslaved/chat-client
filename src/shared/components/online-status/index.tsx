@@ -1,6 +1,6 @@
-import cn from "classnames";
+import cn from 'classnames';
 
-import classes from "./online-status.module.scss";
+import classes from './online-status.module.scss';
 
 export interface OnlineStatusProps {
   isOnline: boolean;

@@ -1,1 +1,1 @@
-export * from "./no-messages-view";
+export * from './no-messages-view';

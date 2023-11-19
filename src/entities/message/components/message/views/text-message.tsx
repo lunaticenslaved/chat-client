@@ -1,6 +1,6 @@
-import { MessageWrapper } from "../components/wrapper";
-import { TextMessageProps } from "../types";
-import classes from "../styles.module.scss";
+import { MessageWrapper } from '../components/wrapper';
+import classes from '../styles.module.scss';
+import { TextMessageProps } from '../types';
 
 export function TextMessage({ text, ...props }: TextMessageProps) {
   return (

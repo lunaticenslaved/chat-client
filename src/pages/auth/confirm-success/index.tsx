@@ -1,13 +1,13 @@
-import { Spin } from "antd";
-import { Link, useParams } from "react-router-dom";
-import { CheckCircleTwoTone } from "@ant-design/icons";
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import { $api } from "@/shared/api";
-import { Button } from "@/shared/components/Button";
-import { Layout } from "@/widgets/layouts";
+import { CheckCircleTwoTone } from '@ant-design/icons';
+import { Spin } from 'antd';
 
-import classes from "./index.module.scss";
-import { useCallback, useEffect, useState } from "react";
+import classes from './index.module.scss';
+import { $api } from '@/shared/api';
+import { Button } from '@/shared/components/Button';
+import { Layout } from '@/widgets/layouts';
 
 const ConfirmSuccessPage = () => {
   const { link } = useParams();
@@ -18,7 +18,7 @@ const ConfirmSuccessPage = () => {
     setSubmitting(true);
 
     $api
-      .post("/activate/" + link)
+      .post('/activate/' + link)
       .catch(() => setErrored(true))
       .finally(() => setSubmitting(false));
   }, [link]);

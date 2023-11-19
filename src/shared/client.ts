@@ -1,14 +1,14 @@
-import libAxios from "axios";
+import libAxios from 'axios';
 
-import { client as baseClient, Client as BaseClient } from "@lunaticenslaved/schema";
+import { Client as BaseClient, client as baseClient } from '@lunaticenslaved/schema';
 
 const axios = libAxios.create();
 
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
 
   if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
 
   return config;
@@ -27,9 +27,9 @@ export class Client extends BaseClient {
 
   setToken(accessToken?: string) {
     if (accessToken) {
-      localStorage.setItem("token", accessToken);
+      localStorage.setItem('token', accessToken);
     } else {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
     }
   }
 }

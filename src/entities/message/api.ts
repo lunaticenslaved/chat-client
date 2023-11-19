@@ -1,16 +1,15 @@
-import { API } from "@/shared/api";
-
-import { MessageModel } from "./types";
+import { MessageModel } from './types';
+import { API } from '@/shared/api';
 
 function getMessages() {
-  return API.request<MessageAPI.GetMessagesResponse>("/api/messages", {
-    method: "GET",
+  return API.request<MessageAPI.GetMessagesResponse>('/api/messages', {
+    method: 'GET',
   });
 }
 
 function createMessage(data: MessageAPI.CreateMessageRequest) {
-  return API.request("/api/messages", {
-    method: "POST",
+  return API.request('/api/messages', {
+    method: 'POST',
     body: JSON.stringify(data),
   });
 }

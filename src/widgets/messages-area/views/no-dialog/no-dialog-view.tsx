@@ -1,6 +1,6 @@
-import { Empty } from "antd";
+import { Empty } from 'antd';
 
-import classes from "./no-dialog-view.module.scss";
+import classes from './no-dialog-view.module.scss';
 
 export const NoDialogView = () => {
   return (

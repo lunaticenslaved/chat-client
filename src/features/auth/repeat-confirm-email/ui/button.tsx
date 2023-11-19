@@ -1,7 +1,7 @@
-import { Button } from "@/shared/components/Button";
-import { Handlers } from "@/shared/types";
+import { useRepeatConfirmEmail } from '../hooks';
 
-import { useRepeatConfirmEmail } from "../hooks";
+import { Button } from '@/shared/components/Button';
+import { Handlers } from '@/shared/types';
 
 export type RepeatConfirmEmailButtonProps = Handlers;
 
