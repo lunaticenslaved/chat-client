@@ -1,5 +1,7 @@
 /* eslint-disable  */
 const CracoAlias = require("craco-alias");
+const webpackFramerTyperScriptPlugin = require("craco-plugin-framer-typescript");
+const { ProvidePlugin } = require("webpack");
 
 module.exports = {
   plugins: [
@@ -15,5 +17,14 @@ module.exports = {
         tsConfigPath: "./tsconfig.paths.json",
       },
     },
+    { plugin: webpackFramerTyperScriptPlugin }
   ],
+  webpack: {
+    plugins: [
+      new ProvidePlugin({
+        React: "react",
+      }),
+    ],
+  },
 };
+

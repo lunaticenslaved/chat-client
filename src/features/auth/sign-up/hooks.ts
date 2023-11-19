@@ -11,7 +11,7 @@ export type UseSignUpResponse = {
   signUp(values: ViewerAPI.SignUpRequest): Promise<void>;
 };
 
-export function useSignUp({ onError, onSuccess }: UseSignUpRequest): UseSignUpResponse {
+export function useSignUp({ onError, onSuccess }: UseSignUpRequest = {}): UseSignUpResponse {
   const viewerHook = useViewer();
   const { isLoading, mutateAsync } = useMutation({
     mutationKey: "sign-up",

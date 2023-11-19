@@ -5,7 +5,7 @@ import { ReadStatusIcon } from "@/shared/components/read-status-icon";
 import { Avatar } from "@/shared/components/avatar";
 
 import { MessageProps } from "../types";
-import classes from "../wrapper.module.scss";
+import classes from "../styles.module.scss";
 
 const getStatus = ({ isRead, isMe }: { isRead: boolean; isMe: boolean }) =>
   isMe ? <ReadStatusIcon isRead={isRead} /> : null;

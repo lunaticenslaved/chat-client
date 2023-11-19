@@ -1,26 +1,16 @@
 import { API } from "@/shared/api";
+import { Operation } from "@lunaticenslaved/schema";
+
+import { client } from "@/shared/client";
 
 import { ViewerModel } from "./types";
 
 export namespace ViewerAPI {
-  export interface SignInRequest {
-    email: string;
-    password: string;
-  }
+  export type SignInRequest = Operation.Auth.SignInRequest;
+  export type SignInResponse = Operation.Auth.SignInResponse;
 
-  export interface SignInResponse {
-    user: ViewerModel;
-  }
-
-  export interface SignUpRequest {
-    name: string;
-    email: string;
-    password: string;
-  }
-
-  export interface SignUpResponse {
-    user: ViewerModel;
-  }
+  export type SignUpRequest = Operation.Auth.SignUpRequest;
+  export type SignUpResponse = Operation.Auth.SignUpResponse;
 
   export interface RefreshResponse {
     user: ViewerModel;
@@ -28,17 +18,23 @@ export namespace ViewerAPI {
 }
 
 export const ViewerAPI = {
-  signIn(data: ViewerAPI.SignInRequest) {
-    return API.request<ViewerAPI.SignInResponse>("/auth/sign-in", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+  async signIn(data: ViewerAPI.SignInRequest): Promise<ViewerAPI.SignInResponse> {
+    const response = await Operation.Auth.SignIn.action({
+      data,
+    }).then(client.unwrapOperation);
+
+    client.setToken(response.token);
+
+    return response;
   },
-  signUp(data: ViewerAPI.SignUpRequest) {
-    return API.request<ViewerAPI.SignUpResponse>("/auth/sign-up", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+  async signUp(data: ViewerAPI.SignUpRequest): Promise<ViewerAPI.SignUpResponse> {
+    const response = await Operation.Auth.SignUp.action({
+      data,
+    }).then(client.unwrapOperation);
+
+    client.setToken(response.token);
+
+    return response;
   },
   refresh() {
     return API.request<ViewerAPI.RefreshResponse>("/auth/refresh", {

@@ -7,7 +7,7 @@ import { useViewer } from "@/entities/viewer";
 
 import { DialogModel } from "../../types";
 
-import classes from "./dialog-item.module.scss";
+import classes from "./dialog.module.scss";
 
 export interface DialogProps {
   isSelected?: boolean;

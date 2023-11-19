@@ -8,6 +8,7 @@ import { store } from "@/config/store";
 
 import { Router } from "./router";
 import { useViewer } from "@/entities/viewer";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const PagesWithStore = () => {
   const { refresh, isRefreshing } = useViewer();
@@ -19,14 +20,18 @@ const PagesWithStore = () => {
   return isRefreshing ? <PageLoader /> : <Router />;
 };
 
+const client = new QueryClient();
+
 export function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Suspense fallback={<PageLoader />}>
-          <PagesWithStore />
-        </Suspense>
-      </BrowserRouter>
-    </Provider>
+    <QueryClientProvider client={client}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Suspense fallback={<PageLoader />}>
+            <PagesWithStore />
+          </Suspense>
+        </BrowserRouter>
+      </Provider>
+    </QueryClientProvider>
   );
 }

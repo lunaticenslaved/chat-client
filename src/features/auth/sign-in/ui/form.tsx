@@ -1,16 +1,19 @@
 import { Input, Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import Schema from "@lunaticenslaved/schema";
 
 import { ROUTES } from "@/config/routes";
 import { AuthForm } from "@/entities/viewer";
-import { createAntdValidator, isRequired, validateEmail } from "@/shared/lib/validators";
+import { createAntdValidator } from "@/shared/lib/validators";
 
 import { useSignIn } from "../hooks";
 
 type Values = {
-  email: string;
+  login: string;
   password: string;
 };
+
+const signInValidators = Schema.Operation.Auth.SignIn.validators;
 
 export function SignInForm() {
   const [form] = Form.useForm<Values>();
@@ -26,15 +29,15 @@ export function SignInForm() {
       formInstance={form}
     >
       <Form.Item
-        name="email"
-        rules={[{ validator: createAntdValidator(validateEmail) }]}
+        name="login"
+        rules={[{ validator: createAntdValidator(signInValidators.login) }]}
         hasFeedback
       >
         <Input prefix={<UserOutlined />} placeholder="E-mail" />
       </Form.Item>
       <Form.Item
         name="password"
-        rules={[{ validator: createAntdValidator(isRequired) }]}
+        rules={[{ validator: createAntdValidator(signInValidators.password) }]}
         hasFeedback
       >
         <Input autoComplete="" prefix={<LockOutlined />} type="password" placeholder="Пароль" />

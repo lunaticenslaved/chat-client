@@ -2,33 +2,31 @@ import { useMemo } from "react";
 import { Form, Input } from "antd";
 import { RuleObject } from "antd/es/form";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import Schema from "@lunaticenslaved/schema";
 
 import { ROUTES } from "@/config/routes";
 import { AuthForm } from "@/entities/viewer";
-import {
-  createAntdValidator,
-  validateEmail,
-  validateLogin,
-  validateNewPassword,
-} from "@/shared/lib/validators";
+import { createAntdValidator } from "@/shared/lib/validators";
 
 import { useSignUp } from "../hooks";
 
 interface Values {
+  login: string;
   email: string;
-  name: string;
   password: string;
 }
 
+const signUpValidators = Schema.Operation.Auth.SignUp.validators;
+
 export function SignUpForm() {
-  const { signUp, isLoading } = useSignUp({});
+  const { signUp, isLoading } = useSignUp();
   const [form] = Form.useForm<Values>();
 
   const validators = useMemo(
     () => ({
-      name: [{ validator: createAntdValidator(validateLogin) }],
-      email: [{ validator: createAntdValidator(validateEmail) }],
-      password: [{ validator: createAntdValidator(validateNewPassword) }],
+      login: [{ validator: createAntdValidator(signUpValidators.login) }],
+      email: [{ validator: createAntdValidator(signUpValidators.email) }],
+      password: [{ validator: createAntdValidator(signUpValidators.password) }],
       repeatPassword: [
         {
           validator: (_: RuleObject, value: string) => {
@@ -54,17 +52,17 @@ export function SignUpForm() {
       isSubmitting={isLoading}
       formInstance={form}
     >
-      <Form.Item name="name" rules={validators.name} hasFeedback>
-        <Input prefix={<UserOutlined />} placeholder="E-mail" />
+      <Form.Item name="login" rules={validators.login} hasFeedback>
+        <Input prefix={<UserOutlined />} placeholder="Логин" />
       </Form.Item>
       <Form.Item name="email" rules={validators.email} hasFeedback>
         <Input prefix={<UserOutlined />} placeholder="E-mail" />
       </Form.Item>
       <Form.Item name="password" rules={validators.password} hasFeedback>
-        <Input autoComplete="" prefix={<LockOutlined />} type="password" placeholder="Пароль" />
+        <Input prefix={<LockOutlined />} type="password" placeholder="Пароль" />
       </Form.Item>
       <Form.Item name="repeatPassword" rules={validators.repeatPassword} hasFeedback>
-        <Input autoComplete="" prefix={<LockOutlined />} type="password" placeholder="Пароль" />
+        <Input prefix={<LockOutlined />} type="password" placeholder="Повторите пароль" />
       </Form.Item>
     </AuthForm>
   );

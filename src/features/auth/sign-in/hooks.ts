@@ -24,7 +24,10 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
   const signIn = useCallback(
     async (values: ViewerAPI.SignInRequest) => {
       try {
-        const { user } = await mutateAsync(values);
+        const { user } = await mutateAsync({
+          login: values.login,
+          password: values.password,
+        });
 
         viewerHook.setViewer(user);
 
