@@ -9,12 +9,13 @@
     "module": "esnext",
     "moduleResolution": "Bundler",
     "noEmit": true,
-    "types": ["node", "vite/client"],
+    "types": ["node", "vite/client", "vite-plugin-svgr/client"],
     "jsx": "react-jsx",
 
     /* Paths */
     "outDir": "./dist",
     "rootDir": "."
   },
-  "include": ["src", "custom.d.ts", "craco.config.js", "vite.config.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

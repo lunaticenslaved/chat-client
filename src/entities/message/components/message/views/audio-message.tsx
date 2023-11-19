@@ -1,8 +1,8 @@
 import { createRef, useCallback, useEffect, useState } from "react";
 
-import { ReactComponent as PlaySvg } from "@/shared/img/play.svg";
-import { ReactComponent as PauseSvg } from "@/shared/img/pause.svg";
-import { ReactComponent as WaveSvg } from "@/shared/img/wave.svg";
+import PlaySvg from "@/shared/img/play.svg";
+import PauseSvg from "@/shared/img/pause.svg";
+import WaveSvg from "@/shared/img/wave.svg";
 
 import { MessageWrapper } from "../components/wrapper";
 import { AudioMessageProps } from "../types";

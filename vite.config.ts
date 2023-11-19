@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
+import tsChecker from 'vite-plugin-checker'
+import svgLoader from "vite-plugin-svgr"
 import { resolve } from 'path'
 
 export default defineConfig({
@@ -12,10 +15,15 @@ export default defineConfig({
     hmr: true,
     open: true
   },
-  plugins: [reactRefresh()],
+  plugins: [react(), svgLoader(), reactRefresh(), tsChecker({
+    typescript: {
+      tsconfigPath: './tsconfig.json',
+      
+    }
+  })],
   resolve: {
     alias: {
-      '#/': resolve(__dirname, './src'),
+      '@': resolve(__dirname, './src'),
     },
   },
 })

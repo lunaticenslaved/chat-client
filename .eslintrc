@@ -7,7 +7,7 @@
     "./node_modules/@lunaticenslaved/schema/.eslintrc.js",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "settings": {
     "react": {
@@ -15,16 +15,10 @@
     }
   },
   "plugins": ["react", "react-hooks"],
-  "parserOptions": {
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/no-namespace": 0
   },
-  "ignorePatterns": ["vite.config.ts"]
+  "ignorePatterns": ["node_modules"]
 }

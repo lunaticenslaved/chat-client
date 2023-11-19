@@ -1,7 +1,7 @@
 import cn from "classnames";
 
-import { ReactComponent as ReadSvg } from "@/shared/img/readed.svg";
-import { ReactComponent as NotReadSvg } from "@/shared/img/noreaded.svg";
+import ReadSvg from "@/shared/img/readed.svg?react";
+import NotReadSvg from "@/shared/img/noreaded.svg?react";
 
 import classes from "./read-status.module.scss";
 
@@ -9,6 +9,7 @@ export interface ReadStatusIconProps {
   isRead: boolean;
   className?: string;
 }
+
 
 export const ReadStatusIcon = (props: ReadStatusIconProps) => {
   const className = cn(props.className, classes.icon);
