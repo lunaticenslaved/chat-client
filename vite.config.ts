@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     port: 3000,
     hmr: true,
-    open: true,
+    open: false,
   },
   plugins: [
     react(),

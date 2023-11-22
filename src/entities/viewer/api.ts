@@ -1,8 +1,8 @@
-import { Operation } from '@lunaticenslaved/schema';
+import { Operation, ResponseUtils } from '@lunaticenslaved/schema';
 
 import { ViewerModel } from './types';
 import { API } from '@/shared/api';
-import { client } from '@/shared/client';
+import { Token } from '@/shared/token';
 
 export namespace ViewerAPI {
   export type SignInRequest = Operation.Auth.SignInRequest;
@@ -20,25 +20,27 @@ export const ViewerAPI = {
   async signIn(data: ViewerAPI.SignInRequest): Promise<ViewerAPI.SignInResponse> {
     const response = await Operation.Auth.SignIn.action({
       data,
-    }).then(client.unwrapOperation);
+    }).then(ResponseUtils.unwrapResponse);
 
-    client.setToken(response.token);
+    Token.set(response.token);
 
     return response;
   },
   async signUp(data: ViewerAPI.SignUpRequest): Promise<ViewerAPI.SignUpResponse> {
     const response = await Operation.Auth.SignUp.action({
       data,
-    }).then(client.unwrapOperation);
+    }).then(ResponseUtils.unwrapResponse);
 
-    client.setToken(response.token);
+    Token.set(response.token);
 
     return response;
   },
-  refresh() {
-    return API.request<ViewerAPI.RefreshResponse>('/auth/refresh', {
-      method: 'POST',
-    });
+  async refresh() {
+    const response = await Operation.Auth.Refresh.action().then(ResponseUtils.unwrapResponse);
+
+    Token.set(response.token);
+
+    return response;
   },
   logout() {
     return API.request('/auth/logout', {

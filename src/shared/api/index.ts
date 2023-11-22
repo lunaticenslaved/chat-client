@@ -1,10 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-import { BASE_URL } from '@/shared/config';
-
 const options = {
-  baseURL: BASE_URL,
   withCredentials: true,
 };
 
@@ -18,19 +15,19 @@ const errorInterceptor = async (error: AxiosError) => {
 
   if (!res) return;
 
-  const originalRequest = res.config;
+  // const originalRequest = res.config;
 
-  if (res.status === 401) {
-    try {
-      const r = await $api.post<{ accessToken: string }>('/refresh');
-      localStorage.setItem('token', r.data.accessToken);
-      // FIXME: сейчас если во постоянно будет возвращаться ошибка, то запрос будет зациклен. надо исправить
-      return $api.request(originalRequest);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Не авторизован!');
-    }
-  }
+  // if (res.status === 401) {
+  //   try {
+  //     const r = await $api.post<{ accessToken: string }>('/refresh');
+  //     localStorage.setItem('token', r.data.accessToken);
+  //     // FIXME: сейчас если во постоянно будет возвращаться ошибка, то запрос будет зациклен. надо исправить
+  //     return $api.request(originalRequest);
+  //   } catch (error) {
+  //     // eslint-disable-next-line no-console
+  //     console.error('Не авторизован!');
+  //   }
+  // }
 };
 
 const $api = axios.create(options);
@@ -43,7 +40,7 @@ $apiWithoutErrorInterceptor.interceptors.request.use(authInterceptor);
 export { $api, $apiWithoutErrorInterceptor };
 
 export const apiSlice = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
+  baseQuery: fetchBaseQuery({ credentials: 'include' }),
   endpoints: () => ({}),
   reducerPath: 'api',
 });

@@ -1,8 +1,10 @@
-import libAxios from 'axios';
+import libAxios, { AxiosError } from 'axios';
 
-import { Client as BaseClient, client as baseClient } from '@lunaticenslaved/schema';
+import { Errors, Operation, ResponseUtils, client } from '@lunaticenslaved/schema';
 
-const axios = libAxios.create();
+import { Token } from '@/shared/token';
+
+const axios = libAxios.create({ withCredentials: true });
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
@@ -14,26 +16,36 @@ axios.interceptors.request.use(config => {
   return config;
 });
 
-// TODO do interceptors on response
+axios.interceptors.response.use(
+  c => c,
+  async (axiosError: AxiosError) => {
+    const response = axiosError.response;
 
-baseClient.setAxios(axios);
+    if (!response) return;
 
-export class Client extends BaseClient {
-  constructor() {
-    super();
+    const error = Errors.parse(axiosError);
 
-    this.setAxios(axios);
-  }
+    if (error instanceof Errors.TokenExpiredError) {
+      const originalRequest = response.config;
 
-  setToken(accessToken?: string) {
-    if (accessToken) {
-      localStorage.setItem('token', accessToken);
-    } else {
-      localStorage.removeItem('token');
+      if (response.status === 401) {
+        try {
+          const { token } = await Operation.Auth.Refresh.action().then(
+            ResponseUtils.unwrapResponse,
+          );
+
+          Token.set(token);
+          return axios.request(originalRequest);
+        } catch (error) {
+          // TODO log? alert?
+          // eslint-disable-next-line no-console
+          console.error('Не авторизован!');
+        }
+      }
     }
-  }
-}
+  },
+);
 
-const client = new Client();
+client.setAxios(axios);
 
 export { client };

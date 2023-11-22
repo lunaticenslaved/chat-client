@@ -4,10 +4,10 @@
     "es2021": true
   },
   "extends": [
-    "./node_modules/@lunaticenslaved/schema/.eslintrc.js",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "./node_modules/@lunaticenslaved/schema/.eslintrc.js"
   ],
   "settings": {
     "react": {
@@ -16,7 +16,6 @@
   },
   "plugins": ["react", "react-hooks"],
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/no-namespace": 0
   },

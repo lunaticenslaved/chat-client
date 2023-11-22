@@ -21,7 +21,9 @@ interface Values {
 const signUpValidators = Schema.Operation.Auth.SignUp.validators;
 
 export function SignUpForm() {
-  const { signUp, isLoading } = useSignUp();
+  const { signUp, isLoading } = useSignUp({
+    redirectTo: ROUTES.home
+  });
   const [form] = Form.useForm<Values>();
 
   const validators = useMemo(
