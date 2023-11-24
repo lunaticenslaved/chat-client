@@ -1,42 +1,33 @@
-import { Operation, ResponseUtils } from '@lunaticenslaved/schema';
+import Schema, { ResponseUtils } from '@lunaticenslaved/schema';
+import {
+  SignInRequest,
+  SignInResponse,
+  SignUpRequest,
+  SignUpResponse,
+} from '@lunaticenslaved/schema/actions';
 
-import { ViewerModel } from './types';
 import { API } from '@/shared/api';
 import { Token } from '@/shared/token';
 
-export namespace ViewerAPI {
-  export type SignInRequest = Operation.Auth.SignInRequest;
-  export type SignInResponse = Operation.Auth.SignInResponse;
-
-  export type SignUpRequest = Operation.Auth.SignUpRequest;
-  export type SignUpResponse = Operation.Auth.SignUpResponse;
-
-  export interface RefreshResponse {
-    user: ViewerModel;
-  }
-}
+export type { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse };
 
 export const ViewerAPI = {
-  async signIn(data: ViewerAPI.SignInRequest): Promise<ViewerAPI.SignInResponse> {
-    const response = await Operation.Auth.SignIn.action({
-      data,
-    }).then(ResponseUtils.unwrapResponse);
+  async signIn(data: SignInRequest): Promise<SignInResponse> {
+    const response = await Schema.actions.auth.signIn({ data }).then(ResponseUtils.unwrapResponse);
 
     Token.set(response.token);
 
     return response;
   },
-  async signUp(data: ViewerAPI.SignUpRequest): Promise<ViewerAPI.SignUpResponse> {
-    const response = await Operation.Auth.SignUp.action({
-      data,
-    }).then(ResponseUtils.unwrapResponse);
+  async signUp(data: SignUpRequest): Promise<SignUpResponse> {
+    const response = await Schema.actions.auth.signIn({ data }).then(ResponseUtils.unwrapResponse);
 
     Token.set(response.token);
 
     return response;
   },
   async refresh() {
-    const response = await Operation.Auth.Refresh.action().then(ResponseUtils.unwrapResponse);
+    const response = await Schema.actions.auth.refresh().then(ResponseUtils.unwrapResponse);
 
     Token.set(response.token);
 
@@ -47,10 +38,8 @@ export const ViewerAPI = {
       method: 'POST',
     });
   },
-  repeatConfirmMail() {
-    return API.request('/auth/repeat-confirm-email', {
-      method: 'POST',
-    });
+  async repeatConfirmMail() {
+    await Schema.actions.auth.resendEmail();
   },
   activateAccount() {
     return API.request('/auth/activate/:link', {

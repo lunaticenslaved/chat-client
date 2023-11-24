@@ -6,11 +6,11 @@ import { RuleObject } from 'antd/es/form';
 
 import Schema from '@lunaticenslaved/schema';
 
-import { useSignUp } from '../hooks';
-
 import { ROUTES } from '@/config/routes';
 import { AuthForm } from '@/entities/viewer';
 import { createAntdValidator } from '@/shared/lib/validators';
+
+import { useSignUp } from '../hooks';
 
 interface Values {
   login: string;
@@ -18,11 +18,11 @@ interface Values {
   password: string;
 }
 
-const signUpValidators = Schema.Operation.Auth.SignUp.validators;
+const signUpValidators = Schema.validators.auth.signUp;
 
 export function SignUpForm() {
   const { signUp, isLoading } = useSignUp({
-    redirectTo: ROUTES.home
+    redirectTo: ROUTES.home,
   });
   const [form] = Form.useForm<Values>();
 

@@ -3,14 +3,14 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/config/routes';
-import { ViewerAPI, useViewer } from '@/entities/viewer';
+import { SignInRequest, ViewerAPI, useViewer } from '@/entities/viewer';
 import { Handlers } from '@/shared/types';
 
 export type UseSignInRequest = Handlers;
 
 export type UseSignInResponse = {
   isLoading: boolean;
-  signIn(values: ViewerAPI.SignInRequest): Promise<void>;
+  signIn(values: SignInRequest): Promise<void>;
 };
 
 export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInResponse {
@@ -22,7 +22,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
   });
 
   const signIn = useCallback(
-    async (values: ViewerAPI.SignInRequest) => {
+    async (values: SignInRequest) => {
       try {
         const { user } = await mutateAsync({
           login: values.login,

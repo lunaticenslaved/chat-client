@@ -1,12 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
+import { Token } from '@/shared/token';
+
 const options = {
   withCredentials: true,
 };
 
 const authInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  config.headers.Authorization = `Bearer ${Token.get()}`;
   return config;
 };
 
@@ -20,7 +22,7 @@ const errorInterceptor = async (error: AxiosError) => {
   // if (res.status === 401) {
   //   try {
   //     const r = await $api.post<{ accessToken: string }>('/refresh');
-  //     localStorage.setItem('token', r.data.accessToken);
+  //     Token.set(r.data.accessToken);
   //     // FIXME: сейчас если во постоянно будет возвращаться ошибка, то запрос будет зациклен. надо исправить
   //     return $api.request(originalRequest);
   //   } catch (error) {

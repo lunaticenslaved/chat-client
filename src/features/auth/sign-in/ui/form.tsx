@@ -3,18 +3,18 @@ import { Form, Input } from 'antd';
 
 import Schema from '@lunaticenslaved/schema';
 
-import { useSignIn } from '../hooks';
-
 import { ROUTES } from '@/config/routes';
 import { AuthForm } from '@/entities/viewer';
 import { createAntdValidator } from '@/shared/lib/validators';
+
+import { useSignIn } from '../hooks';
 
 type Values = {
   login: string;
   password: string;
 };
 
-const signInValidators = Schema.Operation.Auth.SignIn.validators;
+const signInValidators = Schema.validators.auth.signIn;
 
 export function SignInForm() {
   const [form] = Form.useForm<Values>();

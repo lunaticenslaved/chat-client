@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { useViewer } from '@/entities/viewer';
-import { ViewerAPI } from '@/entities/viewer/api';
+import { SignUpRequest, ViewerAPI } from '@/entities/viewer';
 import { Handlers } from '@/shared/types';
 
 export type UseSignUpRequest = Handlers & {
@@ -12,7 +12,7 @@ export type UseSignUpRequest = Handlers & {
 
 export type UseSignUpResponse = {
   isLoading: boolean;
-  signUp(values: ViewerAPI.SignUpRequest): Promise<void>;
+  signUp(values: SignUpRequest): Promise<void>;
 };
 
 export function useSignUp({
@@ -29,7 +29,7 @@ export function useSignUp({
   });
 
   const signUp = useCallback(
-    async (data: ViewerAPI.SignUpRequest) => {
+    async (data: SignUpRequest) => {
       try {
         const { user } = await mutateAsync(data);
 

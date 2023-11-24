@@ -40,7 +40,7 @@
     "@ant-design/icons": "^5.2.6",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
-    "@lunaticenslaved/schema": "^0.0.27",
+    "@lunaticenslaved/schema": "^0.0.30",
     "@reduxjs/toolkit": "^1.9.7",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "antd": "^5.11.0",

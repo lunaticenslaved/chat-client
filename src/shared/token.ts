@@ -5,4 +5,7 @@ export const Token = {
   remove() {
     localStorage.removeItem('token');
   },
+  get() {
+    return localStorage.getItem('token');
+  },
 };

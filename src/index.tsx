@@ -6,7 +6,6 @@ import 'antd/dist/reset.css';
 import { Endpoint } from '@lunaticenslaved/schema';
 
 import { App } from '@/app';
-import '@/shared/client';
 import { IS_DEV } from '@/shared/constants';
 import '@/shared/styles/index.scss';
 
