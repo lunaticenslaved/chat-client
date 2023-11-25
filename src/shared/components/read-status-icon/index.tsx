@@ -1,8 +1,9 @@
 import cn from 'classnames';
 
-import classes from './read-status.module.scss';
 import NotReadSvg from '@/shared/img/noreaded.svg?react';
 import ReadSvg from '@/shared/img/readed.svg?react';
+
+import classes from './read-status.module.scss';
 
 export interface ReadStatusIconProps {
   isRead: boolean;

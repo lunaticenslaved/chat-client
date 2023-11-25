@@ -1,10 +1,11 @@
+import { DialogModel } from '@/entities/dialog';
+import { MessageModel } from '@/entities/message';
+
 import { HasErrorView } from './views/has-error/has-error';
 import { LoadingMessagesView } from './views/loading-messages';
 import { MessagesList } from './views/messages-list';
 import { NoDialogView } from './views/no-dialog';
 import { NoMessagesView } from './views/no-messages';
-import { DialogModel } from '@/entities/dialog';
-import { MessageModel } from '@/entities/message';
 
 export interface MessageAreaProps {
   messages: MessageModel[];

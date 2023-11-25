@@ -1,5 +1,6 @@
-import { DialogModel } from './types';
 import { API } from '@/shared/api';
+
+import { DialogModel } from './types';
 
 export type GetDialogsResponse = {
   dialogs: DialogModel[];

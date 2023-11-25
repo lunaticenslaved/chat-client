@@ -1,13 +1,13 @@
 import { createRef, useCallback, useEffect, useState } from 'react';
 
+import PauseSvg from '@/shared/img/pause.svg';
+import PlaySvg from '@/shared/img/play.svg';
+import WaveSvg from '@/shared/img/wave.svg';
+
 import { MessageWrapper } from '../components/wrapper';
 import classes from '../styles.module.scss';
 import { AudioMessageProps } from '../types';
 import { secondsToHms } from '../utils';
-
-import PauseSvg from '@/shared/img/pause.svg';
-import PlaySvg from '@/shared/img/play.svg';
-import WaveSvg from '@/shared/img/wave.svg';
 
 export function AudioMessage({ audio, ...props }: AudioMessageProps) {
   const [isPlaying, _setPlaying] = useState(false);

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { DialogsAPI } from '../api';
-import { DialogsStore } from '../store';
-
 import { useAppDispatch, useAppSelector } from '@/config/store';
 import { DialogModel } from '@/entities/dialog';
 import dayjs from '@/shared/lib/dayjs';
+
+import { DialogsAPI } from '../api';
+import { DialogsStore } from '../store';
 
 export type UseDialogsRequest = {
   searchQuery?: string;

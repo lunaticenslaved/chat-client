@@ -34,9 +34,7 @@ const ConfirmSuccessPage = () => {
 
   if (activateAccount.isLoading) {
     return (
-      <Layout.Auth
-        header="Подтверждение аккаунта"
-        description="Пожалуйста, подождите">
+      <Layout.Auth header="Подтверждение аккаунта" description="Пожалуйста, подождите">
         <div className={classes.root}>
           <Spin tip="Подтверждение аккаунта" size="large" />
         </div>
@@ -46,9 +44,7 @@ const ConfirmSuccessPage = () => {
 
   if (errorToggle.isTrue) {
     return (
-      <Layout.Auth
-        header="Ошибка"
-        description="Что-то пошло не так при подтверждении аккаунта">
+      <Layout.Auth header="Ошибка" description="Что-то пошло не так при подтверждении аккаунта">
         <div className={classes.root}>
           <Button onClick={activate}>Попробовать снова</Button>
         </div>
@@ -58,9 +54,7 @@ const ConfirmSuccessPage = () => {
   }
 
   return (
-    <Layout.Auth
-      header="E-mail адрес подтвержден"
-      description="Теперь вы можете начать общаться">
+    <Layout.Auth header="E-mail адрес подтвержден" description="Теперь вы можете начать общаться">
       <div className={classes.root}>
         <CheckCircleTwoTone className={classes.icon} />
         <Link to={ROUTES.auth.signIn}>Перейти к авторизации</Link>

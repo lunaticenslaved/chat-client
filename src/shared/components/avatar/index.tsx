@@ -1,8 +1,9 @@
 import cn from 'classnames';
 import tinycolor from 'tinycolor2';
 
-import classes from './avatar.module.scss';
 import { OnlineStatus } from '@/shared/components/online-status';
+
+import classes from './avatar.module.scss';
 
 export interface AvatarProps {
   name: string;

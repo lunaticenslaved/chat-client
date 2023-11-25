@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext ts,tsx && npx stylelint",
-    "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}' && npx stylelint fix"
+    "lint": "eslint . --ext ts,tsx && prettier --check '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}'",
+    "lint:fix": "eslint . --ext ts,tsx --fix && prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}' --log-level warn"
   },
   "eslintConfig": {
     "extends": [

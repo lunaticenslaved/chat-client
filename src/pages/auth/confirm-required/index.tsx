@@ -15,8 +15,7 @@ export const ConfirmRequiredPage = () => {
         <InfoCircleTwoTone className={classes.icon} />
         <h3 className={classes.header}>Подтвердите свой аккаунт</h3>
         <AuthFormDescription className={classes.description}>
-          На Вашу почту было отправлено письмо с ссылкой на подтверждение
-          аккаунта
+          На Вашу почту было отправлено письмо с ссылкой на подтверждение аккаунта
         </AuthFormDescription>
 
         <ResendEmailButton />

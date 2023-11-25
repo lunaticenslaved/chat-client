@@ -1,8 +1,9 @@
 import { createRef, useEffect } from 'react';
 
-import classes from './messages-list.module.scss';
 import { Message, MessageModel } from '@/entities/message';
 import { useViewer } from '@/entities/viewer';
+
+import classes from './messages-list.module.scss';
 
 export interface MessagesListProps {
   messages: MessageModel[];

@@ -2,8 +2,9 @@ import { PropsWithChildren, ReactNode } from 'react';
 
 import cn from 'classnames';
 
-import classes from './auth-layout.module.scss';
 import { Block } from '@/shared/components/Block';
+
+import classes from './auth-layout.module.scss';
 
 interface AuthLayoutProps {
   header: string;

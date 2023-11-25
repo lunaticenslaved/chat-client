@@ -1,5 +1,6 @@
-import { MessageModel } from './types';
 import { API } from '@/shared/api';
+
+import { MessageModel } from './types';
 
 function getMessages() {
   return API.request<MessageAPI.GetMessagesResponse>('/api/messages', {

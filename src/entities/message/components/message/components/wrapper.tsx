@@ -1,11 +1,11 @@
 import cn from 'classnames';
 
-import classes from '../styles.module.scss';
-import { MessageProps } from '../types';
-
 import { Avatar } from '@/shared/components/avatar';
 import { ReadStatusIcon } from '@/shared/components/read-status-icon';
 import dayjs from '@/shared/lib/dayjs';
+
+import classes from '../styles.module.scss';
+import { MessageProps } from '../types';
 
 const getStatus = ({ isRead, isMe }: { isRead: boolean; isMe: boolean }) =>
   isMe ? <ReadStatusIcon isRead={isRead} /> : null;

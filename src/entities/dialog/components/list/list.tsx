@@ -1,9 +1,9 @@
 import { Empty, Spin } from 'antd';
 
-import { Dialog } from '../dialog/dialog';
-
-import classes from './list.module.scss';
 import { DialogModel } from '@/entities/dialog';
+
+import { Dialog } from '../dialog/dialog';
+import classes from './list.module.scss';
 
 export type DialogsListProps = {
   dialogs: DialogModel[];

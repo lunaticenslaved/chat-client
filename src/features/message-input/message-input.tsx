@@ -5,9 +5,10 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { Button, Popover, Upload, UploadProps, message } from 'antd';
 
-import classes from './message-input.module.scss';
 import { useMessage } from '@/entities/message';
 import { Input } from '@/shared/components/Input';
+
+import classes from './message-input.module.scss';
 
 // FIXME: устанавливать у
 

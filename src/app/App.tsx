@@ -18,9 +18,7 @@ const PagesWithStore = () => {
 
   return (
     <ApiClientWrapper onRefreshTokenExpired={logout}>
-      <Suspense fallback={<PageLoader />}>
-        {isFetching ? <PageLoader /> : <Router />}
-      </Suspense>
+      <Suspense fallback={<PageLoader />}>{isFetching ? <PageLoader /> : <Router />}</Suspense>
     </ApiClientWrapper>
   );
 };

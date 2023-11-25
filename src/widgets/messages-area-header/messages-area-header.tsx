@@ -1,5 +1,6 @@
-import classes from './messages-area-header.module.scss';
 import { OnlineStatus } from '@/shared/components/online-status';
+
+import classes from './messages-area-header.module.scss';
 
 export type MessageAreaHeaderProps = {
   title: string;

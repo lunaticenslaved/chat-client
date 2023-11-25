@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 import { EditOutlined, UserOutlined } from '@ant-design/icons';
 
-import classes from './searchable-dialogs.module.scss';
 import { DialogsList, DialogsSearch, useDialogs } from '@/entities/dialog';
 import { Divider } from '@/shared/components/divider';
+
+import classes from './searchable-dialogs.module.scss';
 
 export const SearchableDialogs = () => {
   const [searchQuery, setSearchQuery] = useState('');

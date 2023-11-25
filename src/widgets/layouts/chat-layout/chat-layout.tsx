@@ -1,5 +1,6 @@
-import classes from './chat-layout.module.scss';
 import { Divider } from '@/shared/components/divider';
+
+import classes from './chat-layout.module.scss';
 
 export interface ChatLayoutProps {
   sidebar: JSX.Element;

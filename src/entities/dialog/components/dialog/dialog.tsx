@@ -1,12 +1,12 @@
 import cn from 'classnames';
 
-import { DialogModel } from '../../types';
-
-import classes from './dialog.module.scss';
 import { useViewer } from '@/entities/viewer';
 import { Avatar } from '@/shared/components/avatar';
 import { ReadStatusIcon } from '@/shared/components/read-status-icon';
 import dayjs from '@/shared/lib/dayjs';
+
+import { DialogModel } from '../../types';
+import classes from './dialog.module.scss';
 
 export interface DialogProps {
   isSelected?: boolean;
