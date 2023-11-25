@@ -1,15 +1,15 @@
 import Schema, { ResponseUtils } from '@lunaticenslaved/schema';
 import {
+  ActivateRequest,
   SignInRequest,
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
 } from '@lunaticenslaved/schema/actions';
 
-import { API } from '@/shared/api';
 import { Token } from '@/shared/token';
 
-export type { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse };
+export type { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse, ActivateRequest };
 
 export const ViewerAPI = {
   async signIn(data: SignInRequest): Promise<SignInResponse> {
@@ -26,24 +26,16 @@ export const ViewerAPI = {
 
     return response;
   },
-  async refresh() {
-    const response = await Schema.actions.auth.refresh().then(ResponseUtils.unwrapResponse);
-
-    Token.set(response.token);
-
-    return response;
+  get() {
+    return Schema.actions.viewer.get().then(ResponseUtils.unwrapResponse);
   },
   logout() {
-    return API.request('/auth/logout', {
-      method: 'POST',
-    });
+    return Schema.actions.auth.logout();
   },
-  async repeatConfirmMail() {
-    await Schema.actions.auth.resendEmail();
+  repeatConfirmMail() {
+    return Schema.actions.auth.resendEmail();
   },
-  activateAccount() {
-    return API.request('/auth/activate/:link', {
-      method: 'POST',
-    });
+  activateAccount(data: ActivateRequest) {
+    return Schema.actions.auth.activate({ data }).then(ResponseUtils.unwrapResponse);
   },
 };

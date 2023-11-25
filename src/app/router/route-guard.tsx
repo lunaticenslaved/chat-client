@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { PageAccessType } from './pages';
 import { ROUTES } from '@/config/routes';
 import { useViewer } from '@/entities/viewer';
 import { useLogout } from '@/features/auth/logout';
+
+import { PageAccessType } from './pages';
 
 export interface RouteGuardProps {
   accessType: PageAccessType;
@@ -16,7 +17,8 @@ export const RouteGuard = ({ accessType }: RouteGuardProps) => {
   const { logout } = useLogout();
 
   useEffect(() => {
-    if (accessType === PageAccessType.Public && isAuthorized) {
+    if (accessType !== PageAccessType.Public && !isAuthorized) {
+      console.log('NOT AUTHORIZED ROUTE ACCESS');
       logout();
       return;
     }

@@ -1,31 +1,29 @@
 import { useCallback } from 'react';
 import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '@/config/routes';
 import { ViewerAPI, useViewer } from '@/entities/viewer';
-import { Handlers } from '@/shared/types';
+import { Token } from '@/shared/token';
 
-export const useLogout = ({ onError, onSuccess }: Handlers = {}) => {
-  const { mutate: callLogout, isLoading } = useMutation({
+export const useLogout = () => {
+  const { mutateAsync: callLogout, isLoading } = useMutation({
     mutationKey: 'logout',
     mutationFn: ViewerAPI.logout,
   });
   const viewerHook = useViewer();
+  const navigate = useNavigate();
 
   const logout = useCallback(async () => {
     try {
+      navigate(ROUTES.auth.signIn);
+      Token.remove();
+      viewerHook.setViewer(undefined);
       await callLogout();
-
-      if (onSuccess) {
-        viewerHook.setViewer(undefined);
-
-        onSuccess();
-      }
     } catch (error) {
-      if (onError) {
-        onError(error as Error);
-      }
+      console.log('logout error');
     }
-  }, [callLogout, onError, onSuccess, viewerHook]);
+  }, [callLogout, navigate, viewerHook]);
 
   return {
     logout,

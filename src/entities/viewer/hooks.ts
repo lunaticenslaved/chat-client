@@ -1,37 +1,34 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { ViewerStore } from './store';
-import { ViewerModel } from './types';
 import { useAppDispatch, useAppSelector } from '@/config/store';
 import { ViewerAPI } from '@/entities/viewer/api';
-import { Handlers } from '@/shared/types';
 
-export type UseViewerRequest = {
-  onRefreshSuccess: Handlers['onSuccess'];
-  onRefreshError: Handlers['onError'];
-};
+import { ViewerStore } from './store';
+import { ViewerModel } from './types';
 
-export type UseViewerResponse = {
+export interface UseViewerResponseRequest {
+  fetch?: boolean;
+}
+
+export interface UseViewerResponse {
   viewer?: ViewerModel;
   isAuthorized: boolean;
   isActivated: boolean;
+  isFetching: boolean;
+  fetch(): void;
   setViewer(viewer?: ViewerModel): void;
-  refresh(): void;
-  isRefreshing: boolean;
-};
+}
 
-export function useViewer(data?: UseViewerRequest): UseViewerResponse {
-  const { onRefreshSuccess, onRefreshError } = data || {};
-
+export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
   const viewer = useAppSelector(ViewerStore.selectors.selectViewer);
   const isAuthorized = useMemo(() => !!viewer, [viewer]);
   const isActivated = useMemo(() => !!viewer?.isActivated, [viewer?.isActivated]);
   const dispatch = useAppDispatch();
 
-  const refreshMutation = useMutation({
-    mutationKey: 'refresh',
-    mutationFn: ViewerAPI.refresh,
+  const getViewerMutation = useMutation({
+    mutationKey: 'viewer/get',
+    mutationFn: ViewerAPI.get,
   });
 
   const setViewer = useCallback(
@@ -41,21 +38,17 @@ export function useViewer(data?: UseViewerRequest): UseViewerResponse {
     [dispatch],
   );
 
-  useEffect(() => {
-    setViewer(refreshMutation.data?.user);
+  const fetch = useCallback(async () => {
+    const { user } = await getViewerMutation.mutateAsync();
+    setViewer(user);
+  }, [getViewerMutation, setViewer]);
 
-    if (refreshMutation.error) {
-      onRefreshError?.(refreshMutation.error as Error);
-    } else {
-      onRefreshSuccess?.();
+  useEffect(() => {
+    if (props?.fetch) {
+      fetch();
     }
-  }, [
-    onRefreshError,
-    onRefreshSuccess,
-    refreshMutation.data?.user,
-    refreshMutation.error,
-    setViewer,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return useMemo(
     () => ({
@@ -63,16 +56,9 @@ export function useViewer(data?: UseViewerRequest): UseViewerResponse {
       setViewer,
       isActivated,
       isAuthorized,
-      refresh: refreshMutation.mutate,
-      isRefreshing: refreshMutation.isLoading,
+      fetch,
+      isFetching: getViewerMutation.isLoading,
     }),
-    [
-      isActivated,
-      isAuthorized,
-      refreshMutation.isLoading,
-      refreshMutation.mutate,
-      setViewer,
-      viewer,
-    ],
+    [fetch, getViewerMutation.isLoading, isActivated, isAuthorized, setViewer, viewer],
   );
 }

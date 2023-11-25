@@ -18,6 +18,8 @@ export function ApiClientWrapper({ onRefreshTokenExpired, children }: ApiClientW
     axios.interceptors.request.use(config => {
       const token = Token.get();
 
+      console.log('AUTH TOKEN');
+
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       }
@@ -54,6 +56,7 @@ export function ApiClientWrapper({ onRefreshTokenExpired, children }: ApiClientW
         }
 
         if (error instanceof Errors.RefreshTokenExpiredError) {
+          console.log('REFRESH TOKEN EXPIRED');
           onRefreshTokenExpired();
         }
       },
