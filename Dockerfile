@@ -1,5 +1,6 @@
 FROM node:20 AS build
 WORKDIR /app
+COPY . .
 COPY /src ./src
 COPY /package.json .
 COPY /package-lock.json .
