@@ -20,7 +20,7 @@ export const ViewerAPI = {
     return response;
   },
   async signUp(data: SignUpRequest): Promise<SignUpResponse> {
-    const response = await Schema.actions.auth.signIn({ data }).then(ResponseUtils.unwrapResponse);
+    const response = await Schema.actions.auth.signUp({ data }).then(ResponseUtils.unwrapResponse);
 
     Token.set(response.token);
 

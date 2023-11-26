@@ -3,9 +3,8 @@ import { useQuery } from 'react-query';
 
 import { useAppDispatch, useAppSelector } from '@/config/store';
 import { DialogModel } from '@/entities/dialog';
-import dayjs from '@/shared/lib/dayjs';
 
-import { DialogsAPI } from '../api';
+import { DialogActions } from '../actions';
 import { DialogsStore } from '../store';
 
 export type UseDialogsRequest = {
@@ -22,38 +21,23 @@ export type UseDialogsResponse = {
 
 export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsResponse => {
   const { data, isFetching, isError } = useQuery({
-    queryKey: ['dialogs'],
-    queryFn: DialogsAPI.getDialogs,
+    queryKey: ['dialog/list'],
+    queryFn: DialogActions.list,
   });
+
+  const dialogs = data?.dialogs;
 
   const currentDialog = useAppSelector(DialogsStore.selectors.selectCurrentDialog);
   const dispatch = useAppDispatch();
 
-  const sorted = useMemo(() => {
-    const lds = data?.dialogs || [];
-    lds.sort((a, b) => {
-      const at = dayjs(a.lastMessage.createdAt);
-      const bt = dayjs(b.lastMessage.createdAt);
-
-      if (!at && at) return -1;
-      if (at && !at) return 1;
-      if (!at && !at) return 0;
-
-      if (at.isAfter(bt)) return -1;
-      if (at.isBefore(bt)) return 1;
-
-      return 0;
-    });
-    return lds;
-  }, [data?.dialogs]);
-
   const filtered = useMemo(() => {
-    if (!searchQuery) return sorted;
+    if (!dialogs) return [];
+    if (!searchQuery) return dialogs;
 
     const s = searchQuery.toLowerCase();
 
-    return sorted.filter(d => d.user.name.toLowerCase().includes(s));
-  }, [searchQuery, sorted]);
+    return dialogs.filter(d => d.partner.login.toLowerCase().includes(s));
+  }, [dialogs, searchQuery]);
 
   const selectDialog = useCallback(
     (dialog: DialogModel) => {

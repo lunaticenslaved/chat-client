@@ -6,6 +6,7 @@ import { ReadStatusIcon } from '@/shared/components/read-status-icon';
 import dayjs from '@/shared/lib/dayjs';
 
 import { DialogModel } from '../../types';
+
 import classes from './dialog.module.scss';
 
 export interface DialogProps {
@@ -19,12 +20,12 @@ export const Dialog = (props: DialogProps) => {
 
   let status: JSX.Element | null = null;
 
-  if (viewer?.id === props.dialog.lastMessage.senderId) {
+  if (viewer?.id === props.dialog.lastMessage.authorId) {
     status = <ReadStatusIcon isRead={props.dialog.lastMessage.isRead} />;
-  } else if (props.dialog.notReadMessages > 0) {
+  } else if (props.dialog.notReadMessagesCount > 0) {
     status = (
       <span className={classes.count}>
-        {props.dialog.notReadMessages > 99 ? '99+' : props.dialog.notReadMessages}
+        {props.dialog.notReadMessagesCount > 99 ? '99+' : props.dialog.notReadMessagesCount}
       </span>
     );
   }
@@ -47,15 +48,16 @@ export const Dialog = (props: DialogProps) => {
       <div className={classes.avatarWrapper}>
         <Avatar
           className={classes.avatar}
-          url={props.dialog.user.avatar}
-          name={props.dialog.user.name}
-          isOnline={props.dialog.user.isOnline}
+          url={props.dialog.partner.avatar?.link}
+          name={props.dialog.partner.login}
+          // TODO: add isOnline
+          // isOnline={props.dialog.partner.isOnline}
         />
       </div>
 
       <div className={classes.body}>
         <div className={classes.line1}>
-          <h6 className={classes.name}>{props.dialog.user.name}</h6>
+          <h6 className={classes.name}>{props.dialog.partner.login}</h6>
           <time className={classes.time} dateTime={props.dialog.lastMessage.createdAt}>
             {dayjs(props.dialog.lastMessage.createdAt).fromNow()}
           </time>

@@ -40,7 +40,7 @@
     "@ant-design/icons": "^5.2.6",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
-    "@lunaticenslaved/schema": "^0.0.32",
+    "@lunaticenslaved/schema": "file:../schema/lunaticenslaved-schema-0.0.34.tgz",
     "@reduxjs/toolkit": "^1.9.7",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "antd": "^5.11.0",
@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@andylacko/vite-svg-react-loader": "^3.0.16",
+    "@lunaticenslaved/configs": "^0.0.0",
     "@types/jest": "^27.5.2",
     "@types/lodash": "^4.14.201",
     "@types/node": "^18.18.8",

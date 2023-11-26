@@ -9,14 +9,12 @@ export interface ChatLayoutProps {
 
 export const ChatLayout = ({ content, sidebar }: ChatLayoutProps) => {
   return (
-    <div>
-      <div className={classes.root}>
-        {sidebar}
+    <main className={classes.root}>
+      {sidebar}
 
-        <Divider vertical />
+      <Divider vertical />
 
-        <div className={classes.content}>{content}</div>
-      </div>
-    </div>
+      <div className={classes.content}>{content}</div>
+    </main>
   );
 };

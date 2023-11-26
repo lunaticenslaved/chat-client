@@ -19,8 +19,10 @@ const ChatPage = () => {
         <Fragment>
           {currentDialog && (
             <MessageAreaHeader
-              title={currentDialog.user.name}
-              isOnline={currentDialog.user.isOnline}
+              title={currentDialog.partner.login}
+              isOnline={false}
+              // TODO add isOnline
+              // isOnline={currentDialog.partner.isOnline}
             />
           )}
           <MessagesArea

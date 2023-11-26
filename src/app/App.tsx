@@ -6,10 +6,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from '@/config/store';
 import { useViewer } from '@/entities/viewer';
 import { useLogout } from '@/features/auth/logout';
-import { ApiClientWrapper } from '@/shared/components/ApiClientWrapper';
 import { PageLoader } from '@/shared/components/page-loader';
 import { Token } from '@/shared/token';
 
+import { ClientWrapper } from './client-wrapper';
 import { Router } from './router';
 
 const PagesWithStore = () => {
@@ -17,9 +17,9 @@ const PagesWithStore = () => {
   const { logout } = useLogout();
 
   return (
-    <ApiClientWrapper onRefreshTokenExpired={logout}>
+    <ClientWrapper onRefreshTokenExpired={logout}>
       <Suspense fallback={<PageLoader />}>{isFetching ? <PageLoader /> : <Router />}</Suspense>
-    </ApiClientWrapper>
+    </ClientWrapper>
   );
 };
 

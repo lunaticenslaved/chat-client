@@ -2,16 +2,17 @@ import { ReactNode, useEffect } from 'react';
 
 import libAxios, { AxiosError } from 'axios';
 
-import Schema, { Errors, ResponseUtils, client } from '@lunaticenslaved/schema';
+import Schema, { Errors, ResponseUtils } from '@lunaticenslaved/schema';
 
+import { client } from '@/shared/client';
 import { Token } from '@/shared/token';
 
-export interface ApiClientWrapperProps {
+export interface ClientWrapperProps {
   onRefreshTokenExpired(): void;
   children: ReactNode;
 }
 
-export function ApiClientWrapper({ onRefreshTokenExpired, children }: ApiClientWrapperProps) {
+export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapperProps) {
   useEffect(() => {
     const axios = libAxios.create({ withCredentials: true });
 
@@ -63,6 +64,7 @@ export function ApiClientWrapper({ onRefreshTokenExpired, children }: ApiClientW
     );
 
     client.setAxios(axios);
+    Schema.client.setAxios(axios);
   }, [onRefreshTokenExpired]);
 
   return <>{children}</>;

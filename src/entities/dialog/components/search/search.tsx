@@ -17,7 +17,7 @@ export function DialogsSearch({ search, onChange }: DialogsSearchProps) {
         value={search}
         onChange={e => onChange(e.currentTarget.value)}
         allowClear
-        placeholder="Поиск по контактам"
+        placeholder="Поиск"
         prefix={<SearchOutlined className={classes.icon} />}
       />
     </div>

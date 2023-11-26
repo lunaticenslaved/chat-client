@@ -1,19 +1,19 @@
+import { User } from '@lunaticenslaved/schema/models';
+
 export interface DialogModel {
   id: number;
-  notReadMessages: number;
+  ownerId: string;
+  partnerId: string;
+  createdAt: string;
+  updatedAt: string;
+  notReadMessagesCount: number;
   lastMessage: LastMessage;
-  user: UserModel;
-}
-
-export interface UserModel {
-  id: number;
-  isOnline: boolean;
-  name: string;
-  avatar: string | null;
+  partner: User;
 }
 
 export interface LastMessage {
-  senderId: string;
+  id: string;
+  authorId: string;
   createdAt: string;
   text: string;
   isRead: boolean;
