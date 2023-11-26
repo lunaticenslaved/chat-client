@@ -7,5 +7,6 @@ COPY /tsconfig.json .
 RUN npm ci \
     && npm run build
 
+
 FROM nginx:1.25.3
 COPY --from=build /app/dist/ /usr/share/nginx/html/
