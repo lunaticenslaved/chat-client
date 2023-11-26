@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react';
-import reactRefresh from '@vitejs/plugin-react-refresh';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import tsChecker from 'vite-plugin-checker';
@@ -18,7 +17,6 @@ export default defineConfig({
   plugins: [
     react(),
     svgLoader(),
-    reactRefresh(),
     tsChecker({
       typescript: {
         tsconfigPath: './tsconfig.json',
