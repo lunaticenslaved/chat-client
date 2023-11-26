@@ -1,5 +1,8 @@
 {
-  "extends": ["./node_modules/@lunaticenslaved/configs/tsconfig.base.json", "./tsconfig.paths.json"],
+  "extends": [
+    "./node_modules/@lunaticenslaved/configs/tsconfig.base.json",
+    "./tsconfig.paths.json"
+  ],
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
