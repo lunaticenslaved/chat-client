@@ -2,14 +2,17 @@ import { useCallback } from 'react';
 
 import { useRepeatConfirmEmail } from '..';
 import { message } from 'antd';
+import { ButtonProps } from 'antd/lib/button';
 
 import { Button } from '@/shared/components/Button';
 import { useToggle } from '@/shared/hooks';
 import { Handlers } from '@/shared/types';
 
-export interface ResendEmailButtonProps extends Handlers {}
+export interface ResendEmailButtonProps extends Handlers {
+  type?: ButtonProps['type'];
+}
 
-export function ResendEmailButton(props: ResendEmailButtonProps) {
+export function ResendEmailButton({ type, ...props }: ResendEmailButtonProps) {
   const showingText = useToggle();
   const showError = useCallback(() => {
     message.error('Что-то пошло не так при повторной отправке письма');
@@ -28,7 +31,7 @@ export function ResendEmailButton(props: ResendEmailButtonProps) {
   return showingText.isTrue ? (
     <p style={{ textAlign: 'center' }}>Письмо было отправлено повторно</p>
   ) : (
-    <Button disabled={isLoading} loading={isLoading} onClick={repeatEmail}>
+    <Button disabled={isLoading} loading={isLoading} onClick={repeatEmail} type={type}>
       Отправить снова
     </Button>
   );

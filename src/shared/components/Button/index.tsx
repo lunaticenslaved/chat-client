@@ -4,11 +4,11 @@ import cn from 'classnames';
 
 import './index.scss';
 
-type ButtonProps = Omit<AntButtonProps, 'type'>;
+type ButtonProps = AntButtonProps;
 
 export const Button = (props: ButtonProps) => {
   return (
-    <AntButton {...props} type="primary" className={cn('button', props.className)}>
+    <AntButton type="primary" {...props} className={cn('button', props.className)}>
       {props.children}
     </AntButton>
   );

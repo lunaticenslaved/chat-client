@@ -1,3 +1,4 @@
+import { LogoutButton } from '@/features/auth/logout';
 import { Divider } from '@/shared/components/divider';
 
 import classes from './chat-layout.module.scss';
@@ -9,12 +10,20 @@ export interface ChatLayoutProps {
 
 export const ChatLayout = ({ content, sidebar }: ChatLayoutProps) => {
   return (
-    <main className={classes.root}>
-      {sidebar}
+    <div className={classes.root}>
+      <nav className={classes.nav}>
+        <LogoutButton />
+      </nav>
 
       <Divider vertical />
 
-      <div className={classes.content}>{content}</div>
-    </main>
+      <main className={classes.main}>
+        {sidebar}
+
+        <Divider vertical />
+
+        <div className={classes.content}>{content}</div>
+      </main>
+    </div>
   );
 };
