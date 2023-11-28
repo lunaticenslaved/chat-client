@@ -4,7 +4,7 @@ import { ROUTES } from '@/config/routes';
 
 const SignInPage = lazy(() => import('@/pages/auth/sign-in'));
 const SignUpPage = lazy(() => import('@/pages/auth/sign-up'));
-const SignUpConfirmRequiredPage = lazy(() => import('@/pages/auth/confirm-required'));
+const ActivateAccountPage = lazy(() => import('@/pages/auth/activate'));
 const ChatPage = lazy(() => import('@/pages/chat'));
 const PageNotFound = lazy(() => import('@/pages/not-found'));
 
@@ -33,7 +33,7 @@ export const PAGES = [
   },
   {
     path: ROUTES.auth.confirmEmailRequired,
-    component: SignUpConfirmRequiredPage,
+    component: ActivateAccountPage,
     accessType: PageAccessType.PrivateCommon,
   },
   {
