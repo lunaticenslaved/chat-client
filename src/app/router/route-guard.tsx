@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/config/routes';
@@ -16,7 +16,7 @@ export const RouteGuard = ({ accessType }: RouteGuardProps) => {
   const { isActivated, isAuthorized } = useViewer();
   const { logout } = useLogout();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (accessType !== PageAccessType.Public && !isAuthorized) {
       console.log('NOT AUTHORIZED ROUTE ACCESS');
       logout();

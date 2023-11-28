@@ -1,3 +1,5 @@
+import { LogoutOutlined } from '@ant-design/icons';
+
 import { useViewer } from '@/entities/viewer';
 import { Button } from '@/shared/components/Button';
 
@@ -8,8 +10,14 @@ export function LogoutButton() {
   const { viewer } = useViewer();
 
   return viewer ? (
-    <Button onClick={logout} disabled={isLoading} loading={isLoading}>
-      Logout
-    </Button>
+    <Button
+      onClick={logout}
+      disabled={isLoading}
+      type="text"
+      size="large"
+      shape="circle"
+      loading={isLoading}
+      icon={<LogoutOutlined />}
+    />
   ) : null;
 }
