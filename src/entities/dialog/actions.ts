@@ -5,9 +5,9 @@ import { ResponseUtils } from '@lunaticenslaved/schema';
 import { DialogModel } from '@/entities/dialog';
 import { client } from '@/shared/client';
 
-export type ListDialogsResponse = {
+export interface ListDialogsResponse {
   dialogs: DialogModel[];
-};
+}
 
 export const DialogActions = {
   list: () =>

@@ -19,8 +19,6 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
     axios.interceptors.request.use(config => {
       const token = Token.get();
 
-      console.log('AUTH TOKEN');
-
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       }
