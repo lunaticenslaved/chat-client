@@ -28,7 +28,7 @@ export function useActivateAccount({
       try {
         const { user } = await mutateAsync(data);
 
-        viewer.setViewer(user);
+        viewer.set(user);
         onSuccess?.();
       } catch (error) {
         onError?.(error as Error);

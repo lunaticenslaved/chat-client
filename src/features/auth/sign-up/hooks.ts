@@ -33,7 +33,7 @@ export function useSignUp({
       try {
         const { user } = await mutateAsync(data);
 
-        viewerHook.setViewer(user);
+        viewerHook.set(user);
 
         if (onSuccess) onSuccess();
         if (redirectTo) navigate(redirectTo);

@@ -29,7 +29,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
           password: values.password,
         });
 
-        viewerHook.setViewer(user);
+        viewerHook.set(user);
 
         if (user.isActivated) {
           navigate(ROUTES.home, {});

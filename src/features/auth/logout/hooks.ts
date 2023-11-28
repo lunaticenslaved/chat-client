@@ -18,7 +18,7 @@ export const useLogout = () => {
     try {
       navigate(ROUTES.auth.signIn);
       Token.remove();
-      viewerHook.setViewer(undefined);
+      viewerHook.set(undefined);
       await callLogout();
     } catch (error) {
       console.log('logout error');

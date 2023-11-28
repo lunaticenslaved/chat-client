@@ -16,7 +16,7 @@ export interface DialogProps {
 }
 
 export const Dialog = (props: DialogProps) => {
-  const { viewer } = useViewer();
+  const { user: viewer } = useViewer();
 
   let status: JSX.Element | null = null;
 

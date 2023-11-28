@@ -46,8 +46,8 @@ export const Avatar = (props: AvatarProps) => {
         className={classes.gradientContainer}
         style={{ background: `linear-gradient(135deg, #${c1}, #${c2})` }}>
         <span>
-          {l1}
-          {l2}
+          {l1?.toUpperCase()}
+          {l2?.toUpperCase()}
         </span>
       </div>
     );

@@ -7,7 +7,7 @@ import { useLogout } from '../hooks';
 
 export function LogoutButton() {
   const { logout, isLoading } = useLogout();
-  const { viewer } = useViewer();
+  const { user: viewer } = useViewer();
 
   return viewer ? (
     <Button

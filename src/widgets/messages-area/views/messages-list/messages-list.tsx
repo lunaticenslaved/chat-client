@@ -10,7 +10,7 @@ export interface MessagesListProps {
 }
 
 export const MessagesList = (props: MessagesListProps) => {
-  const { viewer } = useViewer();
+  const { user: viewer } = useViewer();
   const wrapperRef = createRef<HTMLDivElement>();
 
   useEffect(() => {

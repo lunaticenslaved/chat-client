@@ -12,18 +12,18 @@ export interface UseViewerResponseRequest {
 }
 
 export interface UseViewerResponse {
-  viewer?: ViewerModel;
+  user?: ViewerModel;
   isAuthorized: boolean;
   isActivated: boolean;
   isFetching: boolean;
   fetch(): void;
-  setViewer(viewer?: ViewerModel): void;
+  set(user?: ViewerModel): void;
 }
 
 export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
-  const viewer = useAppSelector(ViewerStore.selectors.selectViewer);
-  const isAuthorized = useMemo(() => !!viewer, [viewer]);
-  const isActivated = useMemo(() => !!viewer?.isActivated, [viewer?.isActivated]);
+  const user = useAppSelector(ViewerStore.selectors.selectViewer);
+  const isAuthorized = useMemo(() => !!user, [user]);
+  const isActivated = useMemo(() => !!user?.isActivated, [user?.isActivated]);
   const dispatch = useAppDispatch();
 
   const getViewerMutation = useMutation({
@@ -31,7 +31,7 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
     mutationFn: ViewerAPI.get,
   });
 
-  const setViewer = useCallback(
+  const set = useCallback(
     (viewer?: ViewerModel) => {
       dispatch(ViewerStore.actions.setViewer(viewer));
     },
@@ -40,8 +40,8 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
 
   const fetch = useCallback(async () => {
     const { user } = await getViewerMutation.mutateAsync();
-    setViewer(user);
-  }, [getViewerMutation, setViewer]);
+    set(user);
+  }, [getViewerMutation, set]);
 
   useEffect(() => {
     if (props?.fetch) {
@@ -52,13 +52,13 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
 
   return useMemo(
     () => ({
-      viewer: viewer || undefined,
-      setViewer,
+      user: user || undefined,
+      set,
       isActivated,
       isAuthorized,
       fetch,
       isFetching: getViewerMutation.isLoading,
     }),
-    [fetch, getViewerMutation.isLoading, isActivated, isAuthorized, setViewer, viewer],
+    [fetch, getViewerMutation.isLoading, isActivated, isAuthorized, set, user],
   );
 }
