@@ -7,7 +7,7 @@ import svgLoader from 'vite-plugin-svgr';
 export default defineConfig({
   mode: process.env.NODE_ENV,
   build: {
-    outDir: 'dist',
+    outDir: './dist/client',
   },
   server: {
     port: 5001,
@@ -19,13 +19,14 @@ export default defineConfig({
     svgLoader(),
     tsChecker({
       typescript: {
-        tsconfigPath: './tsconfig.json',
+        tsconfigPath: './src/client/tsconfig.json',
       },
     }),
   ],
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      '@': resolve(__dirname, './src/client'),
+      '@/common': resolve(__dirname, './src/common'),
     },
   },
 });

@@ -1,0 +1,31 @@
+{
+    "extends": [
+        "../../tsconfig.base.json"
+    ],
+    "ts-node": {
+        "require": ["tsconfig-paths/register"],
+        "files": true
+    },
+    "tsc-alias": {
+        "verbose": false,
+        "resolveFullPaths": true
+    },
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": ["ESNext"],
+        "skipLibCheck": true,
+
+        /* Bundler mode */
+        "types": ["node", "jest"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+
+        /* Paths */
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"],
+            "@/common/*": ["../common/*"]
+        }
+    }
+}
+  
