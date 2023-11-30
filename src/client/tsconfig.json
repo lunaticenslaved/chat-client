@@ -13,6 +13,7 @@
 
         /* Paths */
         "baseUrl": ".",
+        "rootDir": "..",
         "paths": {
             "@/*": ["./*"],
             "@/common/*": ["../common/*"]
