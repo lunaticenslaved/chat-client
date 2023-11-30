@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "./node_modules/@lunaticenslaved/configs/tsconfig.base.json",
+  ],
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

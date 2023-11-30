@@ -1,6 +1,5 @@
-import { OperationResponse } from 'node_modules/@lunaticenslaved/schema/dist/umd/models';
-
 import { ResponseUtils } from '@lunaticenslaved/schema';
+import { OperationResponse } from '@lunaticenslaved/schema/models';
 
 import { DialogModel } from '@/entities/dialog';
 import { client } from '@/shared/client';
