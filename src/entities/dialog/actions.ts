@@ -5,17 +5,21 @@ import { ResponseUtils } from '@lunaticenslaved/schema';
 import { DialogModel } from '@/entities/dialog';
 import { client } from '@/shared/client';
 
+export interface ListDialogRequest {
+  search?: string;
+}
 export interface ListDialogsResponse {
   dialogs: DialogModel[];
 }
 
 export const DialogActions = {
-  list: () =>
+  list: (data: ListDialogRequest) =>
     client
-      .createAction<OperationResponse<ListDialogsResponse>>({
+      .createAction<OperationResponse<ListDialogsResponse>, ListDialogRequest>({
         method: 'GET',
         endpoint: 'chat-api',
-        path: '/dialogs',
-      })()
+        path: data =>
+          data.search ? `/dialogs?search=${encodeURIComponent(data.search)}` : '/dialogs',
+      })({ data })
       .then(ResponseUtils.unwrapResponse),
 };

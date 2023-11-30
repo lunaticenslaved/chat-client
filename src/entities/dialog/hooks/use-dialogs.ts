@@ -21,8 +21,8 @@ export type UseDialogsResponse = {
 
 export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsResponse => {
   const { data, isFetching, isError } = useQuery({
-    queryKey: ['dialog/list'],
-    queryFn: DialogActions.list,
+    queryKey: ['dialog/list', searchQuery],
+    queryFn: () => DialogActions.list({ search: searchQuery }),
   });
 
   const dialogs = data?.dialogs;

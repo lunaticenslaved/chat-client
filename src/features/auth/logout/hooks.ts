@@ -14,12 +14,12 @@ export const useLogout = () => {
   const viewerHook = useViewer();
   const navigate = useNavigate();
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(() => {
     try {
       navigate(ROUTES.auth.signIn);
       Token.remove();
       viewerHook.set(undefined);
-      await callLogout();
+      callLogout();
     } catch (error) {
       console.log('logout error');
     }
