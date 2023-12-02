@@ -1,6 +1,6 @@
-import { User } from '@lunaticenslaved/schema/models';
+import { User } from './user';
 
-export interface DialogModel {
+export interface Dialog {
   id: number;
   ownerId: string;
   partnerId: string;
@@ -11,7 +11,7 @@ export interface DialogModel {
   partner: User;
 }
 
-export interface LastMessage {
+interface LastMessage {
   id: string;
   authorId: string;
   createdAt: string;

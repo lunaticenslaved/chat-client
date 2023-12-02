@@ -1,12 +1,14 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 
-import { store } from '@/config/store';
+import { Store } from '@reduxjs/toolkit';
+
 import { useViewer } from '@/entities/viewer';
 import { useLogout } from '@/features/auth/logout';
 import { PageLoader } from '@/shared/components/page-loader';
+import constants from '@/shared/constants';
+import { useToggle } from '@/shared/hooks';
 import { Token } from '@/shared/token';
 
 import { ClientWrapper } from './client-wrapper';
@@ -31,20 +33,21 @@ const client = new QueryClient({
   },
 });
 
-export function App() {
-  const token = Token.get();
+export interface AppProps {
+  store: Store;
+}
 
-  if (token) {
-    Token.set(token);
-  }
+export function App({ store }: AppProps) {
+  const loading = useToggle({ value: constants.IS_SERVER_RENDERING || constants.IS_SSR });
+
+  useEffect(() => {
+    loading.setFalse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <QueryClientProvider client={client}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <PagesWithStore />
-        </BrowserRouter>
-      </Provider>
+      <Provider store={store}>{loading.isTrue ? <PageLoader /> : <PagesWithStore />}</Provider>
     </QueryClientProvider>
   );
 }

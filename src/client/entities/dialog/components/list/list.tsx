@@ -1,6 +1,5 @@
+import { Dialog as DialogModel } from '@common/models';
 import { Empty, Spin } from 'antd';
-
-import { DialogModel } from '@/entities/dialog';
 
 import { Dialog } from '../dialog/dialog';
 

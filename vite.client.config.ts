@@ -1,3 +1,4 @@
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
@@ -15,6 +16,7 @@ export default defineConfig({
     open: false,
   },
   plugins: [
+    viteCommonjs(),
     react(),
     svgLoader(),
     tsChecker({
@@ -26,7 +28,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src/client'),
-      '@/common': resolve(__dirname, './src/common'),
+      '@common': resolve(__dirname, './src/common'),
     },
   },
 });

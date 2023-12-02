@@ -1,4 +1,8 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+export type UseToggleRequest = {
+  value?: boolean;
+};
 
 export type UseToggleResponse = {
   value: boolean;
@@ -9,11 +13,15 @@ export type UseToggleResponse = {
   setValue(value: boolean): void;
 };
 
-export function useToggle(): UseToggleResponse {
-  const [value, setValue] = useState(false);
+export function useToggle(props: UseToggleRequest = {}): UseToggleResponse {
+  const [value, setValue] = useState(!!props.value);
 
   const setTrue = useCallback(() => setValue(true), []);
   const setFalse = useCallback(() => setValue(false), []);
+
+  useEffect(() => {
+    setValue(!!props.value);
+  }, [props?.value]);
 
   return useMemo(
     () => ({

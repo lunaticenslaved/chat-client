@@ -1,22 +1,21 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { useAppDispatch, useAppSelector } from '@/config/store';
-import { DialogModel } from '@/entities/dialog';
+import { Dialog } from '@common/models';
+import { store, useAppDispatch, useAppSelector } from '@common/store';
 
 import { DialogActions } from '../actions';
-import { DialogsStore } from '../store';
 
 export type UseDialogsRequest = {
   searchQuery?: string;
 };
 
 export type UseDialogsResponse = {
-  dialogs: DialogModel[];
+  dialogs: Dialog[];
   isFetching: boolean;
   isError: boolean;
-  currentDialog?: DialogModel;
-  selectDialog(dialog?: DialogModel): void;
+  currentDialog?: Dialog;
+  selectDialog(dialog?: Dialog): void;
 };
 
 export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsResponse => {
@@ -24,10 +23,9 @@ export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsRespon
     queryKey: ['dialog/list', searchQuery],
     queryFn: () => DialogActions.list({ search: searchQuery }),
   });
-
   const dialogs = data?.dialogs;
 
-  const currentDialog = useAppSelector(DialogsStore.selectors.selectCurrentDialog);
+  const currentDialog = useAppSelector(store.dialog.selectors.selectCurrentDialog);
   const dispatch = useAppDispatch();
 
   const filtered = useMemo(() => {
@@ -40,14 +38,14 @@ export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsRespon
   }, [dialogs, searchQuery]);
 
   const selectDialog = useCallback(
-    (dialog: DialogModel) => {
-      dispatch(DialogsStore.actions.setCurrentDialogId(dialog.id));
+    (dialog: Dialog) => {
+      dispatch(store.dialog.actions.setCurrentDialogId(dialog.id));
     },
     [dispatch],
   );
 
   useEffect(() => {
-    dispatch(DialogsStore.actions.setDialogs(data?.dialogs || []));
+    dispatch(store.dialog.actions.setDialogs(data?.dialogs || []));
   }, [data?.dialogs, dispatch]);
 
   return {

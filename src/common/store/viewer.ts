@@ -1,16 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { ViewerModel } from './types';
+import { Viewer } from '../models';
 
 const reducers = {
-  setViewer: (state: ViewerState, action: PayloadAction<ViewerModel | undefined>) => {
+  setViewer: (state: ViewerState, action: PayloadAction<Viewer | undefined>) => {
     state.viewer = action.payload || undefined;
   },
 };
 
 interface ViewerState {
-  viewer?: ViewerModel;
+  viewer?: Viewer;
 }
 
 const initialState: ViewerState = {};

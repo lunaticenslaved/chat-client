@@ -1,27 +1,26 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { useAppDispatch, useAppSelector } from '@/config/store';
-import { ViewerAPI } from '@/entities/viewer/api';
+import { Viewer } from '@common/models';
+import { store, useAppDispatch, useAppSelector } from '@common/store';
 
-import { ViewerStore } from './store';
-import { ViewerModel } from './types';
+import { ViewerAPI } from '@/entities/viewer/api';
 
 export interface UseViewerResponseRequest {
   fetch?: boolean;
 }
 
 export interface UseViewerResponse {
-  user?: ViewerModel;
+  user?: Viewer;
   isAuthorized: boolean;
   isActivated: boolean;
   isFetching: boolean;
   fetch(): void;
-  set(user?: ViewerModel): void;
+  set(user?: Viewer): void;
 }
 
 export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
-  const user = useAppSelector(ViewerStore.selectors.selectViewer);
+  const user = useAppSelector(store.viewer.selectors.selectViewer);
   const isAuthorized = useMemo(() => !!user, [user]);
   const isActivated = useMemo(() => !!user?.isActivated, [user?.isActivated]);
   const dispatch = useAppDispatch();
@@ -32,8 +31,8 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
   });
 
   const set = useCallback(
-    (viewer?: ViewerModel) => {
-      dispatch(ViewerStore.actions.setViewer(viewer));
+    (viewer?: Viewer) => {
+      dispatch(store.viewer.actions.setViewer(viewer));
     },
     [dispatch],
   );
