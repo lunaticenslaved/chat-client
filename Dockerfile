@@ -10,7 +10,7 @@ RUN npm ci \
     && npm prune --production \
     && rm -rf src
 
-FROM node:alpine
+FROM node:20-alpine
 WORKDIR /app
 COPY --from=build /app/dist /app/dist 
 COPY --from=build /app/package.json /app
