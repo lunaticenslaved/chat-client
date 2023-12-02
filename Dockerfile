@@ -14,8 +14,7 @@ FROM node:alpine
 WORKDIR /app
 COPY --from=build /app/dist /app/dist 
 COPY --from=build /app/package.json /app
-RUN apk update \ 
-    && apk add --no-cache openssl \
+RUN apk add --no-cache openssl \
     && npm i --omit=dev 
 
 USER 1000
