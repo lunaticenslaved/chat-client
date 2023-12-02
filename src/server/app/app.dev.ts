@@ -2,7 +2,6 @@ import express from 'express';
 
 import fs from 'fs';
 import path from 'path';
-import vite from 'vite';
 
 import { context } from '@/context';
 import { addRoutes } from '@/controllers';
@@ -21,12 +20,20 @@ const CLIENT_HTML_FILE_PATH = path.resolve(ROOT_PATH, 'index.html');
 export async function createApp() {
   await context.connectDB();
 
+  const vite = await import('vite');
+
   const app = express();
   const viteServer = await vite.createServer({
-    server: { middlewareMode: true },
     root: ROOT_PATH,
     appType: 'custom',
     configFile: 'vite.client.config.ts',
+    server: {
+      middlewareMode: true,
+      hmr: {
+        protocol: 'http',
+        host: 'localhost',
+      },
+    },
   });
 
   app.use(viteServer.middlewares);

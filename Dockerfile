@@ -13,9 +13,11 @@ RUN npm ci \
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=build /app/dist /app/dist 
+COPY --from=build /app/prisma /app/prisma 
 COPY --from=build /app/package.json /app
 RUN apk add --no-cache openssl \
-    && npm i --omit=dev 
+    && npm i --omit=dev \
+    && npx prisma generate
 
 USER 1000
 EXPOSE 3000
