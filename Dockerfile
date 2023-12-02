@@ -4,8 +4,12 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm ci && npm run build
+RUN npm ci \
+    && npx prisma generate \
+    && npm run build \
+    && npm prune --production \
+    && rm -rf src
 
-FROM nginx:1.25.3
-COPY --from=build /app/dist/ /usr/share/nginx/html/
-COPY --from=build /app/chat-client.conf /etc/nginx/conf.d/
+USER 1000
+EXPOSE 3000
+ENTRYPOINT ["npm", "run", "start"]
