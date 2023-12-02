@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dialog {
+  id String @id @default(uuid())
+
+  partnerId String
+  ownerId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages Message[]
+
+  @@map(name: "dialogs")
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+
+  authorId String
+
+  dialogId String
+  dialog   Dialog @relation(fields: [dialogId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  text String @db.VarChar(4096)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isRead Boolean @default(false)
+
+  @@map(name: "messages")
+}

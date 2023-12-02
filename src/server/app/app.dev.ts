@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import vite from 'vite';
 
-// import { context } from '@/context';
+import { context } from '@/context';
 import { addRouter } from '@/controllers';
 import { constants } from '@/shared';
 
@@ -19,7 +19,7 @@ const CLIENT_STORE_FILE_PATH = path.resolve(SRC_PATH, 'common/store');
 const CLIENT_HTML_FILE_PATH = path.resolve(ROOT_PATH, 'index.html');
 
 export async function createApp() {
-  // await context.prisma.$connect();
+  await context.connectDB();
 
   const app = express();
   const viteServer = await vite.createServer({

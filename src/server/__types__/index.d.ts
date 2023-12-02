@@ -3,7 +3,7 @@ import { User } from '@lunaticenslaved/schema/models';
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      APP_ENV: 'dev' | 'production';
+      APP_ENV: 'dev' | 'prod';
       DATABASE_URL: string;
       PORT?: string;
     }
