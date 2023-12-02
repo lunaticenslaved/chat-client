@@ -2,15 +2,15 @@
 
 - React / React Router
 - Redux Toolkit
+- React Query
 - TypeScript
 - Socket.io
 - CSS Modules
-- Storybook
 
 <br />
 
 # Folder Order / Import Order
 
-TODO: fix imports between store and api
+TODO: move router to somewhere
 
 shared → entities → config → features → widgets → pages → app
