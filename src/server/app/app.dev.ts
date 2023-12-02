@@ -5,7 +5,7 @@ import path from 'path';
 import vite from 'vite';
 
 import { context } from '@/context';
-import { addRouter } from '@/controllers';
+import { addRoutes } from '@/controllers';
 import { constants } from '@/shared';
 
 import { ROOT_PATH } from './constants';
@@ -33,7 +33,7 @@ export async function createApp() {
 
   configureApp(app);
 
-  addRouter(app);
+  addRoutes(app);
 
   addSSRRoute({
     app,

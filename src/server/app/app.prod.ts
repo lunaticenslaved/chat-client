@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { context } from '@/context';
-import { addRouter } from '@/controllers';
+import { addRoutes } from '@/controllers';
 import { PORT } from '@/shared/constants';
 
 import { ROOT_PATH } from './constants';
@@ -22,7 +22,7 @@ export async function createApp() {
 
   configureApp(app);
 
-  addRouter(app);
+  addRoutes(app);
 
   addSSRRoute({
     app,
