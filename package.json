@@ -8,7 +8,7 @@
     "build:client": "vite build --config vite.client.config.ts && vite build --config vite.server.config.ts",
     "build:server": "tsc --project src/server/tsconfig.json && tsc-alias --project src/server/tsconfig.json",
     "build": "rm -rf dist && npm run build:client && npm run build:server",
-    "lint": "eslint . --ext ts,tsx && prettier --check '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}'",
+    "lint": "eslint . --ext ts,tsx --max-warnings 0 && prettier --check '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}'",
     "lint:fix": "eslint . --ext ts,tsx --fix && prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,yaml,yml,md}' --log-level warn"
   },
   "eslintConfig": {

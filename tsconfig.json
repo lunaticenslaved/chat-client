@@ -3,6 +3,6 @@
   "include": ["src"],
   "compilerOptions": {
     "resolveJsonModule": false,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }

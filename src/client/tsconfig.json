@@ -1,20 +1,19 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "target": "es6",
-        "lib": ["DOM", "es2019", "esnext"],
-        "module": "esnext",
-        "moduleResolution": "Bundler",
-        "types": ["vite/client", "vite-plugin-svgr/client"],
-        "jsx": "react-jsx",
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["DOM", "es2019", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "jsx": "react-jsx",
 
-        /* Paths */
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./*"],
-            "@common/*": ["../common/*"]
-        }
-    },
-    "exclude": ["../server"]
+    /* Paths */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@common/*": ["../common/*"]
+    }
+  },
+  "exclude": ["../server"]
 }
-  
