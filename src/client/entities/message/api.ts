@@ -1,18 +1,11 @@
-import { API } from '@/shared/api';
-
 import { MessageModel } from './types';
 
 function getMessages() {
-  return API.request<MessageAPI.GetMessagesResponse>('/api/messages', {
-    method: 'GET',
-  });
+  return Promise.resolve({} as MessageAPI.GetMessagesResponse);
 }
 
-function createMessage(data: MessageAPI.CreateMessageRequest) {
-  return API.request('/api/messages', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+function createMessage(_: MessageAPI.CreateMessageRequest) {
+  return Promise.resolve({} as MessageAPI.GetMessagesResponse);
 }
 
 export const MessageAPI = {

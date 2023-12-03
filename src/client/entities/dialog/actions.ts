@@ -3,7 +3,7 @@ import { Dialog } from '@common/models/dialog';
 import { ResponseUtils } from '@lunaticenslaved/schema';
 import { OperationResponse } from '@lunaticenslaved/schema/models';
 
-import { client } from '@/shared/client';
+import { api } from '@/shared/api';
 
 export interface ListDialogRequest {
   search?: string;
@@ -14,7 +14,7 @@ export interface ListDialogsResponse {
 
 export const DialogActions = {
   list: (data: ListDialogRequest) =>
-    client
+    api.client
       .createAction<OperationResponse<ListDialogsResponse>, ListDialogRequest>({
         method: 'GET',
         endpoint: 'chat-api',

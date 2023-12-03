@@ -28,11 +28,9 @@ export async function createApp() {
     appType: 'custom',
     configFile: 'vite.client.config.ts',
     server: {
+      https: true,
       middlewareMode: true,
-      hmr: {
-        protocol: 'http',
-        host: 'localhost',
-      },
+      hmr: true,
     },
   });
 
@@ -53,7 +51,7 @@ export async function createApp() {
 
   app.listen(PORT, () => {
     console.log(
-      `  ➜ 🎸 [DEV] Server is listening on port: ${PORT}. Use this server: http://localhost:${PORT}`,
+      `  ➜ 🎸 [DEV] Server is listening on port: ${PORT}. Use this server: https://localhost:${PORT}`,
     );
   });
 }

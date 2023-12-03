@@ -1,10 +1,10 @@
 import { ReactNode, useEffect } from 'react';
 
-import libAxios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
-import Schema, { Errors, ResponseUtils } from '@lunaticenslaved/schema';
+import schema, { Errors, ResponseUtils } from '@lunaticenslaved/schema';
 
-import { client } from '@/shared/client';
+import { api } from '@/shared/api';
 import { Token } from '@/shared/token';
 
 export interface ClientWrapperProps {
@@ -14,19 +14,9 @@ export interface ClientWrapperProps {
 
 export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapperProps) {
   useEffect(() => {
-    const axios = libAxios.create({ withCredentials: true });
+    const axios = api.axios;
 
-    axios.interceptors.request.use(config => {
-      const token = Token.get();
-
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      return config;
-    });
-
-    axios.interceptors.response.use(
+    api.axios.interceptors.response.use(
       c => c,
       async (axiosError: AxiosError) => {
         const response = axiosError.response;
@@ -40,7 +30,7 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
 
           if (response.status === 401) {
             try {
-              const { token } = await Schema.actions.auth
+              const { token } = await schema.actions.auth
                 .refresh()
                 .then(ResponseUtils.unwrapResponse);
 
@@ -61,8 +51,8 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
       },
     );
 
-    client.setAxios(axios);
-    Schema.client.setAxios(axios);
+    api.client.setAxios(axios);
+    schema.client.setAxios(axios);
   }, [onRefreshTokenExpired]);
 
   return <>{children}</>;

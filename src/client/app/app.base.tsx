@@ -4,23 +4,22 @@ import { Provider } from 'react-redux';
 
 import { Store } from '@reduxjs/toolkit';
 
-import { useViewer } from '@/entities/viewer';
 import { useLogout } from '@/features/auth/logout';
 import { PageLoader } from '@/shared/components/page-loader';
 import constants from '@/shared/constants';
 import { useToggle } from '@/shared/hooks';
-import { Token } from '@/shared/token';
 
 import { ClientWrapper } from './client-wrapper';
 import { Router } from './router';
 
 const PagesWithStore = () => {
-  const { isFetching } = useViewer({ fetch: Token.exists() });
   const { logout } = useLogout();
 
   return (
     <ClientWrapper onRefreshTokenExpired={logout}>
-      <Suspense fallback={<PageLoader />}>{isFetching ? <PageLoader /> : <Router />}</Suspense>
+      <Suspense fallback={<PageLoader />}>
+        <Router />
+      </Suspense>
     </ClientWrapper>
   );
 };

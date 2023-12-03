@@ -7,13 +7,14 @@ import {
   SignUpResponse,
 } from '@lunaticenslaved/schema/actions';
 
+import { api } from '@/shared/api';
 import { Token } from '@/shared/token';
 
 export type { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse, ActivateRequest };
 
 export const ViewerAPI = {
   async signIn(data: SignInRequest): Promise<SignInResponse> {
-    const response = await Schema.actions.auth.signIn({ data }).then(ResponseUtils.unwrapResponse);
+    const response = await api.actions.auth.signIn({ data }).then(ResponseUtils.unwrapResponse);
 
     Token.set(response.token);
 

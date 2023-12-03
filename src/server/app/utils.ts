@@ -54,6 +54,9 @@ export function addSSRRoute({
   }
 
   app.use('*', addUser, async (req: Request, res, next) => {
+    console.log('GET HTML');
+    console.log('HEADERS\n', req.headers);
+
     try {
       const filePath = staticFiles.find(file => req.baseUrl.endsWith(file));
 
