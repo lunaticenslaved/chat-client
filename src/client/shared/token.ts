@@ -1,6 +1,8 @@
 export const Token = {
   set(token: string) {
-    localStorage.setItem('token', token);
+    if (typeof token === 'string') {
+      localStorage.setItem('token', token);
+    }
   },
   remove() {
     localStorage.removeItem('token');

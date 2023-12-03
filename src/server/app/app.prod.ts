@@ -5,6 +5,7 @@ import path from 'path';
 
 import { context } from '@/context';
 import { addRoutes } from '@/controllers';
+import { logger } from '@/shared';
 import { PORT } from '@/shared/constants';
 
 import { ROOT_PATH } from './constants';
@@ -33,7 +34,7 @@ export async function createApp() {
   });
 
   app.listen(PORT, () => {
-    console.log(
+    logger.info(
       `  ➜ 🎸 [PROD] Server is listening on port: ${PORT}. Use this server: http://localhost:${PORT}`,
     );
   });

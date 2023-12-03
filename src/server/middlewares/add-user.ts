@@ -2,24 +2,21 @@ import { NextFunction, Request, Response } from 'express';
 
 import schema, { ResponseUtils } from '@lunaticenslaved/schema';
 
+import { logger } from '@/shared';
+
 export async function addUser(request: Request, _: Response, next: NextFunction) {
-  console.log('HEADERS\n', request.headers);
+  const { host: _host, ...headers } = request.headers;
 
   try {
     const { user } = await schema.actions.viewer
-      .get({
-        token: request.headers['authorization'],
-      })
-      .then(res => {
-        console.log('RESPONSE', res);
+      .get({ config: { headers } })
+      .then(ResponseUtils.unwrapResponse);
 
-        return ResponseUtils.unwrapResponse(res);
-      });
+    logger.info(`[MIDDLEWARE] [GET USER] User found:\n${JSON.stringify(user, null, 2)}`);
 
     request.user = user || undefined;
   } catch (error) {
-    console.log('ERROR', error);
-    console.log('Cannot get user from token');
+    logger.info(`[MIDDLEWARE] [GET USER] User not found`);
   }
 
   next();

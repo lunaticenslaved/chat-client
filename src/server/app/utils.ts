@@ -6,19 +6,22 @@ import cors from 'cors';
 import fs from 'fs';
 import { resolve } from 'path';
 
-import { addHeaders, addUser } from '@/middlewares';
+import { addHeaders, addUser, logRequest } from '@/middlewares';
+import { logger } from '@/shared';
 
 export function configureApp(app: Express) {
   app.disable('x-powered-by');
   app.disable('via');
 
   app.use(cookieParser());
+  // FIXME: set no cross origin
   app.use(
     cors({
       credentials: true,
       origin: ['*'],
     }),
   );
+  app.use(logRequest);
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(addHeaders);
@@ -54,8 +57,7 @@ export function addSSRRoute({
   }
 
   app.use('*', addUser, async (req: Request, res, next) => {
-    console.log('GET HTML');
-    console.log('HEADERS\n', req.headers);
+    logger.info('GET HTML');
 
     try {
       const filePath = staticFiles.find(file => req.baseUrl.endsWith(file));

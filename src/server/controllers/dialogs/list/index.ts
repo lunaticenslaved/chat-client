@@ -4,7 +4,6 @@ import { User } from '@lunaticenslaved/schema/dist/types/models';
 
 import { createOperation } from '@/context';
 import { DialogFullWithPartner } from '@/models';
-import { utils } from '@/shared';
 
 interface ListDialogRequestQuery {
   search?: string;
@@ -16,9 +15,8 @@ interface ListDialogResponse {
 
 export const list = createOperation<ListDialogResponse>(async (req, _, context) => {
   const { search } = req.query as ListDialogRequestQuery;
-  const token = utils.request.getToken(req, 'strict');
   const { user } = await schema.actions.viewer
-    .get({ token, config: { headers: req.headers } })
+    .get({ config: { headers: req.headers } })
     .then(ResponseUtils.unwrapResponse);
   const dialogs = await context.service.dialog.list({ ownerId: user.id });
 

@@ -21,7 +21,7 @@ export const useLogout = () => {
       viewerHook.set(undefined);
       callLogout();
     } catch (error) {
-      console.log('logout error');
+      // TODO: do I need any info here?
     }
   }, [callLogout, navigate, viewerHook]);
 
