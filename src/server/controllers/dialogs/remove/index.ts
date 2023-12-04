@@ -1,4 +1,4 @@
-import schema, { Errors, ResponseUtils } from '@lunaticenslaved/schema';
+import schema, { Errors } from '@lunaticenslaved/schema';
 
 import { createOperation } from '@/context';
 import { utils } from '@/shared';
@@ -11,7 +11,7 @@ export const remove = createOperation<null>(async (req, _, context) => {
   const { dialogId } = req.params as unknown as RemoveDialogRequestParams;
 
   const token = utils.request.getToken(req, 'strict');
-  const { user } = await schema.actions.viewer.get({ token }).then(ResponseUtils.unwrapResponse);
+  const { user } = await schema.actions.viewer.get({ token, data: undefined });
 
   const dialog = await context.service.dialog.get({ dialogId });
 

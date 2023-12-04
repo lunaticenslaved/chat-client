@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { useViewer } from '@/entities/viewer';
 import { SignUpRequest, ViewerAPI } from '@/entities/viewer';
+import { fingerprint } from '@/shared/fingerprint';
 import { Handlers } from '@/shared/types';
+
+type Values = Omit<SignUpRequest, 'fingerprint'>;
 
 export type UseSignUpRequest = Handlers & {
   redirectTo?: string;
@@ -12,7 +15,7 @@ export type UseSignUpRequest = Handlers & {
 
 export type UseSignUpResponse = {
   isLoading: boolean;
-  signUp(values: SignUpRequest): Promise<void>;
+  signUp(values: Values): Promise<void>;
 };
 
 export function useSignUp({
@@ -29,9 +32,12 @@ export function useSignUp({
   });
 
   const signUp = useCallback(
-    async (data: SignUpRequest) => {
+    async (data: Values) => {
       try {
-        const { user } = await mutateAsync(data);
+        const { user } = await mutateAsync({
+          ...data,
+          fingerprint: await fingerprint.create(),
+        });
 
         viewerHook.set(user);
 

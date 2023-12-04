@@ -1,4 +1,4 @@
-import Schema, { ResponseUtils } from '@lunaticenslaved/schema';
+import Schema from '@lunaticenslaved/schema';
 import {
   ActivateRequest,
   SignInRequest,
@@ -14,17 +14,17 @@ export type { SignInRequest, SignInResponse, SignUpRequest, SignUpResponse, Acti
 
 export const ViewerAPI = {
   async signIn(data: SignInRequest): Promise<SignInResponse> {
-    const response = await api.actions.auth.signIn({ data }).then(ResponseUtils.unwrapResponse);
-    Token.set(response.token);
+    const response = await api.actions.auth.signIn({ data });
+    Token.set(response);
     return response;
   },
   async signUp(data: SignUpRequest): Promise<SignUpResponse> {
-    const response = await Schema.actions.auth.signUp({ data }).then(ResponseUtils.unwrapResponse);
-    Token.set(response.token);
+    const response = await Schema.actions.auth.signUp({ data });
+    Token.set(response);
     return response;
   },
   get() {
-    return Schema.actions.viewer.get().then(ResponseUtils.unwrapResponse);
+    return Schema.actions.viewer.get();
   },
   logout() {
     // return Schema.actions.auth.logout();
@@ -34,6 +34,6 @@ export const ViewerAPI = {
     return Schema.actions.auth.resendEmail();
   },
   activateAccount(data: ActivateRequest) {
-    return Schema.actions.auth.activate({ data }).then(ResponseUtils.unwrapResponse);
+    return Schema.actions.auth.activate({ data });
   },
 };

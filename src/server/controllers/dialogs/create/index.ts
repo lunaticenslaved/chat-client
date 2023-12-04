@@ -1,4 +1,4 @@
-import schema, { ResponseUtils } from '@lunaticenslaved/schema';
+import schema from '@lunaticenslaved/schema';
 
 import { createOperation } from '@/context';
 import { DialogFullWithPartner } from '@/models';
@@ -16,8 +16,8 @@ export const create = createOperation<CreateDialogResponse>(async (req, _, conte
   const { partnerId } = req.body as CreateDialogRequestBody;
   const token = utils.request.getToken(req, 'strict');
   const [{ user: author }, { user: partner }] = await Promise.all([
-    schema.actions.viewer.get({ token }).then(ResponseUtils.unwrapResponse),
-    schema.actions.users.get({ data: { userId: partnerId } }).then(ResponseUtils.unwrapResponse),
+    schema.actions.viewer.get({ token, data: undefined }),
+    schema.actions.users.get({ data: { userId: partnerId } }),
   ]);
 
   const newDialog = await context.service.dialog.create({

@@ -1,4 +1,4 @@
-import schema, { ResponseUtils } from '@lunaticenslaved/schema';
+import schema from '@lunaticenslaved/schema';
 // FIXME fix import path
 import { User } from '@lunaticenslaved/schema/dist/types/models';
 
@@ -16,21 +16,17 @@ interface ListDialogResponse {
 export const list = createOperation<ListDialogResponse>(async (req, _, context) => {
   const { search } = req.query as ListDialogRequestQuery;
   const { host: _host, ...headers } = req.headers;
-  const { user } = await schema.actions.viewer
-    .get({ config: { headers } })
-    .then(ResponseUtils.unwrapResponse);
+  const { user } = await schema.actions.viewer.get({ config: { headers }, data: undefined });
   const dialogs = await context.service.dialog.list({ ownerId: user.id });
 
   if (!search && !dialogs.length) {
     return { dialogs: [] };
   }
 
-  const { users: partners } = await schema.actions.users
-    .list({
-      data: { userIds: dialogs.map(d => d.partnerId), search },
-      config: { headers: req.headers },
-    })
-    .then(ResponseUtils.unwrapResponse);
+  const { users: partners } = await schema.actions.users.list({
+    data: { userIds: dialogs.map(d => d.partnerId), search },
+    config: { headers: req.headers },
+  });
 
   const dialogsWithPartners = dialogs.reduce<DialogFullWithPartner[]>((acc, dialog) => {
     const partner = partners.find(p => p.id === dialog.partnerId);
@@ -45,12 +41,10 @@ export const list = createOperation<ListDialogResponse>(async (req, _, context) 
   let users: User[] = [];
 
   if (search) {
-    const data = await schema.actions.users
-      .list({
-        data: { take: 20, search },
-        config: { headers: req.headers },
-      })
-      .then(ResponseUtils.unwrapResponse);
+    const data = await schema.actions.users.list({
+      data: { take: 20, search },
+      config: { headers: req.headers },
+    });
 
     users = data.users;
   }

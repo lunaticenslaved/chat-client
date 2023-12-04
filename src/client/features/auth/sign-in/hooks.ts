@@ -4,13 +4,16 @@ import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/config/routes';
 import { SignInRequest, ViewerAPI, useViewer } from '@/entities/viewer';
+import { fingerprint } from '@/shared/fingerprint';
 import { Handlers } from '@/shared/types';
+
+type Values = Omit<SignInRequest, 'fingerprint'>;
 
 export type UseSignInRequest = Handlers;
 
 export type UseSignInResponse = {
   isLoading: boolean;
-  signIn(values: SignInRequest): Promise<void>;
+  signIn(values: Values): Promise<void>;
 };
 
 export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInResponse {
@@ -22,11 +25,12 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
   });
 
   const signIn = useCallback(
-    async (values: SignInRequest) => {
+    async (values: Values) => {
       try {
         const { user } = await mutateAsync({
           login: values.login,
           password: values.password,
+          fingerprint: await fingerprint.create(),
         });
 
         viewerHook.set(user);

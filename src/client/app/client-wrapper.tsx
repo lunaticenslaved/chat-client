@@ -2,9 +2,10 @@ import { ReactNode, useEffect } from 'react';
 
 import { AxiosError } from 'axios';
 
-import schema, { Errors, ResponseUtils } from '@lunaticenslaved/schema';
+import schema, { Errors } from '@lunaticenslaved/schema';
 
 import { api } from '@/shared/api';
+import { fingerprint } from '@/shared/fingerprint';
 import { Token } from '@/shared/token';
 
 export interface ClientWrapperProps {
@@ -15,6 +16,26 @@ export interface ClientWrapperProps {
 export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapperProps) {
   useEffect(() => {
     const axios = api.axios;
+
+    axios.interceptors.request.use(async config => {
+      const { token, expiresAt } = Token.get();
+
+      if (new Date() >= expiresAt) {
+        const response = await schema.actions.auth.refresh({
+          data: {
+            fingerprint: await fingerprint.create(),
+          },
+        });
+
+        Token.set(response);
+      }
+
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      return config;
+    });
 
     api.axios.interceptors.response.use(
       c => c,
@@ -30,11 +51,9 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
 
           if (response.status === 401) {
             try {
-              const { token } = await schema.actions.auth
-                .refresh()
-                .then(ResponseUtils.unwrapResponse);
+              const tokenData = await schema.actions.auth.refresh();
 
-              Token.set(token);
+              Token.set(tokenData);
               return axios.request(originalRequest);
             } catch (error) {
               // TODO log? alert?

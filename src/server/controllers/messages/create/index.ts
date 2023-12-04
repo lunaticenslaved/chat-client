@@ -1,4 +1,4 @@
-import schema, { ResponseUtils } from '@lunaticenslaved/schema';
+import schema from '@lunaticenslaved/schema';
 
 import { createOperation } from '@/context';
 import { Message } from '@/models';
@@ -17,9 +17,11 @@ export const create = createOperation<CreateMessageResponse>(async (req, _, cont
   const { dialogId, text } = req.body as CreateMessageRequestBody;
   const token = utils.request.getToken(req, 'strict');
   // TODO can I get userId from token?
-  const { user } = await schema.actions.viewer
-    .get({ token, config: { headers: req.headers } })
-    .then(ResponseUtils.unwrapResponse);
+  const { user } = await schema.actions.viewer.get({
+    token,
+    config: { headers: req.headers },
+    data: undefined,
+  });
 
   const message = await context.service.message.create({
     dialogId,
