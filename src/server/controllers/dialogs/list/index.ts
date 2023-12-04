@@ -15,8 +15,9 @@ interface ListDialogResponse {
 
 export const list = createOperation<ListDialogResponse>(async (req, _, context) => {
   const { search } = req.query as ListDialogRequestQuery;
+  const { host: _host, ...headers } = req.headers;
   const { user } = await schema.actions.viewer
-    .get({ config: { headers: req.headers } })
+    .get({ config: { headers } })
     .then(ResponseUtils.unwrapResponse);
   const dialogs = await context.service.dialog.list({ ownerId: user.id });
 
