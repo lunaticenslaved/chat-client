@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { Dialog } from '@common/models';
 import { store, useAppDispatch, useAppSelector } from '@common/store';
 
-import { DialogActions } from '../actions';
+import { api } from '@/shared/api';
 
 export type UseDialogsRequest = {
   searchQuery?: string;
@@ -21,7 +21,10 @@ export type UseDialogsResponse = {
 export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsResponse => {
   const { data, isFetching, isError } = useQuery({
     queryKey: ['dialog/list', searchQuery],
-    queryFn: () => DialogActions.list({ search: searchQuery }),
+    queryFn: () =>
+      api.actions.dialogs.list({
+        data: { search: searchQuery },
+      }),
   });
   const dialogs = data?.dialogs;
 

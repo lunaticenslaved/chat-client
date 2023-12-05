@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { ViewerAPI } from '@/entities/viewer';
+import { api } from '@/shared/api';
 import { Handlers } from '@/shared/types';
 
 export type UseRepeatConfirmEmailRequest = Handlers;
@@ -17,12 +17,12 @@ export function useRepeatConfirmEmail({
 }: UseRepeatConfirmEmailRequest): UseRepeatConfirmEmailResponse {
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: 'repeat-confirm-email',
-    mutationFn: ViewerAPI.repeatConfirmMail,
+    mutationFn: api.actions.auth.resendEmail,
   });
 
   const repeatEmail = useCallback(async () => {
     try {
-      await mutateAsync();
+      await mutateAsync({ data: undefined });
 
       if (onSuccess) {
         onSuccess();

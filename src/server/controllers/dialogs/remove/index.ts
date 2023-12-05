@@ -3,13 +3,12 @@ import schema, { Errors } from '@lunaticenslaved/schema';
 import { createOperation } from '@/context';
 import { utils } from '@/shared';
 
-interface RemoveDialogRequestParams {
+interface RemoveDialogRequest {
   dialogId: string;
 }
 
-export const remove = createOperation<null>(async (req, _, context) => {
-  const { dialogId } = req.params as unknown as RemoveDialogRequestParams;
-
+export const remove = createOperation<null, RemoveDialogRequest>(async (req, _, context) => {
+  const { dialogId } = req.body;
   const token = utils.request.getToken(req, 'strict');
   const { user } = await schema.actions.viewer.get({ token, data: undefined });
 

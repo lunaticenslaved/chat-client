@@ -3,13 +3,14 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/config/routes';
-import { ViewerAPI, useViewer } from '@/entities/viewer';
+import { useViewer } from '@/entities/viewer';
+import { api } from '@/shared/api';
 import { Token } from '@/shared/token';
 
 export const useLogout = () => {
   const { mutateAsync: callLogout, isLoading } = useMutation({
     mutationKey: 'logout',
-    mutationFn: ViewerAPI.logout,
+    mutationFn: api.actions.auth.logout,
   });
   const viewerHook = useViewer();
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export const useLogout = () => {
       navigate(ROUTES.auth.signIn);
       Token.remove();
       viewerHook.set(undefined);
-      callLogout();
+      callLogout({ data: undefined });
     } catch (error) {
       // TODO: do I need any info here?
     }

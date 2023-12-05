@@ -6,8 +6,8 @@ import { list } from './list';
 import { remove } from './remove';
 
 export const addDialogsRoutes = utils.app.createRoutes(app => {
-  app.post('/api/dialogs', create);
-  app.get('/api/dialogs/:dialogId', get);
-  app.get('/api/dialogs', list);
-  app.delete('/api/dialogs/:dialogId', remove);
+  app.post('/api/dialogs/create', create);
+  app.post('/api/dialogs/list', list);
+  app.post('/api/dialogs/get', get);
+  app.post('/api/dialogs/remove', remove);
 });

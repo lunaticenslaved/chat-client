@@ -2,9 +2,14 @@ import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
+import { message } from 'antd';
+
+import { SignUpRequest } from '@lunaticenslaved/schema/actions';
+
 import { useViewer } from '@/entities/viewer';
-import { SignUpRequest, ViewerAPI } from '@/entities/viewer';
+import { api } from '@/shared/api';
 import { fingerprint } from '@/shared/fingerprint';
+import { Token } from '@/shared/token';
 import { Handlers } from '@/shared/types';
 
 type Values = Omit<SignUpRequest, 'fingerprint'>;
@@ -28,25 +33,30 @@ export function useSignUp({
   const navigate = useNavigate();
   const { isLoading, mutateAsync } = useMutation({
     mutationKey: 'sign-up',
-    mutationFn: ViewerAPI.signUp,
+    mutationFn: api.actions.auth.signUp,
   });
 
   const signUp = useCallback(
     async (data: Values) => {
       try {
-        const { user } = await mutateAsync({
-          ...data,
-          fingerprint: await fingerprint.create(),
+        const { user, ...token } = await mutateAsync({
+          data: {
+            ...data,
+            fingerprint: await fingerprint.create(),
+          },
         });
 
+        Token.set(token);
         viewerHook.set(user);
 
         if (onSuccess) onSuccess();
         if (redirectTo) navigate(redirectTo);
-      } catch (error) {
-        if (onError) {
-          onError(error as Error);
-        }
+      } catch (e) {
+        const error = e as Error;
+
+        message.error(`Cannot sign up: ${error.message}`);
+
+        if (onError) onError(error);
       }
     },
     [mutateAsync, navigate, onError, onSuccess, redirectTo, viewerHook],

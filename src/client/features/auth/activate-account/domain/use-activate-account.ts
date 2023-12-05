@@ -1,7 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { ActivateRequest, ViewerAPI, useViewer } from '@/entities/viewer';
+import { ActivateRequest } from '@lunaticenslaved/schema/actions';
+
+import { useViewer } from '@/entities/viewer';
+import { api } from '@/shared/api';
 import { Handlers } from '@/shared/types';
 
 export interface UseActivateAccountRequest extends Handlers {
@@ -20,13 +23,13 @@ export function useActivateAccount({
   const viewer = useViewer();
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: 'auth/activate',
-    mutationFn: ViewerAPI.activateAccount,
+    mutationFn: api.actions.auth.activate,
   });
 
   const call = useCallback(
     async (data: ActivateRequest) => {
       try {
-        const { user } = await mutateAsync(data);
+        const { user } = await mutateAsync({ data });
 
         viewer.set(user);
         onSuccess?.();

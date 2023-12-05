@@ -2,9 +2,15 @@ import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
+import { message } from 'antd';
+
+import { SignInRequest } from '@lunaticenslaved/schema/actions';
+
 import { ROUTES } from '@/config/routes';
-import { SignInRequest, ViewerAPI, useViewer } from '@/entities/viewer';
+import { useViewer } from '@/entities/viewer';
+import { api } from '@/shared/api';
 import { fingerprint } from '@/shared/fingerprint';
+import { Token } from '@/shared/token';
 import { Handlers } from '@/shared/types';
 
 type Values = Omit<SignInRequest, 'fingerprint'>;
@@ -21,18 +27,21 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
   const navigate = useNavigate();
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: 'sign-in',
-    mutationFn: ViewerAPI.signIn,
+    mutationFn: api.actions.auth.signIn,
   });
 
   const signIn = useCallback(
     async (values: Values) => {
       try {
-        const { user } = await mutateAsync({
-          login: values.login,
-          password: values.password,
-          fingerprint: await fingerprint.create(),
+        const { user, ...data } = await mutateAsync({
+          data: {
+            login: values.login,
+            password: values.password,
+            fingerprint: await fingerprint.create(),
+          },
         });
 
+        Token.set(data);
         viewerHook.set(user);
 
         if (user.isActivated) {
@@ -44,9 +53,11 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
         if (onSuccess) {
           onSuccess(user);
         }
-      } catch (error) {
+      } catch (e) {
+        const error = e as Error;
         if (onError) {
-          onError(error as Error);
+          message.error(`Cannot sign in: ${error.message}`);
+          onError(error);
         }
       }
     },

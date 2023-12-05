@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 import { Viewer } from '@common/models';
 import { store, useAppDispatch, useAppSelector } from '@common/store';
 
-import { ViewerAPI } from '@/entities/viewer/api';
+import { api } from '@/shared/api';
 
 export interface UseViewerResponseRequest {
   fetch?: boolean;
@@ -27,7 +27,7 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
 
   const getViewerMutation = useMutation({
     mutationKey: 'viewer/get',
-    mutationFn: ViewerAPI.get,
+    mutationFn: api.actions.viewer.get,
   });
 
   const set = useCallback(
@@ -38,7 +38,7 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
   );
 
   const fetch = useCallback(async () => {
-    const { user } = await getViewerMutation.mutateAsync();
+    const { user } = await getViewerMutation.mutateAsync({ data: undefined });
     set(user);
   }, [getViewerMutation, set]);
 

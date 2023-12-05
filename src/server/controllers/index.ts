@@ -24,7 +24,9 @@ export function addRoutes(app: Express) {
             'raw',
           );
 
-          res.setHeader('set-cookie', response.headers['set-cookie'] || []);
+          for (const cookie of response.headers['set-cookie'] || []) {
+            res.setHeader('set-cookie', cookie);
+          }
 
           return res.send(response.data).status(200);
         } catch (error) {
@@ -42,7 +44,7 @@ export function addRoutes(app: Express) {
     }
   }
 
-  addActions('/api/auth', schema.actions.auth);
+  addActions('/api', schema.actions);
 
   app.use('/api/*', (_, response) => {
     response.status(404).json(
