@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx nodemon src/server/index.ts --project src/server/tsconfig.json",
+    "dev": "npx ts-node src/server/index.ts --project src/server/tsconfig.json",
     "start": "APP_ENV=prod node dist/server/index.js",
     "build:client": "vite build --config vite.client.config.ts && vite build --config vite.server.config.ts",
     "build:server": "tsc --project src/server/tsconfig.json && tsc-alias --project src/server/tsconfig.json",

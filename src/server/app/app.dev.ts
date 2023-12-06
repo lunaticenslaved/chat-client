@@ -28,9 +28,11 @@ export async function createApp() {
     appType: 'custom',
     configFile: 'vite.client.config.ts',
     server: {
-      https: true,
       middlewareMode: true,
-      hmr: true,
+      hmr: {
+        path: 'hmr',
+        clientPort: 5551,
+      },
     },
   });
 
