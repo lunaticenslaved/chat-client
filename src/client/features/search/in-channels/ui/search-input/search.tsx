@@ -3,14 +3,14 @@ import { Input } from 'antd';
 
 import classes from './search.module.scss';
 
-export type DialogsSearchProps = {
+export type SearchInChannelsInputProps = {
   search: string;
   onChange(value: string): void;
 };
 
 // FIXME: Input можно заменить на Search
 
-export function DialogsSearch({ search, onChange }: DialogsSearchProps) {
+export function SearchInChannelsInput({ search, onChange }: SearchInChannelsInputProps) {
   return (
     <div className={classes.searchWrapper}>
       <Input

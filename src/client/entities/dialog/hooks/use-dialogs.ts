@@ -1,61 +1,44 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 import { Dialog } from '@common/models';
-import { store, useAppDispatch, useAppSelector } from '@common/store';
+import { store, useAppDispatch } from '@common/store';
 
 import { api } from '@/shared/api';
 
 export type UseDialogsRequest = {
-  searchQuery?: string;
+  disabled?: boolean;
 };
 
 export type UseDialogsResponse = {
   dialogs: Dialog[];
-  isFetching: boolean;
+  isLoading: boolean;
   isError: boolean;
-  currentDialog?: Dialog;
-  selectDialog(dialog?: Dialog): void;
 };
 
-export const useDialogs = ({ searchQuery }: UseDialogsRequest): UseDialogsResponse => {
-  const { data, isFetching, isError } = useQuery({
-    queryKey: ['dialog/list', searchQuery],
-    queryFn: () =>
-      api.actions.dialogs.list({
-        data: { search: searchQuery },
-      }),
-  });
-  const dialogs = data?.dialogs;
-
-  const currentDialog = useAppSelector(store.dialog.selectors.selectCurrentDialog);
+export const useDialogs = ({ disabled }: UseDialogsRequest = {}): UseDialogsResponse => {
   const dispatch = useAppDispatch();
 
-  const filtered = useMemo(() => {
-    if (!dialogs) return [];
-    if (!searchQuery) return dialogs;
-
-    const s = searchQuery.toLowerCase();
-
-    return dialogs.filter(d => d.partner.login.toLowerCase().includes(s));
-  }, [dialogs, searchQuery]);
-
-  const selectDialog = useCallback(
-    (dialog: Dialog) => {
-      dispatch(store.dialog.actions.setCurrentDialogId(dialog.id));
+  const { data, isLoading, isError } = useQuery(
+    ['dialog/list'],
+    () => api.actions.dialogs.list({ data: undefined }),
+    {
+      enabled: !disabled,
     },
-    [dispatch],
   );
 
-  useEffect(() => {
-    dispatch(store.dialog.actions.setDialogs(data?.dialogs || []));
-  }, [data?.dialogs, dispatch]);
+  const dialogs = data?.dialogs;
 
-  return {
-    dialogs: filtered,
-    isFetching,
-    isError,
-    currentDialog,
-    selectDialog,
-  };
+  useEffect(() => {
+    dispatch(store.dialog.actions.setDialogs(dialogs || []));
+  }, [dialogs, dispatch]);
+
+  return useMemo(
+    () => ({
+      dialogs: dialogs || [],
+      isLoading,
+      isError,
+    }),
+    [dialogs, isError, isLoading],
+  );
 };

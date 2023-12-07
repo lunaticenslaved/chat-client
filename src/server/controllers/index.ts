@@ -6,9 +6,11 @@ import { Errors } from '@lunaticenslaved/schema';
 import schema from '@lunaticenslaved/schema';
 
 import { addDialogsRoutes } from './dialogs';
+import { addSearchRoutes } from './search';
 
 export function addRoutes(app: Express) {
   addDialogsRoutes(app);
+  addSearchRoutes(app);
 
   function addActions(path: string, value: unknown) {
     if (typeof value === 'function' && schema.actions.isAction(value)) {

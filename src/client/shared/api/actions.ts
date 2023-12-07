@@ -2,6 +2,8 @@ import {
   ActivateRequest,
   ActivateResponse,
   GetViewerResponse,
+  RefreshRequest,
+  RefreshResponse,
   SignInRequest,
   SignInResponse,
   SignUpRequest,
@@ -9,7 +11,12 @@ import {
 } from '@lunaticenslaved/schema/actions';
 
 import { client } from './client';
-import { ListDialogRequest, ListDialogsResponse } from './types';
+import {
+  ListDialogRequest,
+  ListDialogsResponse,
+  SearchInChannelsRequest,
+  SearchInChannelsResponse,
+} from './types';
 
 export const actions = {
   auth: {
@@ -24,6 +31,10 @@ export const actions = {
     logout: client.createAction({
       endpoint: 'chat-api',
       path: '/auth/logout',
+    }),
+    refresh: client.createAction<RefreshResponse, RefreshRequest>({
+      endpoint: 'chat-api',
+      path: '/auth/refresh',
     }),
     activate: client.createAction<ActivateResponse, ActivateRequest>({
       endpoint: 'chat-api',
@@ -44,6 +55,12 @@ export const actions = {
     list: client.createAction<ListDialogsResponse, ListDialogRequest>({
       endpoint: 'chat-api',
       path: 'dialogs/list',
+    }),
+  },
+  search: {
+    inChannels: client.createAction<SearchInChannelsResponse, SearchInChannelsRequest>({
+      endpoint: 'chat-api',
+      path: 'search/in-channels',
     }),
   },
 };

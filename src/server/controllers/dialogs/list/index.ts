@@ -1,58 +1,28 @@
 import schema from '@lunaticenslaved/schema';
-// FIXME fix import path
-import { User } from '@lunaticenslaved/schema/dist/types/models';
 
 import { createOperation } from '@/context';
 import { DialogFullWithPartner } from '@/models';
+import { getToken } from '@/shared/request';
 
-interface ListDialogRequest {
-  search?: string;
-}
 interface ListDialogResponse {
   dialogs: DialogFullWithPartner[];
-  users?: User[];
 }
 
-export const list = createOperation<ListDialogResponse, ListDialogRequest>(
-  async (req, _, context) => {
-    const { search } = req.body;
-    const { host: _host, ...headers } = req.headers;
-    const { user } = await schema.actions.viewer.get({ config: { headers }, data: undefined });
-    const dialogs = await context.service.dialog.list({ ownerId: user.id });
+export const list = createOperation<ListDialogResponse, void>(async (req, _, context) => {
+  const { host: _host, ...headers } = req.headers;
+  const { user } = await schema.actions.viewer.get({
+    data: undefined,
+    token: getToken(req),
+    config: {
+      headers: {
+        Origin: headers.origin,
+      },
+    },
+  });
 
-    if (!search && !dialogs.length) {
-      return { dialogs: [] };
-    }
+  const dialogs = await context.metaService.dialog.listWithPartners(req, {
+    ownerId: user.id,
+  });
 
-    const { users: partners } = await schema.actions.users.list({
-      data: { userIds: dialogs.map(d => d.partnerId), search },
-      config: { headers: req.headers },
-    });
-
-    const dialogsWithPartners = dialogs.reduce<DialogFullWithPartner[]>((acc, dialog) => {
-      const partner = partners.find(p => p.id === dialog.partnerId);
-
-      if (partner) {
-        acc.push({ ...dialog, partner });
-      }
-
-      return acc;
-    }, []);
-
-    let users: User[] = [];
-
-    if (search) {
-      const data = await schema.actions.users.list({
-        data: { take: 20, search },
-        config: { headers: req.headers },
-      });
-
-      users = data.users;
-    }
-
-    return {
-      dialogs: dialogsWithPartners,
-      users,
-    };
-  },
-);
+  return { dialogs };
+});

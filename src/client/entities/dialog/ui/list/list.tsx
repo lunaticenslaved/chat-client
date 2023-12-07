@@ -1,25 +1,30 @@
 import { Dialog as DialogModel } from '@common/models';
 import { Empty, Spin } from 'antd';
 
+import { UseDialogsResponse, useDialogs } from '@/entities/dialog';
+
 import { Dialog } from '../dialog/dialog';
 
 import classes from './list.module.scss';
 
 export type DialogsListProps = {
-  dialogs: DialogModel[];
+  dialogsQuery?: UseDialogsResponse;
   currentDialogId?: number;
-  isLoading: boolean;
-  isError: boolean;
   onSelectDialog: (dialog: DialogModel) => void;
 };
 
 export const DialogsList = ({
-  dialogs,
-  currentDialogId,
-  isLoading,
-  isError,
   onSelectDialog,
+  currentDialogId,
+  dialogsQuery: dialogsQueryProp,
 }: DialogsListProps) => {
+  const dialogsQueryLocal = useDialogs({ disabled: !!dialogsQueryProp });
+  const dialogsQuery = dialogsQueryProp || dialogsQueryLocal;
+
+  console.log('dialogsQueryProp', dialogsQueryProp);
+
+  const { isError, isLoading, dialogs } = dialogsQuery;
+
   if (isLoading) {
     return (
       <div className={classes.emptyWrapper}>
