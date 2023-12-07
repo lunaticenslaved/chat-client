@@ -20,26 +20,24 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
     async function callRefreshAndSetToken() {
       console.log('NEED REFRESH');
 
-      try {
-        const response = await api.actions.auth.refresh({
+      const response = await api.actions.auth.refresh(
+        {
           axios: libAxios.create({
             withCredentials: true,
           }),
           data: {
             fingerprint: await fingerprint.create(),
           },
-        });
+        },
+        'operation',
+      );
 
-        Token.set(response);
-      } catch (e) {
-        const error = Errors.parse(e);
-
-        if (error instanceof Errors.RefreshTokenExpiredError) {
-          console.log('REFRESH TOKEN EXPIRED');
-
-          Token.remove();
-          onRefreshTokenExpired();
-        }
+      if (response.error) {
+        console.log('REFRESH ERROR');
+        onRefreshTokenExpired();
+        Token.remove();
+      } else {
+        Token.set(response.data);
       }
     }
 

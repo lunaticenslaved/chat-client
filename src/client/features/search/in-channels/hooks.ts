@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { Dialog, User } from '@common/models';
 
 import { api } from '@/shared/api';
+import { useDebouncedState } from '@/shared/hooks';
 
 export interface UseSearchInChannelsRequest {
   query: string;
@@ -18,24 +19,11 @@ export interface UseSearchInChannelsResponse {
 export function useSearchInChannels(
   props: UseSearchInChannelsRequest,
 ): UseSearchInChannelsResponse {
-  const { query } = props;
+  const [query] = useDebouncedState(props.query, 300);
 
-  console.log(
-    api.actions.search.inChannels({ data: { search: query } }).then(data => console.log(data)),
-  );
-
-  const { data, isLoading, isError, isFetched } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['search/in-channels', query],
     queryFn: () => api.actions.search.inChannels({ data: { search: query } }),
-  });
-
-  console.log('isFetched', isFetched);
-
-  console.log({
-    isError,
-    isLoading,
-    users: data?.users || [],
-    dialogs: data?.dialogs || [],
   });
 
   return useMemo(

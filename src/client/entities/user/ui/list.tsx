@@ -1,4 +1,7 @@
 import { User } from '@common/models';
+import { List } from 'antd';
+
+import { UserListItem } from './list-item';
 
 export interface UsersListProps {
   users: User[];
@@ -6,11 +9,11 @@ export interface UsersListProps {
 
 export function UsersList({ users }: UsersListProps) {
   return (
-    <ul>
-      {users.map(user => {
-        console.log(user);
-        return <li key={user.id}>{user.login}</li>;
-      })}
-    </ul>
+    <List
+      dataSource={users}
+      renderItem={user => {
+        return <UserListItem key={user.id} user={user} />;
+      }}
+    />
   );
 }

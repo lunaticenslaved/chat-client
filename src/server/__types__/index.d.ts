@@ -6,6 +6,7 @@ declare global {
       APP_ENV: 'dev' | 'prod';
       DATABASE_URL: string;
       PORT?: string;
+      AUTH_API_URL?: string;
     }
   }
 }
