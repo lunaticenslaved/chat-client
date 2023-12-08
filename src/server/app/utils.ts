@@ -4,7 +4,9 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import fs from 'fs';
+import { Server } from 'http';
 import { resolve } from 'path';
+import { Server as WebSocketServer } from 'socket.io';
 
 import { addHeaders, addUser, logRequest } from '@/middlewares';
 import { logger } from '@/shared';
@@ -90,5 +92,37 @@ export function addSSRRoute({
 
       next(e);
     }
+  });
+}
+
+export function addWebSocket(server: Server) {
+  console.log('ADD WEB SOCKET');
+
+  const wsServer = new WebSocketServer(server);
+
+  // io.use(async (socket, next) => {
+  //   try {
+  //     const token = socket.handshake.auth.token;
+
+  //     // Verify and decode the JWT
+  //     const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+  //     // Get the user information from the database
+  //     const user = await User.findById(decoded.userId);
+  //     if (!user) {
+  //       throw new Error('User not found');
+  //     }
+
+  //     // Attach the user object to the socket
+  //     socket.user = user;
+  //     next();
+  //   } catch (error) {
+  //     console.error('Authentication error', error);
+  //     next(new Error('Authentication error'));
+  //   }
+  // });
+
+  wsServer.on('connection', () => {
+    logger.info(`[SOCKET] User connected`);
   });
 }

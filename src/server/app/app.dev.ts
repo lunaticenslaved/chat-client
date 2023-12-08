@@ -8,7 +8,7 @@ import { addRoutes } from '@/controllers';
 import { constants, logger } from '@/shared';
 
 import { ROOT_PATH } from './constants';
-import { addSSRRoute, configureApp } from './utils';
+import { addSSRRoute, addWebSocket, configureApp } from './utils';
 
 const { PORT } = constants;
 
@@ -23,6 +23,7 @@ export async function createApp() {
   const vite = await import('vite');
 
   const app = express();
+
   const viteServer = await vite.createServer({
     root: ROOT_PATH,
     appType: 'custom',
@@ -51,9 +52,11 @@ export async function createApp() {
     createStore: (await viteServer.ssrLoadModule(CLIENT_STORE_FILE_PATH)).createStore,
   });
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     logger.info(
       `  ➜ 🎸 [DEV] Server is listening on port: ${PORT}. Use this server: https://localhost:${PORT}`,
     );
   });
+
+  addWebSocket(server);
 }

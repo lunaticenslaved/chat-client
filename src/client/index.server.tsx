@@ -3,7 +3,7 @@ import { StaticRouter } from 'react-router-dom/server';
 
 import { Store } from '@reduxjs/toolkit';
 
-import { App } from './app/app.base';
+import { App } from './app/app';
 
 export function render(url: string, store: Store) {
   return renderToString(

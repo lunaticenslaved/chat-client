@@ -9,7 +9,7 @@ import { logger } from '@/shared';
 import { PORT } from '@/shared/constants';
 
 import { ROOT_PATH } from './constants';
-import { addSSRRoute, configureApp } from './utils';
+import { addSSRRoute, addWebSocket, configureApp } from './utils';
 
 const ASSETS_PATH = path.resolve(ROOT_PATH, 'dist/client/client/assets');
 const HTML_FILE_PATH = path.resolve(ROOT_PATH, 'dist/client/client/index.html');
@@ -33,9 +33,11 @@ export async function createApp() {
     createStore: (await import(STORE_FILE_PATH)).createStore,
   });
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     logger.info(
       `  ➜ 🎸 [PROD] Server is listening on port: ${PORT}. Use this server: http://localhost:${PORT}`,
     );
   });
+
+  addWebSocket(server);
 }
