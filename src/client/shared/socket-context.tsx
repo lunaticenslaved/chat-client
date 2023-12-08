@@ -1,12 +1,14 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-import { io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 
 import { Token } from '@/shared/token';
 
-interface ISocketContext {}
+interface ISocketContext {
+  socket: Socket;
+}
 
-const SocketContextBase = createContext<ISocketContext>({});
+const SocketContextBase = createContext<ISocketContext>({} as ISocketContext);
 
 interface SocketContextProps {
   children: ReactNode;
@@ -14,15 +16,22 @@ interface SocketContextProps {
 
 // FIXME handle token expired
 function createSocket() {
-  return io({
+  const socket = io({
     auth: {
       token: Token.get().token,
     },
   });
+
+  socket.on('connect', () => {
+    console.log('SOCKET CONNECTED');
+  });
+
+  return socket;
 }
 
 export function SocketContext({ children }: SocketContextProps) {
   const [socket, setSocket] = useState(createSocket());
+  const value = useMemo((): ISocketContext => ({ socket }), [socket]);
 
   useEffect(() => {
     function setNewToken() {
@@ -37,10 +46,6 @@ export function SocketContext({ children }: SocketContextProps) {
   }, []);
 
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('SOCKET CONNECTED');
-    });
-
     socket.connect();
 
     return () => {
@@ -48,7 +53,7 @@ export function SocketContext({ children }: SocketContextProps) {
     };
   }, [socket]);
 
-  return <SocketContextBase.Provider value={{}}>{children}</SocketContextBase.Provider>;
+  return <SocketContextBase.Provider value={value}>{children}</SocketContextBase.Provider>;
 }
 
 export function useSocketContext() {

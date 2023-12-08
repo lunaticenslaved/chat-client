@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { Viewer } from '@common/models';
-import { store, useAppDispatch, useAppSelector } from '@common/store';
+import { Viewer } from '@domain/viewer';
+import { store, useAppDispatch, useAppSelector } from '@store';
 
 import { api } from '@/shared/api';
 

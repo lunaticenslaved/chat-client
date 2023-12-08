@@ -21,11 +21,9 @@ export const select = {
 
 interface PrepareDialogRequest {
   messages?: {
-    id: number;
+    id: string;
     text: string;
-    authorId: string;
     createdAt: Date;
-    isRead: boolean;
   }[];
   partnerId: string;
   ownerId: string;
@@ -56,10 +54,17 @@ export const selectWithLastMessage = {
 
 export function prepareDialog(notPreparedDialog: PrepareDialogRequest): DialogFull {
   const { _count, messages, ...dialog } = notPreparedDialog;
+  const message = messages?.[0];
 
   return {
     ...dialog,
-    lastMessage: messages?.[0],
+    lastMessage: message
+      ? {
+          id: message.id,
+          text: message.text,
+          createdAt: message.createdAt.toISOString(),
+        }
+      : undefined,
     notReadMessagesCount: _count.messages || 0,
   };
 }

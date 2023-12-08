@@ -8,12 +8,13 @@
     "types": ["vite/client", "vite-plugin-svgr/client"],
     "jsx": "react-jsx",
 
-    /* Paths */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@common/*": ["../common/*"]
-    }
+      "@store": ["../store/index.ts"],
+      "@domain/*": ["../domain/*"],
+      "@api/*": ["../api/*"]
+  }
   },
   "exclude": ["../server"]
 }

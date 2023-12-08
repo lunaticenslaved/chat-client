@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
-import { Dialog } from '@common/models';
-import { store, useAppDispatch, useAppSelector } from '@common/store';
+import { Dialog } from '@domain/dialog';
+import { store, useAppDispatch, useAppSelector } from '@store';
 
 export interface UseDialogResponse {
   current?: Dialog;

@@ -22,7 +22,7 @@ model Dialog {
 }
 
 model Message {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
 
   authorId String
 

@@ -1,4 +1,4 @@
-import { User } from '@common/models';
+import { User } from '@domain/user';
 import { List } from 'antd';
 
 import { UserListItem } from './list-item';

@@ -3,6 +3,13 @@
   "include": ["src"],
   "compilerOptions": {
     "resolveJsonModule": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "baseUrl": "./src",
+    "paths": {
+        "@store": ["./store/index.ts"],
+        "@domain/*": ["./domain/*"],
+        "@api/*": ["./api/*"]
+    }
   }
 }

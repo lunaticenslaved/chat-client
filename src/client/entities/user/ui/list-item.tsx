@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { User } from '@common/models';
+import { User } from '@domain/user';
 import { List, Typography } from 'antd';
 
 import { Avatar } from '@/shared/components/avatar';

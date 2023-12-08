@@ -1,22 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
-import { Message } from '@/models';
-
-interface CreateMessageRequest {
-  text: string;
-  authorId: string;
-  dialogId: string;
-}
-type CreateMessageResponse = Message;
-
-const select = {
-  text: true,
-  id: true,
-  authorId: true,
-  dialogId: true,
-  isRead: true,
-  createdAt: true,
-};
+import { CreateMessageRequest, CreateMessageResponse } from './types';
+import { select } from './utils';
 
 export class MessageService {
   private prisma: PrismaClient;
@@ -35,6 +20,10 @@ export class MessageService {
       },
     });
 
-    return message;
+    return {
+      id: message.id,
+      text: message.text,
+      createdAt: message.createdAt.toISOString(),
+    };
   }
 }

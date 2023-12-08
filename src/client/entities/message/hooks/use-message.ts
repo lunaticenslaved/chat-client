@@ -1,26 +1,29 @@
-import { useMemo } from 'react';
-import { useMutation } from 'react-query';
+import { useCallback, useMemo } from 'react';
 
-import { MessageAPI } from '../api';
+import { CreateMessageRequest, MessageEvent } from '@api/messages';
+
+import { useSocketContext } from '@/shared/socket-context';
 
 export type UseMessageResponse = {
-  isLoading: boolean;
-  isError: boolean;
-  createMessage(data: MessageAPI.CreateMessageRequest): void;
+  send(data: CreateMessageRequest): void;
 };
 
 export function useMessage(): UseMessageResponse {
-  const { mutate, isLoading, isError } = useMutation({
-    mutationKey: 'create-message',
-    mutationFn: MessageAPI.createMessage,
-  });
+  const { socket } = useSocketContext();
+
+  const send: UseMessageResponse['send'] = useCallback(
+    value => {
+      console.log('SEND MESSAGE');
+
+      socket.emit(MessageEvent.send, value);
+    },
+    [socket],
+  );
 
   return useMemo(
     () => ({
-      isLoading,
-      isError,
-      createMessage: mutate,
+      send,
     }),
-    [isError, isLoading, mutate],
+    [send],
   );
 }

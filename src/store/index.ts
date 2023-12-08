@@ -1,8 +1,7 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
+import { Viewer } from '@domain/viewer';
 import { configureStore } from '@reduxjs/toolkit';
-
-import { Viewer } from '../models';
 
 import { DialogsStore } from './dialog';
 import { ViewerStore } from './viewer';

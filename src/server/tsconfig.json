@@ -15,10 +15,12 @@
 
     "outDir": "../../dist",
     "rootDir": "..",
-    "baseUrl": "..",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./server/*"],
-      "@common/*": ["./common/*"]
+        "@/*": ["./*"],
+        "@store": ["../store/index.ts"],
+        "@domain/*": ["../domain/*"],
+        "@api/*": ["../api/*"]
     }
   },
   "exclude": ["../client"]

@@ -1,16 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { KeyboardEventHandler, useCallback } from 'react';
 
 import { AudioOutlined, CameraOutlined, SmileOutlined } from '@ant-design/icons';
+import { isExistingDialog } from '@domain/dialog';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { Button, Popover, Upload, UploadProps, message } from 'antd';
 
+import { useDialog } from '@/entities/dialog';
 import { useMessage } from '@/entities/message';
+import { useViewer } from '@/entities/viewer';
 import { Input } from '@/shared/components/Input';
 
 import classes from './message-input.module.scss';
-
-// FIXME: устанавливать у
 
 const props: UploadProps = {
   name: 'file',
@@ -32,7 +33,9 @@ const props: UploadProps = {
 
 export const MessageInput = () => {
   const [text, setText] = React.useState('');
-  const { createMessage } = useMessage();
+  const message = useMessage();
+  const dialog = useDialog();
+  const viewer = useViewer();
 
   const onEmojiSelect = useCallback(
     (emoji: { native: unknown }) => {
@@ -42,9 +45,33 @@ export const MessageInput = () => {
     [text],
   );
 
-  const sendMessage = useCallback(() => {
-    createMessage({ text });
-  }, [createMessage, text]);
+  const sendMessage: KeyboardEventHandler = useCallback(
+    event => {
+      if (event.key !== 'Enter') return;
+
+      const currentDialog = dialog.current;
+      const userId = viewer.user?.id;
+
+      if (!currentDialog || !userId) return;
+
+      if (isExistingDialog(currentDialog)) {
+        message.send({
+          text,
+          type: 'old_dialog',
+          dialogId: currentDialog.id,
+          viewerId: userId,
+        });
+      } else {
+        message.send({
+          text,
+          type: 'new_dialog',
+          userId: currentDialog.user.id,
+          viewerId: userId,
+        });
+      }
+    },
+    [dialog, message, text, viewer.user?.id],
+  );
 
   return (
     <div className={classes.root}>

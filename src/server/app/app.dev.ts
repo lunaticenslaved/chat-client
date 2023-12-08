@@ -14,7 +14,7 @@ const { PORT } = constants;
 
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
 const CLIENT_RENDER_FILE_PATH = path.resolve(SRC_PATH, 'client/index.server');
-const CLIENT_STORE_FILE_PATH = path.resolve(SRC_PATH, 'common/store');
+const CLIENT_STORE_FILE_PATH = path.resolve(SRC_PATH, 'store');
 const CLIENT_HTML_FILE_PATH = path.resolve(ROOT_PATH, 'index.html');
 
 export async function createApp() {
@@ -41,8 +41,14 @@ export async function createApp() {
 
   configureApp(app);
 
-  addRoutes(app);
+  const server = app.listen(PORT, () => {
+    logger.info(
+      `  ➜ 🎸 [DEV] Server is listening on port: ${PORT}. Use this server: https://localhost:${PORT}`,
+    );
+  });
 
+  addWebSocket(server);
+  addRoutes(app);
   addSSRRoute({
     app,
     getContent: async url =>
@@ -51,12 +57,4 @@ export async function createApp() {
     onError: viteServer.ssrFixStacktrace,
     createStore: (await viteServer.ssrLoadModule(CLIENT_STORE_FILE_PATH)).createStore,
   });
-
-  const server = app.listen(PORT, () => {
-    logger.info(
-      `  ➜ 🎸 [DEV] Server is listening on port: ${PORT}. Use this server: https://localhost:${PORT}`,
-    );
-  });
-
-  addWebSocket(server);
 }

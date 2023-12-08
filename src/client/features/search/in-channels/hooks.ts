@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { Dialog, User } from '@common/models';
+import { Dialog } from '@domain/dialog';
+import { User } from '@domain/user';
 
 import { api } from '@/shared/api';
 import { useDebouncedState } from '@/shared/hooks';

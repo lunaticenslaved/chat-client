@@ -1,6 +1,5 @@
+import { Dialog } from '@domain/dialog';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
-import { Dialog } from '../models';
 
 interface DialogsState {
   currentDialog?: Dialog;

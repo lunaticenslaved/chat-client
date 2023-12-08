@@ -3,7 +3,8 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import svgLoader from 'vite-plugin-svgr';
 
-// https://vitejs.dev/config/
+import { alias } from './vite.utils.config';
+
 export default defineConfig({
   plugins: [react(), svgLoader()],
   mode: process.env.NODE_ENV,
@@ -17,9 +18,6 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, './src/client'),
-      '@common': resolve(__dirname, './src/common'),
-    },
+    alias,
   },
 });

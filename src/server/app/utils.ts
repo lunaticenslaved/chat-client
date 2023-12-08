@@ -8,6 +8,7 @@ import { Server } from 'http';
 import { resolve } from 'path';
 import { Server as WebSocketServer } from 'socket.io';
 
+import { addSocketEvents } from '@/controllers';
 import { addHeaders, addUser, logRequest } from '@/middlewares';
 import { logger } from '@/shared';
 
@@ -95,10 +96,10 @@ export function addSSRRoute({
   });
 }
 
-export function addWebSocket(server: Server) {
-  console.log('ADD WEB SOCKET');
-
+export function addWebSocket(server: Server): WebSocketServer {
   const wsServer = new WebSocketServer(server);
+
+  // FIXME add auth middleware
 
   // io.use(async (socket, next) => {
   //   try {
@@ -122,7 +123,11 @@ export function addWebSocket(server: Server) {
   //   }
   // });
 
-  wsServer.on('connection', () => {
+  wsServer.on('connection', socket => {
     logger.info(`[SOCKET] User connected`);
+
+    addSocketEvents(socket);
   });
+
+  return wsServer;
 }

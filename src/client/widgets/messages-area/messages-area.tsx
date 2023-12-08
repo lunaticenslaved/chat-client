@@ -1,4 +1,4 @@
-import { Dialog } from '@common/models';
+import { Dialog } from '@domain/dialog';
 
 import { MessageModel } from '@/entities/message';
 

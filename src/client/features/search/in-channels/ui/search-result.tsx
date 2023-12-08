@@ -1,6 +1,7 @@
 import { Fragment, useCallback } from 'react';
 
-import { User, createNewDialog } from '@common/models';
+import { createNewDialog } from '@domain/dialog';
+import { User } from '@domain/user';
 import { Typography } from 'antd';
 
 import { useDialog } from '@/entities/dialog';

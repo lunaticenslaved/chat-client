@@ -1,22 +1,16 @@
 import { Request } from 'express';
 
-import { PrismaClient } from '@prisma/client';
-
 import schema from '@lunaticenslaved/schema';
 
-import { IService, ListDialogRequest } from '@/context/service';
+import { ListDialogRequest } from '@/context/service';
 import { DialogFullWithPartner } from '@/models';
 import { getToken } from '@/shared/request';
 
+import { BaseMetaService } from '../base-metaservice';
+
 import { ListDialogResponse } from './types';
 
-export class DialogsMetaService {
-  private service: IService;
-
-  constructor(_: PrismaClient, service: IService) {
-    this.service = service;
-  }
-
+export class DialogsMetaService extends BaseMetaService {
   async listWithPartners(req: Request, data: ListDialogRequest): Promise<ListDialogResponse> {
     const { search } = data;
 

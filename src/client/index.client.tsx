@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import { createStore } from '@common/store';
+import { createStore } from '@store';
 
 import { constants } from '@/shared/constants';
 import { SocketContext } from '@/shared/socket-context';

@@ -1,4 +1,4 @@
-import { User } from '@common/models';
+import { User } from '@domain/user';
 
 import schema from '@lunaticenslaved/schema';
 
