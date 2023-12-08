@@ -14,6 +14,8 @@ import {
 } from './types';
 import { prepareDialog, select, selectWithLastMessage } from './utils';
 
+export * from './types';
+
 export class DialogService {
   private prisma: PrismaClient;
 

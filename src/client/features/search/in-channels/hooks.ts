@@ -13,7 +13,7 @@ export interface UseSearchInChannelsResponse {
   isLoading: boolean;
   isError: boolean;
   users: User[];
-  dialogs: Dialog[];
+  existingDialogs: Dialog[];
 }
 
 export function useSearchInChannels(
@@ -31,8 +31,8 @@ export function useSearchInChannels(
       isError,
       isLoading,
       users: data?.users || [],
-      dialogs: data?.dialogs || [],
+      existingDialogs: data?.existingDialogs || [],
     }),
-    [data?.dialogs, data?.users, isLoading, isError],
+    [data?.existingDialogs, data?.users, isLoading, isError],
   );
 }

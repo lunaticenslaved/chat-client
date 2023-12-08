@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { useCurrentDialog } from '@/entities/dialog';
+import { useDialog } from '@/entities/dialog';
 import { useMessages } from '@/entities/message';
 import { MessageInput } from '@/features/message-input';
 import { ChannelsListAndSearch } from '@/widgets/channels-list-and-search';
@@ -9,7 +9,7 @@ import { MessagesArea } from '@/widgets/messages-area';
 import { MessageAreaHeader } from '@/widgets/messages-area-header';
 
 const ChatPage = () => {
-  const currentDialog = useCurrentDialog();
+  const dialog = useDialog();
   const { messages, isError: isErrorMessages, isFetching: isLoadingMessages } = useMessages();
 
   return (
@@ -17,9 +17,9 @@ const ChatPage = () => {
       sidebar={<ChannelsListAndSearch />}
       content={
         <Fragment>
-          {currentDialog.current && (
+          {dialog.current && (
             <MessageAreaHeader
-              title={currentDialog.current.partner.login}
+              title={dialog.current.user.login}
               isOnline={false}
               // TODO add isOnline
               // isOnline={currentDialog.partner.isOnline}
@@ -27,11 +27,11 @@ const ChatPage = () => {
           )}
           <MessagesArea
             messages={messages || []}
-            currentDialog={currentDialog.current}
+            dialog={dialog.current}
             isError={isErrorMessages}
             isLoading={isLoadingMessages}
           />
-          {currentDialog && <MessageInput />}
+          {dialog && <MessageInput />}
         </Fragment>
       }
     />

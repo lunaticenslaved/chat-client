@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client';
 import { DialogService } from './dialog';
 import { MessageService } from './message';
 
+export * from './dialog/types';
+
 export interface IService {
   dialog: DialogService;
   message: MessageService;

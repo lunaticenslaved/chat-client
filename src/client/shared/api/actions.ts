@@ -12,7 +12,7 @@ import {
 
 import { client } from './client';
 import {
-  ListDialogRequest,
+  ListDialogsRequest,
   ListDialogsResponse,
   SearchInChannelsRequest,
   SearchInChannelsResponse,
@@ -51,8 +51,8 @@ export const actions = {
       path: '/viewer/get',
     }),
   },
-  dialogs: {
-    list: client.createAction<ListDialogsResponse, ListDialogRequest>({
+  dialog: {
+    list: client.createAction<ListDialogsResponse, ListDialogsRequest>({
       endpoint: 'chat-api',
       path: 'dialogs/list',
     }),

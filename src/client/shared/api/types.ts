@@ -1,6 +1,6 @@
 import { Dialog, User } from '@common/models';
 
-export type ListDialogRequest = void;
+export type ListDialogsRequest = void;
 export interface ListDialogsResponse {
   dialogs: Dialog[];
 }
@@ -10,6 +10,6 @@ export interface SearchInChannelsRequest {
 }
 
 export interface SearchInChannelsResponse {
-  dialogs: Dialog[];
+  existingDialogs: Dialog[];
   users: User[];
 }

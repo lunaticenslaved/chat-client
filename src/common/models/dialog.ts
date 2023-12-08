@@ -1,14 +1,10 @@
 import { User } from './user';
 
 export interface Dialog {
-  id: number;
-  ownerId: string;
-  partnerId: string;
-  createdAt: string;
-  updatedAt: string;
-  notReadMessagesCount: number;
-  lastMessage: LastMessage;
-  partner: User;
+  id?: number;
+  notReadMessagesCount?: number;
+  lastMessage?: LastMessage;
+  user: User;
 }
 
 interface LastMessage {
@@ -17,4 +13,12 @@ interface LastMessage {
   createdAt: string;
   text: string;
   isRead: boolean;
+}
+
+export function isExistingDialog(dialog: Dialog): boolean {
+  return !!dialog.id;
+}
+
+export function createNewDialog(user: User): Dialog {
+  return { user };
 }

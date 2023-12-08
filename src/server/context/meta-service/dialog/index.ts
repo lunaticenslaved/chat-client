@@ -4,8 +4,7 @@ import { PrismaClient } from '@prisma/client';
 
 import schema from '@lunaticenslaved/schema';
 
-import { IService } from '@/context/service';
-import { ListDialogRequest } from '@/context/service/dialog/types';
+import { IService, ListDialogRequest } from '@/context/service';
 import { DialogFullWithPartner } from '@/models';
 import { getToken } from '@/shared/request';
 

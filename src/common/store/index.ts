@@ -30,6 +30,6 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export const store = {
-  dialog: DialogsStore,
-  viewer: ViewerStore,
+  [DialogsStore.slice.name]: DialogsStore,
+  [ViewerStore.slice.name]: ViewerStore,
 };

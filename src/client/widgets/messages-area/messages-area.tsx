@@ -10,13 +10,13 @@ import { NoMessagesView } from './views/no-messages';
 
 export interface MessageAreaProps {
   messages: MessageModel[];
-  currentDialog?: Dialog;
+  dialog?: Dialog;
   isLoading: boolean;
   isError: boolean;
 }
 
-export const MessagesArea = ({ messages, currentDialog, isError, isLoading }: MessageAreaProps) => {
-  if (!currentDialog) {
+export const MessagesArea = ({ messages, dialog, isError, isLoading }: MessageAreaProps) => {
+  if (!dialog) {
     return <NoDialogView />;
   }
 
