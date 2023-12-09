@@ -21,6 +21,14 @@ interface LastMessage {
   isRead: boolean;
 }
 
+export function getDialogIdentifier(dialog: Dialog): string {
+  if (isExistingDialog(dialog)) {
+    return dialog.id;
+  }
+
+  return dialog.user.id;
+}
+
 export function isExistingDialog(dialog: Dialog): dialog is ExistingDialog {
   return 'id' in dialog && !!dialog.id;
 }

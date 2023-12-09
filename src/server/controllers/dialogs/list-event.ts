@@ -1,16 +1,13 @@
 import { Socket } from 'socket.io';
 
 import schema from '@lunaticenslaved/schema';
+import { ApiError } from '@lunaticenslaved/schema/dist/types/errors';
 
-import { ListDialogsRequest, ListDialogsResponse } from '#/api/dialog';
+import { DialogServerEvent, ListDialogsRequest } from '#/api/dialog';
 import { Context } from '#/server/context';
 import { logger } from '#/server/shared';
 
-export async function list(
-  data: ListDialogsRequest,
-  socket: Socket,
-  context: Context,
-): Promise<ListDialogsResponse> {
+export async function list(data: ListDialogsRequest, socket: Socket, context: Context) {
   try {
     logger.info(`[SOCKET][DIALOG] List dialogs:\n ${JSON.stringify(data)}`);
 
@@ -31,8 +28,14 @@ export async function list(
       ownerId: user.id,
     });
 
-    return dialogs;
-  } catch {
-    return [];
+    socket.emit(DialogServerEvent.Listed, {
+      data: dialogs,
+      error: null,
+    });
+  } catch (e) {
+    socket.emit(DialogServerEvent.Listed, {
+      data: null,
+      error: e as ApiError,
+    });
   }
 }

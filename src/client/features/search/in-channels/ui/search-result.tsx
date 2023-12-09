@@ -2,30 +2,29 @@ import { Fragment, useCallback } from 'react';
 
 import { Typography } from 'antd';
 
-import { useDialog } from '#/client/entities/dialog';
 import { UsersList } from '#/client/entities/user';
-import { createNewDialog } from '#/domain/dialog';
+import { Dialog, createNewDialog } from '#/domain/dialog';
 import { User } from '#/domain/user';
 
 import { useSearchInChannels } from '../hooks';
 
 export interface SearchInChannelsResultProps {
   query: string;
+  onClick?(dialog: Dialog): void;
 }
 
 const style = {
   padding: '20px 20px',
 };
 
-export function SearchInChannelsResult({ query }: SearchInChannelsResultProps) {
+export function SearchInChannelsResult({ query, onClick }: SearchInChannelsResultProps) {
   const searchQuery = useSearchInChannels({ query });
-  const dialog = useDialog();
 
   const onUserClick = useCallback(
     (user: User) => {
-      dialog.set(createNewDialog(user));
+      onClick?.(createNewDialog(user));
     },
-    [dialog],
+    [onClick],
   );
 
   return (

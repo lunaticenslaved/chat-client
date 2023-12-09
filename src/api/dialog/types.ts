@@ -1,3 +1,5 @@
+import { OperationResponse } from '@lunaticenslaved/schema/dist/types/models';
+
 import { Dialog } from '#/domain/dialog';
 
 export enum DialogServerEvent {
@@ -9,9 +11,9 @@ export enum DialogClientEvent {
   List = 'CLIENT:DIALOG:LIST',
 }
 
-export type DialogCreatedData = Dialog;
+export type CreateDialogResponse = OperationResponse<Dialog>;
 
-export type ListDialogsResponse = Dialog[];
+export type ListDialogsResponse = OperationResponse<Dialog[]>;
 export type ListDialogsRequest = {
   take: number;
 };

@@ -3,15 +3,16 @@ import { useCallback } from 'react';
 import { List, Typography } from 'antd';
 
 import { Avatar } from '#/client/shared/components/avatar';
-import { User } from '#/domain/user';
+import { Dialog } from '#/domain/dialog';
 
-export interface UserListItemProps {
-  user: User;
-  onClick?(user: User): void;
+export interface DialogListItemProps {
+  dialog: Dialog;
+  onClick?(user: Dialog): void;
 }
 
-export function UserListItem({ user, onClick }: UserListItemProps) {
-  const handleClick = useCallback(() => onClick?.(user), [onClick, user]);
+export function DialogListItem({ dialog, onClick }: DialogListItemProps) {
+  const { user } = dialog;
+  const handleClick = useCallback(() => onClick?.(dialog), [onClick, dialog]);
 
   return (
     <List.Item onClick={onClick ? handleClick : undefined}>

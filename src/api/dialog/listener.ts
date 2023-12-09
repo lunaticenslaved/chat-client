@@ -12,8 +12,4 @@ export class DialogEventsListener extends SocketEventListener {
   listDialogs(fn: (data: ListDialogsResponse) => void) {
     this.socket.on(DialogServerEvent.Listed, fn);
   }
-
-  destroy() {
-    this.socket.off(DialogServerEvent.Created);
-  }
 }

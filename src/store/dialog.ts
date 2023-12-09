@@ -30,7 +30,7 @@ const slice = createSlice({
 
 const selectors = {
   selectCurrentDialog: (state: { dialogs: DialogsState }) => state.dialogs.currentDialog,
-  selectDialogs: (state: { dialogs: DialogsState }) => state.dialogs.currentDialog,
+  selectDialogs: (state: { dialogs: DialogsState }) => state.dialogs.dialogs,
 };
 
 export const DialogsStore = {

@@ -10,6 +10,6 @@ export class MessageEventsEmitter extends SocketEventsEmitter {
 
   listMessages(value: ListMessagesRequest) {
     console.log('LIST MESSAGES');
-    this.socket.emit(MessageClientEvent.Send, value);
+    this.socket.emit(MessageClientEvent.List, value);
   }
 }

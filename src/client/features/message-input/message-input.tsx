@@ -6,10 +6,10 @@ import Picker from '@emoji-mart/react';
 import { Button, Popover, Upload, UploadProps, message } from 'antd';
 
 import { useDialog } from '#/client/entities/dialog';
-import { useMessage } from '#/client/entities/message';
+import { useMessagesContext } from '#/client/entities/message';
 import { useViewer } from '#/client/entities/viewer';
-import { isExistingDialog } from '#/domain/dialog';
 import { Input } from '#/client/shared/components/Input';
+import { isExistingDialog } from '#/domain/dialog';
 
 import classes from './message-input.module.scss';
 
@@ -33,7 +33,7 @@ const props: UploadProps = {
 
 export const MessageInput = () => {
   const [text, setText] = React.useState('');
-  const message = useMessage();
+  const messagesContext = useMessagesContext();
   const dialog = useDialog();
   const viewer = useViewer();
 
@@ -55,14 +55,14 @@ export const MessageInput = () => {
       if (!currentDialog || !userId) return;
 
       if (isExistingDialog(currentDialog)) {
-        message.send({
+        messagesContext.sendMessage({
           text,
           type: 'old_dialog',
           dialogId: currentDialog.id,
           viewerId: userId,
         });
       } else {
-        message.send({
+        messagesContext.sendMessage({
           text,
           type: 'new_dialog',
           userId: currentDialog.user.id,
@@ -70,7 +70,7 @@ export const MessageInput = () => {
         });
       }
     },
-    [dialog, message, text, viewer.user?.id],
+    [dialog, messagesContext, text, viewer.user?.id],
   );
 
   return (
