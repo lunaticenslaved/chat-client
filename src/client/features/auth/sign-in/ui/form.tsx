@@ -3,9 +3,9 @@ import { Form, Input } from 'antd';
 
 import Schema from '@lunaticenslaved/schema';
 
-import { ROUTES } from '@/config/routes';
-import { AuthForm } from '@/entities/viewer';
-import { createAntdValidator } from '@/shared/lib/validators';
+import { ROUTES } from '#/client/config/routes';
+import { AuthForm } from '#/client/entities/viewer';
+import { createAntdValidator } from '#/client/shared/lib/validators';
 
 import { useSignIn } from '../hooks';
 

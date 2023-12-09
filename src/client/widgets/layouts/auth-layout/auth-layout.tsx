@@ -2,7 +2,7 @@ import { PropsWithChildren, ReactNode } from 'react';
 
 import cn from 'classnames';
 
-import { Block } from '@/shared/components/Block';
+import { Block } from '#/client/shared/components/Block';
 
 import classes from './auth-layout.module.scss';
 

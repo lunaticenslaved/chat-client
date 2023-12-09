@@ -1,7 +1,7 @@
-import { useViewer } from '@/entities/viewer';
-import { LogoutButton } from '@/features/auth/logout';
-import { Avatar } from '@/shared/components/avatar';
-import { Divider } from '@/shared/components/divider';
+import { useViewer } from '#/client/entities/viewer';
+import { LogoutButton } from '#/client/features/auth/logout';
+import { Avatar } from '#/client/shared/components/avatar';
+import { Divider } from '#/client/shared/components/divider';
 
 import classes from './chat-layout.module.scss';
 

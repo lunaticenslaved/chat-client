@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { IService } from '@/context/service';
+import { IService } from '#/server/context/service';
 
 import { DialogsMetaService } from './dialog';
 

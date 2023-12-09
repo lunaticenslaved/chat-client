@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { api } from '@/shared/api';
-import { Handlers } from '@/shared/types';
+import { api } from '#/client/shared/api';
+import { Handlers } from '#/client/shared/types';
 
 export type UseRepeatConfirmEmailRequest = Handlers;
 

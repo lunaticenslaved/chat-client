@@ -1,12 +1,13 @@
 import { createRef, useEffect } from 'react';
 
-import { Message, MessageModel } from '@/entities/message';
-import { useViewer } from '@/entities/viewer';
+import { MessageItem } from '#/client/entities/message';
+import { useViewer } from '#/client/entities/viewer';
+import { Message } from '#/domain/message';
 
 import classes from './messages-list.module.scss';
 
 export interface MessagesListProps {
-  messages: MessageModel[];
+  messages: Message[];
 }
 
 export const MessagesList = (props: MessagesListProps) => {
@@ -25,10 +26,10 @@ export const MessagesList = (props: MessagesListProps) => {
       <ul>
         {props.messages.map(m => (
           <li key={m.id}>
-            <Message
+            <MessageItem
               {...m}
-              avatarSrc={m.author.avatar}
-              ownerName={m.author.name}
+              avatarSrc={m.author.avatar?.link}
+              ownerName={m.author.login}
               isMe={m.author.id === viewer?.id}
             />
           </li>

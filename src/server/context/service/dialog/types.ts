@@ -1,4 +1,4 @@
-import { DialogFull } from '@/models';
+import { DialogFull } from '#/server/models';
 
 export interface CreateDialogRequest {
   partnerId: string;

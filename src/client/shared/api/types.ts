@@ -1,5 +1,5 @@
-import { Dialog } from '@domain/dialog';
-import { User } from '@domain/user';
+import { Dialog } from '#/domain/dialog';
+import { User } from '#/domain/user';
 
 export type ListDialogsRequest = void;
 export interface ListDialogsResponse {

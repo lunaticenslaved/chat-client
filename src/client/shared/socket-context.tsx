@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useEffect, useMemo, useState } fr
 
 import { Socket, io } from 'socket.io-client';
 
-import { Token } from '@/shared/token';
+import { Token } from '#/client/shared/token';
 
 interface ISocketContext {
   socket: Socket;

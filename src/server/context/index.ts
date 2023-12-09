@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { createOperationWithContext } from '@/shared/operation';
+import { createOperationWithContext } from '#/server/shared/operation';
 
 import { IMetaService, createMetaServices } from './meta-service';
 import { IService, createServices } from './service';

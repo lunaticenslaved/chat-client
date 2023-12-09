@@ -2,9 +2,9 @@ import { Request } from 'express';
 
 import schema from '@lunaticenslaved/schema';
 
-import { ListDialogRequest } from '@/context/service';
-import { DialogFullWithPartner } from '@/models';
-import { getToken } from '@/shared/request';
+import { ListDialogRequest } from '#/server/context/service';
+import { DialogFullWithPartner } from '#/server/models';
+import { getToken } from '#/server/shared/request';
 
 import { BaseMetaService } from '../base-metaservice';
 

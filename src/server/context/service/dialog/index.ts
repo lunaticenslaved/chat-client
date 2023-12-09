@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { Errors } from '@lunaticenslaved/schema';
 
-import { Helpers } from '@/shared/helpers';
+import { Helpers } from '#/server/shared/helpers';
 
 import {
   CreateDialogRequest,

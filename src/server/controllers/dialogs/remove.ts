@@ -1,7 +1,7 @@
 import schema, { Errors } from '@lunaticenslaved/schema';
 
-import { createOperation } from '@/context';
-import { utils } from '@/shared';
+import { createOperation } from '#/server/context';
+import { utils } from '#/server/shared';
 
 interface RemoveDialogRequest {
   dialogId: string;

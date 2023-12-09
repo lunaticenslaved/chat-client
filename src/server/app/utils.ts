@@ -8,9 +8,9 @@ import { Server } from 'http';
 import { resolve } from 'path';
 import { Server as WebSocketServer } from 'socket.io';
 
-import { addSocketEvents } from '@/controllers';
-import { addHeaders, addUser, logRequest } from '@/middlewares';
-import { logger } from '@/shared';
+import { addSocketEvents } from '#/server/controllers';
+import { addHeaders, addUser, logRequest } from '#/server/middlewares';
+import { logger } from '#/server/shared';
 
 export function configureApp(app: Express) {
   app.disable('x-powered-by');

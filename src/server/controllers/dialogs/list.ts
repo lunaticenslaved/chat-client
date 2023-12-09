@@ -1,8 +1,8 @@
 import schema from '@lunaticenslaved/schema';
 
-import { createOperation } from '@/context';
-import { DialogFullWithPartner } from '@/models';
-import { getToken } from '@/shared/request';
+import { createOperation } from '#/server/context';
+import { DialogFullWithPartner } from '#/server/models';
+import { getToken } from '#/server/shared/request';
 
 interface ListDialogResponse {
   dialogs: DialogFullWithPartner[];

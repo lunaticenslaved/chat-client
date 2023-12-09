@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { Dialog } from '@domain/dialog';
-import { User } from '@domain/user';
-
-import { api } from '@/shared/api';
-import { useDebouncedState } from '@/shared/hooks';
+import { api } from '#/client/shared/api';
+import { useDebouncedState } from '#/client/shared/hooks';
+import { Dialog } from '#/domain/dialog';
+import { User } from '#/domain/user';
 
 export interface UseSearchInChannelsRequest {
   query: string;

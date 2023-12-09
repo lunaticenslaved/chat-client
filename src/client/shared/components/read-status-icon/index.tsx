@@ -1,7 +1,7 @@
 import cn from 'classnames';
 
-import NotReadSvg from '@/shared/img/noreaded.svg?react';
-import ReadSvg from '@/shared/img/readed.svg?react';
+import NotReadSvg from '#/client/shared/img/noreaded.svg?react';
+import ReadSvg from '#/client/shared/img/readed.svg?react';
 
 import classes from './read-status.module.scss';
 

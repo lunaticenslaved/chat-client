@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { ActivateRequest } from '@lunaticenslaved/schema/actions';
+import { ActivateRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
-import { useViewer } from '@/entities/viewer';
-import { api } from '@/shared/api';
-import { Handlers } from '@/shared/types';
+import { useViewer } from '#/client/entities/viewer';
+import { api } from '#/client/shared/api';
+import { Handlers } from '#/client/shared/types';
 
 export interface UseActivateAccountRequest extends Handlers {
   link: string;

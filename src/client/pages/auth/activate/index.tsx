@@ -6,12 +6,11 @@ import { Button, Flex, Form, Input, Result } from 'antd';
 
 import schema from '@lunaticenslaved/schema';
 
-import { ROUTES } from '@/config/routes';
-import { ResendEmailButton } from '@/features/auth/activate-account';
-import { useActivateAccount } from '@/features/auth/activate-account/domain/use-activate-account';
-import { useToggle } from '@/shared/hooks';
-import { createAntdValidator } from '@/shared/lib/validators';
-import { Layout } from '@/widgets/layouts';
+import { ROUTES } from '#/client/config/routes';
+import { ResendEmailButton, useActivateAccount } from '#/client/features/auth/activate-account';
+import { useToggle } from '#/client/shared/hooks';
+import { createAntdValidator } from '#/client/shared/lib/validators';
+import { Layout } from '#/client/widgets/layouts';
 
 import classes from './index.module.scss';
 

@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
-import { SearchInChannelsInput, SearchInChannelsResult } from '@/features/search/in-channels';
-import { Divider } from '@/shared/components/divider';
+import {
+  SearchInChannelsInput,
+  SearchInChannelsResult,
+} from '#/client/features/search/in-channels';
+import { Divider } from '#/client/shared/components/divider';
 
 import classes from './channels-list-and-search.module.scss';
 

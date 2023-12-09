@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { message } from 'antd';
 
-import { SignUpRequest } from '@lunaticenslaved/schema/actions';
+import { SignUpRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
-import { useViewer } from '@/entities/viewer';
-import { api } from '@/shared/api';
-import { fingerprint } from '@/shared/fingerprint';
-import { Token } from '@/shared/token';
-import { Handlers } from '@/shared/types';
+import { useViewer } from '#/client/entities/viewer';
+import { api } from '#/client/shared/api';
+import { fingerprint } from '#/client/shared/fingerprint';
+import { Token } from '#/client/shared/token';
+import { Handlers } from '#/client/shared/types';
 
 type Values = Omit<SignUpRequest, 'fingerprint'>;
 

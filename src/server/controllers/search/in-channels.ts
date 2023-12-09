@@ -1,10 +1,9 @@
-import { User } from '@domain/user';
-
 import schema from '@lunaticenslaved/schema';
 
-import { createOperation } from '@/context';
-import { DialogFullWithPartner } from '@/models';
-import { getToken } from '@/shared/request';
+import { User } from '#/domain/user';
+import { createOperation } from '#/server/context';
+import { DialogFullWithPartner } from '#/server/models';
+import { getToken } from '#/server/shared/request';
 
 interface SearchInChannelsRequest {
   search: string;

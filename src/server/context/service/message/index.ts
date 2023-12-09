@@ -24,6 +24,8 @@ export class MessageService {
       id: message.id,
       text: message.text,
       createdAt: message.createdAt.toISOString(),
+      isRead: message.isRead,
+      attachments: [],
     };
   }
 }

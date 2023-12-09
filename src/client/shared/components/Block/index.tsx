@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import cn from 'classnames';
 
-import { SizeType } from '@/shared/types';
+import { SizeType } from '#/client/shared/types';
 
 import classes from './Block.module.scss';
 

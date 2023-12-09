@@ -8,7 +8,7 @@ import {
   SignInResponse,
   SignUpRequest,
   SignUpResponse,
-} from '@lunaticenslaved/schema/actions';
+} from '@lunaticenslaved/schema/dist/types/actions';
 
 import { client } from './client';
 import {

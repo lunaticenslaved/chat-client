@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { DialogFull } from '@/models';
+import { DialogFull } from '#/server/models';
 
 export const select = {
   partnerId: true,
@@ -56,13 +56,22 @@ export function prepareDialog(notPreparedDialog: PrepareDialogRequest): DialogFu
   const { _count, messages, ...dialog } = notPreparedDialog;
   const message = messages?.[0];
 
+  // TODO: add more actual types
   return {
     ...dialog,
     lastMessage: message
       ? {
           id: message.id,
           text: message.text,
+          isRead: false,
+          attachments: [],
           createdAt: message.createdAt.toISOString(),
+          author: {
+            id: 'wow',
+            login: 'TEST',
+            email: 'test@test.com',
+            avatar: null,
+          },
         }
       : undefined,
     notReadMessagesCount: _count.messages || 0,

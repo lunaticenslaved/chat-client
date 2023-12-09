@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
-import { User } from '@domain/user';
 import { List, Typography } from 'antd';
 
-import { Avatar } from '@/shared/components/avatar';
+import { User } from '#/domain/user';
+import { Avatar } from '#/client/shared/components/avatar';
 
 export interface UserListItemProps {
   user: User;

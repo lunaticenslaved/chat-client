@@ -1,8 +1,8 @@
 import schema from '@lunaticenslaved/schema';
 
-import { createOperation } from '@/context';
-import { DialogFullWithPartner } from '@/models';
-import { utils } from '@/shared';
+import { createOperation } from '#/server/context';
+import { DialogFullWithPartner } from '#/server/models';
+import { utils } from '#/server/shared';
 
 interface CreateDialogRequest {
   partnerId: string;

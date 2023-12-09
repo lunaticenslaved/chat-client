@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { ROUTES } from '@/config/routes';
-import { useViewer } from '@/entities/viewer';
-import { useLogout } from '@/features/auth/logout';
+import { ROUTES } from '#/client/config/routes';
+import { useViewer } from '#/client/entities/viewer';
+import { useLogout } from '#/client/features/auth/logout';
 
 import { PageAccessType } from './pages';
 

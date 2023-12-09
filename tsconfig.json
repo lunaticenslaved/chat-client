@@ -2,14 +2,24 @@
   "extends": "./node_modules/@lunaticenslaved/configs/tsconfig.base.json",
   "include": ["src"],
   "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["DOM", "es2019", "esnext"],
     "resolveJsonModule": false,
     "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
 
+    "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
-        "@store": ["./store/index.ts"],
-        "@domain/*": ["./domain/*"],
-        "@api/*": ["./api/*"]
+      "#/server/*": ["./server/*"],
+      "#/client/*": ["./client/*"],
+      "#/domain/*": ["./domain/*"],
+      "#/api/*": ["./api/*"],
+      "#/store/*": ["./store/*"],
+      "#/store": ["./store/index.ts"],
     }
   }
 }

@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { Viewer } from '@domain/viewer';
-import { store, useAppDispatch, useAppSelector } from '@store';
-
-import { api } from '@/shared/api';
+import { api } from '#/client/shared/api';
+import { Viewer } from '#/domain/viewer';
+import { store, useAppDispatch, useAppSelector } from '#/store';
 
 export interface UseViewerResponseRequest {
   fetch?: boolean;

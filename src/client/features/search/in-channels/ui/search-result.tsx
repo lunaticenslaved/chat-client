@@ -1,11 +1,11 @@
 import { Fragment, useCallback } from 'react';
 
-import { createNewDialog } from '@domain/dialog';
-import { User } from '@domain/user';
 import { Typography } from 'antd';
 
-import { useDialog } from '@/entities/dialog';
-import { UsersList } from '@/entities/user';
+import { useDialog } from '#/client/entities/dialog';
+import { UsersList } from '#/client/entities/user';
+import { createNewDialog } from '#/domain/dialog';
+import { User } from '#/domain/user';
 
 import { useSearchInChannels } from '../hooks';
 

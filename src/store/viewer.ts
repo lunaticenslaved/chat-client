@@ -1,5 +1,6 @@
-import { Viewer } from '@domain/viewer';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
+import { Viewer } from '../domain/viewer';
 
 const reducers = {
   setViewer: (state: ViewerState, action: PayloadAction<Viewer | undefined>) => {

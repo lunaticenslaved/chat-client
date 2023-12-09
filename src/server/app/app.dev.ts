@@ -3,9 +3,9 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { context } from '@/context';
-import { addRoutes } from '@/controllers';
-import { constants, logger } from '@/shared';
+import { context } from '#/server/context';
+import { addRoutes } from '#/server/controllers';
+import { constants, logger } from '#/server/shared';
 
 import { ROOT_PATH } from './constants';
 import { addSSRRoute, addWebSocket, configureApp } from './utils';
@@ -14,7 +14,7 @@ const { PORT } = constants;
 
 const SRC_PATH = path.resolve(ROOT_PATH, 'src');
 const CLIENT_RENDER_FILE_PATH = path.resolve(SRC_PATH, 'client/index.server');
-const CLIENT_STORE_FILE_PATH = path.resolve(SRC_PATH, 'store');
+const CLIENT_STORE_FILE_PATH = path.resolve(SRC_PATH, 'store/index');
 const CLIENT_HTML_FILE_PATH = path.resolve(ROOT_PATH, 'index.html');
 
 export async function createApp() {

@@ -1,5 +1,5 @@
-import { SignUpForm } from '@/features/auth/sign-up';
-import { Layout } from '@/widgets/layouts';
+import { SignUpForm } from '#/client/features/auth/sign-up';
+import { Layout } from '#/client/widgets/layouts';
 
 export const SignUpPage = () => {
   return (

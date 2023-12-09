@@ -1,8 +1,8 @@
 import cn from 'classnames';
 
-import { Avatar } from '@/shared/components/avatar';
-import { ReadStatusIcon } from '@/shared/components/read-status-icon';
-import dayjs from '@/shared/lib/dayjs';
+import { Avatar } from '#/client/shared/components/avatar';
+import { ReadStatusIcon } from '#/client/shared/components/read-status-icon';
+import dayjs from '#/client/shared/lib/dayjs';
 
 import classes from '../styles.module.scss';
 import { MessageProps } from '../types';

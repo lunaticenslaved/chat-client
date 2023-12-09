@@ -1,8 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
-import { CreateMessageRequest, MessageEvent } from '@api/messages';
-
-import { useSocketContext } from '@/shared/socket-context';
+import { CreateMessageRequest, MessageClientEvent } from '#/api/message';
+import { useSocketContext } from '#/client/shared/socket-context';
 
 export type UseMessageResponse = {
   send(data: CreateMessageRequest): void;
@@ -13,9 +12,7 @@ export function useMessage(): UseMessageResponse {
 
   const send: UseMessageResponse['send'] = useCallback(
     value => {
-      console.log('SEND MESSAGE');
-
-      socket.emit(MessageEvent.send, value);
+      socket.emit(MessageClientEvent.Send, value);
     },
     [socket],
   );

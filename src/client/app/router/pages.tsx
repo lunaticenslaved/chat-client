@@ -1,12 +1,12 @@
 import { lazy } from 'react';
 
-import { ROUTES } from '@/config/routes';
+import { ROUTES } from '#/client/config/routes';
 
-const SignInPage = lazy(() => import('@/pages/auth/sign-in'));
-const SignUpPage = lazy(() => import('@/pages/auth/sign-up'));
-const ActivateAccountPage = lazy(() => import('@/pages/auth/activate'));
-const ChatPage = lazy(() => import('@/pages/chat'));
-const PageNotFound = lazy(() => import('@/pages/not-found'));
+const SignInPage = lazy(() => import('#/client/pages/auth/sign-in'));
+const SignUpPage = lazy(() => import('#/client/pages/auth/sign-up'));
+const ActivateAccountPage = lazy(() => import('#/client/pages/auth/activate'));
+const ChatPage = lazy(() => import('#/client/pages/chat'));
+const PageNotFound = lazy(() => import('#/client/pages/not-found'));
 
 export enum PageAccessType {
   PrivateCommon = 'private-common',

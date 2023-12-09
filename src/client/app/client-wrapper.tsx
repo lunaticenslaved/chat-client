@@ -4,9 +4,9 @@ import libAxios, { AxiosError } from 'axios';
 
 import { Errors } from '@lunaticenslaved/schema';
 
-import { api } from '@/shared/api';
-import { fingerprint } from '@/shared/fingerprint';
-import { Token } from '@/shared/token';
+import { api } from '#/client/shared/api';
+import { fingerprint } from '#/client/shared/fingerprint';
+import { Token } from '#/client/shared/token';
 
 export interface ClientWrapperProps {
   onRefreshTokenExpired(): void;

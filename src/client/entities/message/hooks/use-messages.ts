@@ -1,23 +1,20 @@
-import { useQuery } from 'react-query';
+import { useMemo } from 'react';
 
-import { MessageAPI } from '../api';
-import { MessageModel } from '../types';
+import { Message } from '#/domain/message';
 
 export type UseMessagesResponse = {
-  messages: MessageModel[] | undefined;
+  messages: Message[] | undefined;
   isFetching: boolean;
   isError: boolean;
 };
 
 export function useMessages(): UseMessagesResponse {
-  const { data, isFetching, isError } = useQuery({
-    queryKey: ['messages'],
-    queryFn: MessageAPI.getMessages,
-  });
-
-  return {
-    messages: data?.messages,
-    isFetching,
-    isError,
-  };
+  return useMemo(
+    () => ({
+      messages: [],
+      isFetching: false,
+      isError: false,
+    }),
+    [],
+  );
 }

@@ -1,15 +1,15 @@
 import React, { KeyboardEventHandler, useCallback } from 'react';
 
 import { AudioOutlined, CameraOutlined, SmileOutlined } from '@ant-design/icons';
-import { isExistingDialog } from '@domain/dialog';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { Button, Popover, Upload, UploadProps, message } from 'antd';
 
-import { useDialog } from '@/entities/dialog';
-import { useMessage } from '@/entities/message';
-import { useViewer } from '@/entities/viewer';
-import { Input } from '@/shared/components/Input';
+import { useDialog } from '#/client/entities/dialog';
+import { useMessage } from '#/client/entities/message';
+import { useViewer } from '#/client/entities/viewer';
+import { isExistingDialog } from '#/domain/dialog';
+import { Input } from '#/client/shared/components/Input';
 
 import classes from './message-input.module.scss';
 

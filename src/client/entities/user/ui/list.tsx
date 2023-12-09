@@ -1,5 +1,6 @@
-import { User } from '@domain/user';
 import { List } from 'antd';
+
+import { User } from '#/domain/user';
 
 import { UserListItem } from './list-item';
 

@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { ROUTES } from '@/config/routes';
-import { useViewer } from '@/entities/viewer';
-import { api } from '@/shared/api';
-import { Token } from '@/shared/token';
+import { ROUTES } from '#/client/config/routes';
+import { useViewer } from '#/client/entities/viewer';
+import { api } from '#/client/shared/api';
+import { Token } from '#/client/shared/token';
 
 export const useLogout = () => {
   const { mutateAsync: callLogout, isLoading } = useMutation({

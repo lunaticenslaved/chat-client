@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import schema from '@lunaticenslaved/schema';
 
-import { logger } from '@/shared';
+import { logger } from '#/server/shared';
 
 export async function addUser(request: Request, _: Response, next: NextFunction) {
   const { host: _host, ...headers } = request.headers;

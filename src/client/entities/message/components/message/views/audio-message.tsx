@@ -1,8 +1,8 @@
 import { createRef, useCallback, useEffect, useState } from 'react';
 
-import PauseSvg from '@/shared/img/pause.svg';
-import PlaySvg from '@/shared/img/play.svg';
-import WaveSvg from '@/shared/img/wave.svg';
+import PauseSvg from '#/client/shared/img/pause.svg';
+import PlaySvg from '#/client/shared/img/play.svg';
+import WaveSvg from '#/client/shared/img/wave.svg';
 
 import { MessageWrapper } from '../components/wrapper';
 import classes from '../styles.module.scss';

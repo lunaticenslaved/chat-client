@@ -8,20 +8,13 @@
     "verbose": false,
     "resolveFullPaths": true
   },
+  "include": ["."],
   "compilerOptions": {
-    "target": "es6",
     "types": ["node", "jest"],
     "module": "CommonJS",
 
     "outDir": "../../dist",
-    "rootDir": "..",
-    "baseUrl": ".",
-    "paths": {
-        "@/*": ["./*"],
-        "@store": ["../store/index.ts"],
-        "@domain/*": ["../domain/*"],
-        "@api/*": ["../api/*"]
-    }
+    "rootDir": ".."
   },
   "exclude": ["../client"]
 }

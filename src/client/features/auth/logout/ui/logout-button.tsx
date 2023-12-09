@@ -1,7 +1,7 @@
 import { LogoutOutlined } from '@ant-design/icons';
 
-import { useViewer } from '@/entities/viewer';
-import { Button } from '@/shared/components/Button';
+import { useViewer } from '#/client/entities/viewer';
+import { Button } from '#/client/shared/components/Button';
 
 import { useLogout } from '../hooks';
 

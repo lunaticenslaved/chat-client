@@ -1,10 +1,11 @@
-import { CreateMessageRequest, CreateMessageResponse } from '@api/messages';
 import { Socket } from 'socket.io';
 
 import schema from '@lunaticenslaved/schema';
 
-import { Context } from '@/context';
-import { logger } from '@/shared';
+import { DialogSocketEvent } from '#/api/dialog';
+import { CreateMessageRequest, CreateMessageResponse, MessageServerEvent } from '#/api/message';
+import { Context } from '#/server/context';
+import { logger } from '#/server/shared';
 
 export async function create(
   data: CreateMessageRequest,
@@ -17,8 +18,8 @@ export async function create(
 
   const { text } = data;
   const { token } = socket.handshake.auth;
-  // TODO can I get userId from token?
-  const { user } = await schema.actions.viewer.get({
+  // TODO can I get userId from token? Add viewer.getUserId to auth server
+  const { user: author } = await schema.actions.viewer.get({
     token,
     data: undefined,
     config: {
@@ -31,7 +32,11 @@ export async function create(
   if (data.type === 'new_dialog') {
     const dialog = await context.service.dialog.create({
       partnerId: data.userId,
-      ownerId: user.id,
+      ownerId: author.id,
+    });
+
+    socket.emit(DialogSocketEvent.Created, () => {
+      socket.emit(JSON.stringify(dialog));
     });
 
     dialogId = dialog.id;
@@ -42,8 +47,10 @@ export async function create(
   const message = await context.service.message.create({
     dialogId,
     text,
-    authorId: user.id,
+    authorId: author.id,
   });
 
-  return message;
+  socket.emit(MessageServerEvent.Created, message);
+
+  return { ...message, author };
 }

@@ -1,4 +1,4 @@
-import { utils } from '@/shared';
+import { utils } from '#/server/shared';
 
 import { searchInChannels } from './in-channels';
 

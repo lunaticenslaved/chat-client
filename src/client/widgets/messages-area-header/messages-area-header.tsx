@@ -1,4 +1,4 @@
-import { OnlineStatus } from '@/shared/components/online-status';
+import { OnlineStatus } from '#/client/shared/components/online-status';
 
 import classes from './messages-area-header.module.scss';
 

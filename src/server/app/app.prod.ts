@@ -3,10 +3,10 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { context } from '@/context';
-import { addRoutes } from '@/controllers';
-import { logger } from '@/shared';
-import { PORT } from '@/shared/constants';
+import { context } from '#/server/context';
+import { addRoutes } from '#/server/controllers';
+import { logger } from '#/server/shared';
+import { PORT } from '#/server/shared/constants';
 
 import { ROOT_PATH } from './constants';
 import { addSSRRoute, addWebSocket, configureApp } from './utils';

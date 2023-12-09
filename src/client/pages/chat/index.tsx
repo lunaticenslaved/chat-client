@@ -1,12 +1,12 @@
 import { Fragment } from 'react';
 
-import { useDialog } from '@/entities/dialog';
-import { useMessages } from '@/entities/message';
-import { MessageInput } from '@/features/message-input';
-import { ChannelsListAndSearch } from '@/widgets/channels-list-and-search';
-import { Layout } from '@/widgets/layouts';
-import { MessagesArea } from '@/widgets/messages-area';
-import { MessageAreaHeader } from '@/widgets/messages-area-header';
+import { useDialog } from '#/client/entities/dialog';
+import { useMessages } from '#/client/entities/message';
+import { MessageInput } from '#/client/features/message-input';
+import { ChannelsListAndSearch } from '#/client/widgets/channels-list-and-search';
+import { Layout } from '#/client/widgets/layouts';
+import { MessagesArea } from '#/client/widgets/messages-area';
+import { MessageAreaHeader } from '#/client/widgets/messages-area-header';
 
 const ChatPage = () => {
   const dialog = useDialog();

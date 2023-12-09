@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 
 import { Store } from '@reduxjs/toolkit';
 
-import { useLogout } from '@/features/auth/logout';
-import { PageLoader } from '@/shared/components/page-loader';
-import constants from '@/shared/constants';
-import { useToggle } from '@/shared/hooks';
+import { useLogout } from '#/client/features/auth/logout';
+import { PageLoader } from '#/client/shared/components/page-loader';
+import constants from '#/client/shared/constants';
+import { useToggle } from '#/client/shared/hooks';
 
 import { ClientWrapper } from './client-wrapper';
 import { Router } from './router';

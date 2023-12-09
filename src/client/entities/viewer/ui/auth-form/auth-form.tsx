@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Form, FormInstance } from 'antd';
 
-import { Button } from '@/shared/components/Button';
+import { Button } from '#/client/shared/components/Button';
 
 import classes from './auth-form.module.scss';
 

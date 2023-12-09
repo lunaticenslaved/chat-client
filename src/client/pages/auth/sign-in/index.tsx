@@ -1,5 +1,5 @@
-import { SignInForm } from '@/features/auth/sign-in';
-import { Layout } from '@/widgets/layouts';
+import { SignInForm } from '#/client/features/auth/sign-in';
+import { Layout } from '#/client/widgets/layouts';
 
 export const SignInPage = () => {
   return (

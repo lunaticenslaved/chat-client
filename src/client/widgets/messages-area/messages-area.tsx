@@ -1,6 +1,5 @@
-import { Dialog } from '@domain/dialog';
-
-import { MessageModel } from '@/entities/message';
+import { Dialog } from '#/domain/dialog';
+import { Message } from '#/domain/message';
 
 import { HasErrorView } from './views/has-error/has-error';
 import { LoadingMessagesView } from './views/loading-messages';
@@ -9,7 +8,7 @@ import { NoDialogView } from './views/no-dialog';
 import { NoMessagesView } from './views/no-messages';
 
 export interface MessageAreaProps {
-  messages: MessageModel[];
+  messages: Message[];
   dialog?: Dialog;
   isLoading: boolean;
   isError: boolean;

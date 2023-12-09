@@ -1,4 +1,4 @@
-import { IService } from '@/context/service';
+import { IService } from '#/server/context/service';
 
 export class BaseMetaService {
   protected service: IService;

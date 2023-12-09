@@ -2,12 +2,12 @@ import React, { ReactNode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import { createStore } from '@store';
-
-import { constants } from '@/shared/constants';
-import { SocketContext } from '@/shared/socket-context';
-import '@/shared/styles/index.scss';
-import '@/shared/token';
+import { MessagesListener } from '#/client/entities/message';
+import { constants } from '#/client/shared/constants';
+import { SocketContext } from '#/client/shared/socket-context';
+import '#/client/shared/styles/index.scss';
+import '#/client/shared/token';
+import { createStore } from '#/store';
 
 import { App } from './app/app';
 
@@ -20,7 +20,9 @@ function Wrapper({ children }: { children: ReactNode }) {
   return (
     <React.StrictMode>
       <SocketContext>
-        <BrowserRouter>{children}</BrowserRouter>
+        <MessagesListener>
+          <BrowserRouter>{children}</BrowserRouter>
+        </MessagesListener>
       </SocketContext>
     </React.StrictMode>
   );
