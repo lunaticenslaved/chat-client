@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 
-import { Button } from '#/client/shared/components/Button';
-import { useToggle } from '#/client/shared/hooks';
-import { Handlers } from '#/client/shared/types';
 import { useRepeatConfirmEmail } from '..';
 import { message } from 'antd';
 import { ButtonProps } from 'antd/lib/button';
+
+import { Button } from '#/client/shared/components/Button';
+import { useToggle } from '#/client/shared/hooks';
+import { Handlers } from '#/client/shared/types';
 
 export interface ResendEmailButtonProps extends Handlers {
   type?: ButtonProps['type'];

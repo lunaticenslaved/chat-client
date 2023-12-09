@@ -19,7 +19,7 @@
       "#/domain/*": ["./domain/*"],
       "#/api/*": ["./api/*"],
       "#/store/*": ["./store/*"],
-      "#/store": ["./store/index.ts"],
+      "#/store": ["./store/index.ts"]
     }
   }
 }
