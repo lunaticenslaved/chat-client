@@ -16,7 +16,7 @@ export const remove = createOperation<null, RemoveDialogRequest>(async (req, _, 
 
   if (!dialog) return null;
 
-  if (dialog.ownerId !== user.id && dialog.partnerId !== user.id) {
+  if (dialog.ownerId !== user.id && dialog.userId !== user.id) {
     throw new Errors.ValidationError({ messages: "One cannot remove not one's dialog" });
   }
 

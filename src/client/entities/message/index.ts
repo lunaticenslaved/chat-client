@@ -1,4 +1,5 @@
-export { Message as MessageItem, type MessageProps } from './components/message';
+export { MessageListItem, type MessageListItemProps } from './ui/list-item';
+export { MessagesList, type MessagesListProps } from './ui/list/list';
 export {
   MessagesContext,
   useMessagesContext,

@@ -31,7 +31,7 @@ export async function create(
 
   if (data.type === 'new_dialog') {
     const dialog = await context.service.dialog.create({
-      partnerId: data.userId,
+      userId: data.userId,
       ownerId: author.id,
     });
 

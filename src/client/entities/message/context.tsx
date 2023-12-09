@@ -1,6 +1,8 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { MessageEventsEmitter, MessageEventsListener, SendMessageRequest } from '#/api/message';
+import { api } from '#/client/shared/api';
+import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
 import { Message } from '#/domain/message';
 
@@ -9,18 +11,20 @@ export interface IMessagesContext {
   isLoadingMessages: boolean;
   isErrorWhileLoadingMessages: boolean;
 
-  setMessages(messages: Message[]): void;
   sendMessage(data: SendMessageRequest): void;
 }
 
-export type MessagesContextProps = PropsWithChildren & {
+export type MessagesContextProps = {
   dialogId?: string;
+  children?: ReactNode | ((value: IMessagesContext) => ReactNode | JSX.Element);
 };
 
-const Context = createContext<IMessagesContext>({} as IMessagesContext);
+const Context = createContext<IMessagesContext | undefined>(undefined);
 
 function Provider({ children, dialogId }: MessagesContextProps) {
   const [messages, setMessages] = useState<Message[]>([]);
+  const loadingMessagesToggle = useToggle();
+  const errorMessagesToggle = useToggle();
 
   const { socket } = useSocketContext();
   const messagesEmitter = useMemo(() => new MessageEventsEmitter(socket), [socket]);
@@ -32,7 +36,6 @@ function Provider({ children, dialogId }: MessagesContextProps) {
       isLoadingMessages: false,
       isErrorWhileLoadingMessages: false,
 
-      setMessages,
       sendMessage: messagesEmitter.sendMessage,
     }),
     [messagesEmitter, messages],
@@ -47,17 +50,41 @@ function Provider({ children, dialogId }: MessagesContextProps) {
   useEffect(() => {
     if (!dialogId) return;
 
-    messagesEmitter.listMessages({ dialogId, take: 20 });
-  }, [dialogId, messagesEmitter]);
+    console.log('LIST MESSAGES');
 
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+    loadingMessagesToggle.setTrue();
+    errorMessagesToggle.setFalse();
+
+    api.actions.message
+      .list({
+        data: { dialogId, take: 20 },
+      })
+      .then(({ messages }) => {
+        setMessages(messages);
+      })
+      .catch(() => {
+        errorMessagesToggle.setTrue();
+      })
+      .finally(() => {
+        loadingMessagesToggle.setFalse();
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dialogId]);
+
+  return (
+    <Context.Provider value={value}>
+      {typeof children === 'function' ? children(value) : children}
+    </Context.Provider>
+  );
 }
 
 export function MessagesContext(props: MessagesContextProps) {
-  const existingContext = useMessagesContext();
+  const existingContext = useContext(Context);
 
   if (existingContext) {
-    return props.children;
+    const { children } = props;
+
+    return typeof children === 'function' ? children(existingContext) : children;
   }
 
   return <Provider {...props} />;
@@ -65,6 +92,10 @@ export function MessagesContext(props: MessagesContextProps) {
 
 export function useMessagesContext() {
   const context = useContext(Context);
+
+  if (!context) {
+    throw new Error('No messages context!');
+  }
 
   return context;
 }

@@ -10,7 +10,7 @@ datasource db {
 model Dialog {
   id String @id @default(uuid())
 
-  partnerId String
+  userId String
   ownerId   String
 
   createdAt DateTime @default(now())

@@ -1,9 +1,11 @@
 .root {
   height: 100%;
-  flex: 1 1 auto;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 
-  ul {
+  .list {
     overflow-y: auto;
     margin: 0;
     padding: 0;

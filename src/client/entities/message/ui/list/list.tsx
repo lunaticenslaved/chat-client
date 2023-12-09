@@ -1,14 +1,17 @@
 import { createRef, useEffect } from 'react';
 
-import { MessageItem } from '#/client/entities/message';
+import { List } from 'antd';
+
 import { useViewer } from '#/client/entities/viewer';
 import { Message } from '#/domain/message';
 
-import classes from './messages-list.module.scss';
+import { MessageListItem } from '../list-item';
 
-export interface MessagesListProps {
+import classes from './list.module.scss';
+
+export type MessagesListProps = {
   messages: Message[];
-}
+};
 
 export const MessagesList = (props: MessagesListProps) => {
   const { user: viewer } = useViewer();
@@ -23,18 +26,17 @@ export const MessagesList = (props: MessagesListProps) => {
 
   return (
     <div className={classes.root} ref={wrapperRef}>
-      <ul>
-        {props.messages.map(m => (
-          <li key={m.id}>
-            <MessageItem
-              {...m}
-              avatarSrc={m.author.avatar?.link}
-              ownerName={m.author.login}
-              isMe={m.author.id === viewer?.id}
-            />
-          </li>
+      <List className={classes.list}>
+        {props.messages.map(message => (
+          <MessageListItem
+            {...message}
+            key={message.id}
+            avatarSrc={message.author.avatar?.link}
+            ownerName={message.author.login}
+            isMe={message.author.id === viewer?.id}
+          />
         ))}
-      </ul>
+      </List>
     </div>
   );
 };

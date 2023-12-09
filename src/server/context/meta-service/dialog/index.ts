@@ -13,7 +13,7 @@ export class DialogsMetaService extends BaseMetaService {
 
     const dialogs = await this.service.dialog.list(data);
     const { users } = await schema.actions.users.list({
-      data: { userIds: dialogs.map(d => d.partnerId), search },
+      data: { userIds: dialogs.map(d => d.userId), search },
       config: {
         headers: {
           Origin: data.origin,
@@ -22,7 +22,7 @@ export class DialogsMetaService extends BaseMetaService {
     });
 
     return dialogs.reduce<DialogFullWithPartner[]>((acc, dialog) => {
-      const partner = users.find(p => p.id === dialog.partnerId);
+      const partner = users.find(p => p.id === dialog.userId);
 
       if (partner) {
         acc.push({ ...dialog, user: partner });

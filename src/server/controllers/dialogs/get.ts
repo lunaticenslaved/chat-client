@@ -14,7 +14,7 @@ interface GetDialogResponse {
 export const get = createOperation<GetDialogResponse, GetDialogRequest>(async (req, _, context) => {
   const { dialogId } = req.body;
   const dialog = await context.service.dialog.get({ dialogId });
-  const { user } = await schema.actions.users.get({ data: { userId: dialog.partnerId } });
+  const { user } = await schema.actions.users.get({ data: { userId: dialog.userId } });
 
   return {
     dialog: {

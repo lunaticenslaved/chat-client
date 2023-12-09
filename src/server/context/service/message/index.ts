@@ -1,13 +1,39 @@
 import { PrismaClient } from '@prisma/client';
 
-import { CreateMessageRequest, CreateMessageResponse } from './types';
+import {
+  CreateMessageRequest,
+  CreateMessageResponse,
+  ListMessagesRequest,
+  ListMessagesResponse,
+} from './types';
 import { select } from './utils';
+
+export * from './types';
 
 export class MessageService {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
+  }
+
+  async list(data: ListMessagesRequest): Promise<ListMessagesResponse> {
+    const messages = await this.prisma.message.findMany({
+      select,
+      take: data.take,
+      where: {
+        dialogId: data.dialogId,
+      },
+    });
+
+    return messages.map(message => ({
+      id: message.id,
+      text: message.text,
+      authorId: message.authorId,
+      createdAt: message.createdAt.toISOString(),
+      isRead: message.isRead,
+      attachments: [],
+    }));
   }
 
   async create(data: CreateMessageRequest): Promise<CreateMessageResponse> {
@@ -23,6 +49,7 @@ export class MessageService {
     return {
       id: message.id,
       text: message.text,
+      authorId: message.authorId,
       createdAt: message.createdAt.toISOString(),
       isRead: message.isRead,
       attachments: [],

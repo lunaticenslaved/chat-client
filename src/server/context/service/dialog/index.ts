@@ -26,7 +26,7 @@ export class DialogService {
   async create(data: CreateDialogRequest): Promise<CreateDialogResponse> {
     const dialog = await this.prisma.dialog.create({
       data: {
-        partnerId: data.partnerId,
+        userId: data.userId,
         ownerId: data.ownerId,
       },
       select,

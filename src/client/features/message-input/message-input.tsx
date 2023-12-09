@@ -5,7 +5,7 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { Button, Popover, Upload, UploadProps, message } from 'antd';
 
-import { useDialog } from '#/client/entities/dialog';
+import { useDialogsContext } from '#/client/entities/dialog';
 import { useMessagesContext } from '#/client/entities/message';
 import { useViewer } from '#/client/entities/viewer';
 import { Input } from '#/client/shared/components/Input';
@@ -34,7 +34,7 @@ const props: UploadProps = {
 export const MessageInput = () => {
   const [text, setText] = React.useState('');
   const messagesContext = useMessagesContext();
-  const dialog = useDialog();
+  const { currentDialog } = useDialogsContext();
   const viewer = useViewer();
 
   const onEmojiSelect = useCallback(
@@ -49,7 +49,6 @@ export const MessageInput = () => {
     event => {
       if (event.key !== 'Enter') return;
 
-      const currentDialog = dialog.current;
       const userId = viewer.user?.id;
 
       if (!currentDialog || !userId) return;
@@ -70,7 +69,7 @@ export const MessageInput = () => {
         });
       }
     },
-    [dialog, messagesContext, text, viewer.user?.id],
+    [currentDialog, messagesContext, text, viewer.user?.id],
   );
 
   return (

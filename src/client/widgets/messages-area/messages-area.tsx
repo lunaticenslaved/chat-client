@@ -1,9 +1,9 @@
+import { MessagesList } from '#/client/entities/message';
 import { Dialog } from '#/domain/dialog';
 import { Message } from '#/domain/message';
 
 import { HasErrorView } from './views/has-error/has-error';
 import { LoadingMessagesView } from './views/loading-messages';
-import { MessagesList } from './views/messages-list';
 import { NoDialogView } from './views/no-dialog';
 import { NoMessagesView } from './views/no-messages';
 

@@ -6,14 +6,7 @@ export enum MessageServerEvent {
 
 export enum MessageClientEvent {
   Send = 'CLIENT:MESSAGE:SEND',
-  List = 'CLIENT:MESSAGE:LIST',
 }
-
-export type ListMessagesResponse = Message[];
-export type ListMessagesRequest = {
-  dialogId: string;
-  take: number;
-};
 
 export type SendMessageResponse = Message;
 export type SendMessageRequest =
@@ -29,3 +22,12 @@ export type SendMessageRequest =
       dialogId: string;
       viewerId: string;
     };
+
+export type ListMessagesRequest = {
+  dialogId: string;
+  take: number;
+};
+
+export type ListMessagesResponse = {
+  messages: Message[];
+};

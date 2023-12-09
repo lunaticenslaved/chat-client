@@ -5,7 +5,7 @@ import { User } from '@lunaticenslaved/schema/dist/types/models';
 
 import { Message } from '#/domain/message';
 
-export type DialogBase = Pick<DBDialog, 'id' | 'ownerId' | 'partnerId' | 'createdAt' | 'updatedAt'>;
+export type DialogBase = Pick<DBDialog, 'id' | 'ownerId' | 'userId' | 'createdAt' | 'updatedAt'>;
 
 export type DialogFull = DialogBase & {
   notReadMessagesCount: number;

@@ -1,7 +1,7 @@
 import { DialogFull } from '#/server/models';
 
 export interface CreateDialogRequest {
-  partnerId: string;
+  userId: string;
   ownerId: string;
 }
 export type CreateDialogResponse = DialogFull;

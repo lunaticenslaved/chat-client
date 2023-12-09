@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 
 import { Store } from '@reduxjs/toolkit';
 
-import { MessagesListener } from '#/client/features/messenger';
 import { PageLoader } from '#/client/shared/components/page-loader';
 import constants from '#/client/shared/constants';
 import { useToggle } from '#/client/shared/hooks';
@@ -42,11 +41,7 @@ export function App({ store, renderingOnServer }: AppProps) {
   return (
     <QueryClientProvider client={client}>
       <Provider store={store}>
-        <SocketContext>
-          <MessagesListener>
-            {loading.isTrue ? <PageLoader /> : <PagesWithStore />}
-          </MessagesListener>
-        </SocketContext>
+        <SocketContext>{loading.isTrue ? <PageLoader /> : <PagesWithStore />}</SocketContext>
       </Provider>
     </QueryClientProvider>
   );

@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { DialogFull } from '#/server/models';
 
 export const select = {
-  partnerId: true,
+  userId: true,
   ownerId: true,
   id: true,
   createdAt: true,
@@ -24,8 +24,9 @@ interface PrepareDialogRequest {
     id: string;
     text: string;
     createdAt: Date;
+    authorId: string;
   }[];
-  partnerId: string;
+  userId: string;
   ownerId: string;
   id: string;
   createdAt: Date;
@@ -65,6 +66,7 @@ export function prepareDialog(notPreparedDialog: PrepareDialogRequest): DialogFu
           text: message.text,
           isRead: false,
           attachments: [],
+          authorId: message.authorId,
           createdAt: message.createdAt.toISOString(),
           author: {
             id: 'wow',

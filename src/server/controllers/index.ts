@@ -6,18 +6,18 @@ import { Socket } from 'socket.io';
 import { Errors } from '@lunaticenslaved/schema';
 import schema from '@lunaticenslaved/schema';
 
-import { addDialogsEvents, addDialogsRoutes } from './dialogs';
-import { addMessagesEvents } from './messages';
+import { addDialogsRoutes } from './dialogs';
+import { addMessagesEvents, addMessagesRoutes } from './messages';
 import { addSearchRoutes } from './search';
 
 export function addSocketEvents(socket: Socket) {
   addMessagesEvents(socket);
-  addDialogsEvents(socket);
 }
 
 export function addRoutes(app: Express) {
   addDialogsRoutes(app);
   addSearchRoutes(app);
+  addMessagesRoutes(app);
 
   function addActions(path: string, value: unknown) {
     if (typeof value === 'function' && schema.actions.isAction(value)) {

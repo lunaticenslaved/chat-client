@@ -5,7 +5,7 @@ import { DialogFullWithPartner } from '#/server/models';
 import { utils } from '#/server/shared';
 
 interface CreateDialogRequest {
-  partnerId: string;
+  userId: string;
 }
 
 interface CreateDialogResponse {
@@ -14,15 +14,15 @@ interface CreateDialogResponse {
 
 export const create = createOperation<CreateDialogResponse, CreateDialogRequest>(
   async (req, _, context) => {
-    const { partnerId } = req.body;
+    const { userId } = req.body;
     const token = utils.request.getToken(req, 'strict');
     const [{ user: author }, { user: partner }] = await Promise.all([
       schema.actions.viewer.get({ token, data: undefined }),
-      schema.actions.users.get({ data: { userId: partnerId } }),
+      schema.actions.users.get({ data: { userId } }),
     ]);
 
     const newDialog = await context.service.dialog.create({
-      partnerId,
+      userId,
       ownerId: author.id,
     });
 

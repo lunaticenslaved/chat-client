@@ -10,6 +10,8 @@ import {
   SignUpResponse,
 } from '@lunaticenslaved/schema/dist/types/actions';
 
+import { ListMessagesRequest, ListMessagesResponse } from '#/api/message';
+
 import { client } from './client';
 import {
   ListDialogsRequest,
@@ -55,6 +57,12 @@ export const actions = {
     list: client.createAction<ListDialogsResponse, ListDialogsRequest>({
       endpoint: 'chat-api',
       path: 'dialogs/list',
+    }),
+  },
+  message: {
+    list: client.createAction<ListMessagesResponse, ListMessagesRequest>({
+      endpoint: 'chat-api',
+      path: 'messages/list',
     }),
   },
   search: {

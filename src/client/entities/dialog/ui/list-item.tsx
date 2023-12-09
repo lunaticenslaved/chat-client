@@ -1,25 +1,42 @@
 import { useCallback } from 'react';
 
-import { List, Typography } from 'antd';
+import { Flex, List, Tooltip, Typography } from 'antd';
 
 import { Avatar } from '#/client/shared/components/avatar';
-import { Dialog } from '#/domain/dialog';
+import { Dialog, isExistingDialog } from '#/domain/dialog';
+import { formatMessageTime } from '#/domain/message';
 
 export interface DialogListItemProps {
   dialog: Dialog;
   onClick?(user: Dialog): void;
 }
 
+const style = {
+  padding: '10px 20px',
+  cursor: 'pointer',
+};
+
 export function DialogListItem({ dialog, onClick }: DialogListItemProps) {
   const { user } = dialog;
   const handleClick = useCallback(() => onClick?.(dialog), [onClick, dialog]);
 
+  const { lastMessage } = isExistingDialog(dialog) ? dialog : { lastMessage: undefined };
+
   return (
-    <List.Item onClick={onClick ? handleClick : undefined}>
+    <List.Item style={style} onClick={onClick ? handleClick : undefined}>
       <List.Item.Meta
         avatar={<Avatar url={user.avatar?.link} name={user.login} />}
-        title={<Typography.Title level={5}>{user.login}</Typography.Title>}
-        description={<Typography.Paragraph>{user.email}</Typography.Paragraph>}
+        title={
+          <Flex justify="space-between">
+            <Typography.Title level={5}>{user.login}</Typography.Title>
+            {!!lastMessage && (
+              <Tooltip title={formatMessageTime(lastMessage.createdAt, 'exact')}>
+                <Typography.Text>{formatMessageTime(lastMessage.createdAt)}</Typography.Text>
+              </Tooltip>
+            )}
+          </Flex>
+        }
+        description={<Typography.Text>{lastMessage?.text}</Typography.Text>}
       />
     </List.Item>
   );
