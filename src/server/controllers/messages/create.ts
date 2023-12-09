@@ -2,7 +2,7 @@ import { Socket } from 'socket.io';
 
 import schema from '@lunaticenslaved/schema';
 
-import { DialogServerEvent } from '#/api/dialog';
+import { CreateDialogResponse, DialogServerEvent } from '#/api/dialog';
 import { MessageServerEvent, SendMessageRequest, SendMessageResponse } from '#/api/message';
 import { Context } from '#/server/context';
 import { logger } from '#/server/shared';
@@ -34,10 +34,22 @@ export async function create(
       userId: data.userId,
       ownerId: author.id,
     });
-
-    socket.emit(DialogServerEvent.Created, () => {
-      socket.emit(JSON.stringify(dialog));
+    const { user } = await schema.actions.users.get({
+      data: { userId: data.userId },
+      token,
+      config: {
+        headers: {
+          Origin: socket.request.headers.origin,
+        },
+      },
     });
+
+    const dialogResponse: CreateDialogResponse = {
+      data: { ...dialog, user },
+      error: null,
+    };
+
+    socket.emit(DialogServerEvent.Created, dialogResponse);
 
     dialogId = dialog.id;
   } else {
@@ -50,7 +62,9 @@ export async function create(
     authorId: author.id,
   });
 
-  socket.emit(MessageServerEvent.Created, message);
+  const response: SendMessageResponse = { ...message, author };
 
-  return { ...message, author };
+  socket.emit(MessageServerEvent.Created, response);
+
+  return response;
 }

@@ -13,21 +13,21 @@ type TokenListener = (token: string | undefined) => void;
 export const Token = {
   set({ token, expiresAt }: SetTokenRequest) {
     if (typeof token === 'string') {
-      localStorage.setItem('token', token);
-      localStorage.setItem('expiresAt', expiresAt);
+      localStorage?.setItem('token', token);
+      localStorage?.setItem('expiresAt', expiresAt);
 
       this._handleTokenUpdate(token);
     }
   },
   remove() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiresAt');
+    localStorage?.removeItem('token');
+    localStorage?.removeItem('expiresAt');
 
     this._handleTokenUpdate(undefined);
   },
   get(): GetTokenResponse {
-    const token = localStorage.getItem('token') || '';
-    const expiresAt = localStorage.getItem('expiresAt') || '';
+    const token = localStorage?.getItem('token') || '';
+    const expiresAt = localStorage?.getItem('expiresAt') || '';
 
     return {
       token,
@@ -35,7 +35,7 @@ export const Token = {
     };
   },
   exists() {
-    return !!localStorage.getItem('token');
+    return !!localStorage?.getItem('token');
   },
 
   _listeners: [] as TokenListener[],

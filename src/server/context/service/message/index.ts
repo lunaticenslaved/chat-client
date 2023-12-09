@@ -21,6 +21,9 @@ export class MessageService {
     const messages = await this.prisma.message.findMany({
       select,
       take: data.take,
+      orderBy: {
+        createdAt: 'asc',
+      },
       where: {
         dialogId: data.dialogId,
       },

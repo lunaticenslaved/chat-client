@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -15,11 +15,7 @@ import 'normalize.css';
 const element = document.getElementById('root') as HTMLElement;
 
 function Wrapper({ children }: { children: ReactNode }) {
-  return (
-    <React.StrictMode>
-      <BrowserRouter>{children}</BrowserRouter>
-    </React.StrictMode>
-  );
+  return <BrowserRouter>{children}</BrowserRouter>;
 }
 
 if (constants.IS_SSR) {

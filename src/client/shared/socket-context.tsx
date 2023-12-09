@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo } from 'react';
 
 import { Socket, io } from 'socket.io-client';
 
@@ -14,44 +14,36 @@ interface SocketContextProps {
   children: ReactNode;
 }
 
-// FIXME handle token expired
-function createSocket() {
-  const socket = io({
-    auth: {
-      token: Token.get().token,
-    },
-  });
+const socket = io({
+  auth: {
+    token: undefined,
+  },
+});
 
-  return socket;
+function updateToken(token: string | undefined) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (socket.auth as any).token = token;
 }
 
+// FIXME handle token expired
+Token.listenTokenUpdate(updateToken);
+
+socket.on('connect', () => {
+  console.log('SOCKET CONNECTED');
+});
+
 export function SocketContext({ children }: SocketContextProps) {
-  const [socket, setSocket] = useState(createSocket());
-  const value = useMemo((): ISocketContext => ({ socket }), [socket]);
+  const value = useMemo((): ISocketContext => ({ socket }), []);
 
   useEffect(() => {
-    function setNewToken() {
-      setSocket(createSocket());
-    }
+    updateToken(Token.get().token);
 
-    Token.listenTokenUpdate(setNewToken);
+    socket.open();
 
     return () => {
-      Token.removeOnTokenUpdate(setNewToken);
+      socket.close();
     };
   }, []);
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('SOCKET CONNECTED');
-    });
-
-    socket.connect();
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket]);
 
   return <SocketContextBase.Provider value={value}>{children}</SocketContextBase.Provider>;
 }
