@@ -2,9 +2,10 @@ import { Socket } from 'socket.io';
 
 import schema from '@lunaticenslaved/schema';
 
-import { CreateDialogResponse, DialogServerEvent } from '#/api/dialog';
+import { CreateDialogResponse, DialogServerEvent, UpdateDialogResponse } from '#/api/dialog';
 import { MessageServerEvent, SendMessageRequest, SendMessageResponse } from '#/api/message';
 import { Context } from '#/server/context';
+import { DialogFullWithPartner } from '#/server/models';
 import { logger } from '#/server/shared';
 
 export async function create(
@@ -30,28 +31,12 @@ export async function create(
   });
 
   if (data.type === 'new_dialog') {
-    const dialog = await context.service.dialog.create({
+    const { id } = await context.service.dialog.create({
       userId: data.userId,
       ownerId: author.id,
     });
-    const { user } = await schema.actions.users.get({
-      data: { userId: data.userId },
-      token,
-      config: {
-        headers: {
-          Origin: socket.request.headers.origin,
-        },
-      },
-    });
 
-    const dialogResponse: CreateDialogResponse = {
-      data: { ...dialog, user },
-      error: null,
-    };
-
-    socket.emit(DialogServerEvent.Created, dialogResponse);
-
-    dialogId = dialog.id;
+    dialogId = id;
   } else {
     dialogId = data.dialogId;
   }
@@ -61,6 +46,35 @@ export async function create(
     text,
     authorId: author.id,
   });
+
+  const rawDialog = await context.service.dialog.get({ dialogId });
+  const { user } = await schema.actions.users.get({
+    data: { userId: rawDialog.userId },
+    token,
+    config: {
+      headers: {
+        Origin: socket.request.headers.origin,
+      },
+    },
+  });
+
+  const dialog: DialogFullWithPartner = { ...rawDialog, user };
+
+  if (data.type === 'new_dialog') {
+    const dialogResponse: CreateDialogResponse = {
+      data: dialog,
+      error: null,
+    };
+
+    socket.emit(DialogServerEvent.Created, dialogResponse);
+  }
+
+  const dialogUpdate: UpdateDialogResponse = {
+    error: null,
+    data: dialog,
+  };
+
+  socket.emit(DialogServerEvent.Updated, dialogUpdate);
 
   const response: SendMessageResponse = { ...message, author };
 

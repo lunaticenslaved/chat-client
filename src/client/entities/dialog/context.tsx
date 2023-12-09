@@ -4,7 +4,7 @@ import { DialogEventsListener } from '#/api/dialog';
 import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
-import { Dialog } from '#/domain/dialog';
+import { Dialog, isExistingDialog } from '#/domain/dialog';
 
 export interface IDialogsContext {
   dialogs: Dialog[];
@@ -43,10 +43,37 @@ function Provider({ children }: DialogsContextProps) {
   );
 
   useEffect(() => {
-    dialogsListener.dialogCreated(data => {
-      console.log('DIALOG CREATED', data);
+    // FIXME handle error
+    dialogsListener.dialogCreated(({ data }) => {
+      if (data) {
+        console.log('DIALOG CREATED', data);
 
-      setDialogs([data, ...dialogs]);
+        setDialogs([data, ...dialogs]);
+      }
+    });
+
+    // FIXME handle error
+    dialogsListener.dialogUpdated(({ data }) => {
+      if (data) {
+        console.log('DIALOG UPDATED', data);
+
+        setDialogs(arr => {
+          const index = arr.findIndex(dialog => {
+            // FIXME use ALWAYS get from server existing dialog
+            return isExistingDialog(dialog) && isExistingDialog(data) && dialog.id === data.id;
+          });
+
+          if (index < 0) return arr;
+
+          return arr.map((dialog, idx) => {
+            if (index === idx) {
+              return data;
+            }
+
+            return dialog;
+          });
+        });
+      }
     });
   }, [dialogs, dialogsListener]);
 

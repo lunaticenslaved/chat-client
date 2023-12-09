@@ -70,6 +70,7 @@ export const MessageInput = ({ onSubmit }: MessageInputProps) => {
         onChange={e => setText(e.currentTarget.value)}
         onKeyDown={sendMessage}
         placeholder="Введите сообщение..."
+        autoFocus
         suffix={
           <div className={classes.buttonsWrapper} onClick={e => e.stopPropagation()}>
             <Upload {...props} multiple showUploadList={false}>

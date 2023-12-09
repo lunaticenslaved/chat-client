@@ -9,7 +9,4 @@ export enum DialogServerEvent {
 
 export type CreateDialogResponse = OperationResponse<Dialog>;
 
-export type ListDialogsResponse = OperationResponse<Dialog[]>;
-export type ListDialogsRequest = {
-  take: number;
-};
+export type UpdateDialogResponse = OperationResponse<Dialog>;
