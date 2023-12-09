@@ -1,4 +1,4 @@
-import { Message } from '../domain/message';
+import { Message } from '#/domain/message';
 
 export enum MessageServerEvent {
   Created = 'SERVER:MESSAGE:CREATED',
@@ -15,8 +15,8 @@ export type ListMessagesRequest = {
   take: number;
 };
 
-export type CreateMessageResponse = Message;
-export type CreateMessageRequest =
+export type SendMessageResponse = Message;
+export type SendMessageRequest =
   | {
       type: 'new_dialog';
       text: string;

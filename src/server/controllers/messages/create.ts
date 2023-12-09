@@ -2,16 +2,16 @@ import { Socket } from 'socket.io';
 
 import schema from '@lunaticenslaved/schema';
 
-import { DialogSocketEvent } from '#/api/dialog';
-import { CreateMessageRequest, CreateMessageResponse, MessageServerEvent } from '#/api/message';
+import { DialogServerEvent } from '#/api/dialog';
+import { MessageServerEvent, SendMessageRequest, SendMessageResponse } from '#/api/message';
 import { Context } from '#/server/context';
 import { logger } from '#/server/shared';
 
 export async function create(
-  data: CreateMessageRequest,
+  data: SendMessageRequest,
   socket: Socket,
   context: Context,
-): Promise<CreateMessageResponse> {
+): Promise<SendMessageResponse> {
   let dialogId = '';
 
   logger.info(`[SOCKET][MESSAGE] Create message:\n ${JSON.stringify(data)}`);
@@ -35,7 +35,7 @@ export async function create(
       ownerId: author.id,
     });
 
-    socket.emit(DialogSocketEvent.Created, () => {
+    socket.emit(DialogServerEvent.Created, () => {
       socket.emit(JSON.stringify(dialog));
     });
 

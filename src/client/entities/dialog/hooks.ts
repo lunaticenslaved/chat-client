@@ -1,8 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
-import { store, useAppDispatch, useAppSelector } from '#/store';
-
 import { Dialog } from '#/domain/dialog';
+import { store, useAppDispatch, useAppSelector } from '#/store';
 
 export interface UseDialogResponse {
   current?: Dialog;
@@ -16,12 +15,12 @@ export function useDialog(): UseDialogResponse {
 
   const set = useCallback(
     (value: Dialog) => {
-      dispatch(store.dialogs.actions.setCurrentDialogId(value));
+      dispatch(store.dialogs.actions.setCurrentDialog(value));
     },
     [dispatch],
   );
   const clear = useCallback(() => {
-    dispatch(store.dialogs.actions.setCurrentDialogId(undefined));
+    dispatch(store.dialogs.actions.setCurrentDialog(undefined));
   }, [dispatch]);
 
   return useMemo(

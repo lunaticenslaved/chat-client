@@ -56,6 +56,7 @@ export class DialogService {
         ownerId: data.ownerId,
       },
       select: selectWithLastMessage,
+      take: data.take,
     });
 
     return Helpers.orderBy(

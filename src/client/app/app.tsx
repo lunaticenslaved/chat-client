@@ -1,28 +1,16 @@
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 
 import { Store } from '@reduxjs/toolkit';
 
-import { useLogout } from '#/client/features/auth/logout';
+import { MessagesListener } from '#/client/features/messenger';
 import { PageLoader } from '#/client/shared/components/page-loader';
 import constants from '#/client/shared/constants';
 import { useToggle } from '#/client/shared/hooks';
+import { SocketContext } from '#/client/shared/socket-context';
 
-import { ClientWrapper } from './client-wrapper';
-import { Router } from './router';
-
-const PagesWithStore = () => {
-  const { logout } = useLogout();
-
-  return (
-    <ClientWrapper onRefreshTokenExpired={logout}>
-      <Suspense fallback={<PageLoader />}>
-        <Router />
-      </Suspense>
-    </ClientWrapper>
-  );
-};
+import { PagesWithStore } from './pages';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -34,9 +22,10 @@ const client = new QueryClient({
 
 export interface AppProps {
   store: Store;
+  renderingOnServer: boolean;
 }
 
-export function App({ store }: AppProps) {
+export function App({ store, renderingOnServer }: AppProps) {
   const loading = useToggle({ value: constants.IS_SERVER_RENDERING || constants.IS_SSR });
 
   useEffect(() => {
@@ -44,9 +33,21 @@ export function App({ store }: AppProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (renderingOnServer) {
+    return (
+      <Provider store={store}>{loading.isTrue ? <PageLoader /> : <PagesWithStore />}</Provider>
+    );
+  }
+
   return (
     <QueryClientProvider client={client}>
-      <Provider store={store}>{loading.isTrue ? <PageLoader /> : <PagesWithStore />}</Provider>
+      <Provider store={store}>
+        <SocketContext>
+          <MessagesListener>
+            {loading.isTrue ? <PageLoader /> : <PagesWithStore />}
+          </MessagesListener>
+        </SocketContext>
+      </Provider>
     </QueryClientProvider>
   );
 }

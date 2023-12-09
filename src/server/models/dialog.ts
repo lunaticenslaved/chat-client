@@ -13,5 +13,5 @@ export type DialogFull = DialogBase & {
 };
 
 export type DialogFullWithPartner = DialogFull & {
-  partner: User;
+  user: User;
 };

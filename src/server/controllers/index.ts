@@ -6,12 +6,13 @@ import { Socket } from 'socket.io';
 import { Errors } from '@lunaticenslaved/schema';
 import schema from '@lunaticenslaved/schema';
 
-import { addDialogsRoutes } from './dialogs';
+import { addDialogsEvents, addDialogsRoutes } from './dialogs';
 import { addMessagesEvents } from './messages';
 import { addSearchRoutes } from './search';
 
 export function addSocketEvents(socket: Socket) {
   addMessagesEvents(socket);
+  addDialogsEvents(socket);
 }
 
 export function addRoutes(app: Express) {

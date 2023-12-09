@@ -8,7 +8,7 @@ import { App } from './app/app';
 export function render(url: string, store: Store) {
   return renderToString(
     <StaticRouter location={url}>
-      <App store={store} />
+      <App store={store} renderingOnServer={true} />
     </StaticRouter>,
   );
 }

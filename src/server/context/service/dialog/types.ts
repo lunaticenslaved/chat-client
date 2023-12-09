@@ -14,5 +14,7 @@ export type GetDialogResponse = DialogFull;
 export interface ListDialogRequest {
   ownerId: string;
   search?: string;
+  take?: number;
+  origin: string;
 }
 export type ListDialogResponse = DialogFull[];

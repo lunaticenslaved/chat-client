@@ -22,10 +22,6 @@ function createSocket() {
     },
   });
 
-  socket.on('connect', () => {
-    console.log('SOCKET CONNECTED');
-  });
-
   return socket;
 }
 
@@ -46,6 +42,10 @@ export function SocketContext({ children }: SocketContextProps) {
   }, []);
 
   useEffect(() => {
+    socket.on('connect', () => {
+      console.log('SOCKET CONNECTED');
+    });
+
     socket.connect();
 
     return () => {

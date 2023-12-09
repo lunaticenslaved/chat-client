@@ -9,19 +9,18 @@ interface ListDialogResponse {
 }
 
 export const list = createOperation<ListDialogResponse, void>(async (req, _, context) => {
-  const { host: _host, ...headers } = req.headers;
+  const origin = req.headers.origin || '';
   const { user } = await schema.actions.viewer.get({
-    data: undefined,
     token: getToken(req),
+    data: undefined,
     config: {
-      headers: {
-        Origin: headers.origin,
-      },
+      headers: { Origin: origin },
     },
   });
 
-  const dialogs = await context.metaService.dialog.listWithPartners(req, {
+  const dialogs = await context.metaService.dialog.listWithPartners({
     ownerId: user.id,
+    origin,
   });
 
   return { dialogs };

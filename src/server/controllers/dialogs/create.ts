@@ -26,6 +26,6 @@ export const create = createOperation<CreateDialogResponse, CreateDialogRequest>
       ownerId: author.id,
     });
 
-    return { dialog: { ...newDialog, partner } };
+    return { dialog: { ...newDialog, user: partner } };
   },
 );
