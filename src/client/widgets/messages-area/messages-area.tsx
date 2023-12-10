@@ -1,5 +1,4 @@
 import { MessagesList } from '#/client/entities/message';
-import { Dialog } from '#/domain/dialog';
 import { Message } from '#/domain/message';
 
 import { HasErrorView } from './views/has-error/has-error';
@@ -9,13 +8,13 @@ import { NoMessagesView } from './views/no-messages';
 
 export interface MessageAreaProps {
   messages: Message[];
-  dialog?: Dialog;
+  noDialog: boolean;
   isLoading: boolean;
   isError: boolean;
 }
 
-export const MessagesArea = ({ messages, dialog, isError, isLoading }: MessageAreaProps) => {
-  if (!dialog) {
+export const MessagesArea = ({ messages, noDialog, isError, isLoading }: MessageAreaProps) => {
+  if (noDialog) {
     return <NoDialogView />;
   }
 

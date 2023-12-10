@@ -1,16 +1,35 @@
+import { DialogsList } from '#/client/entities/dialog';
 import { useViewer } from '#/client/entities/viewer';
 import { LogoutButton } from '#/client/features/auth/logout';
+import {
+  SearchInChannelsInput,
+  SearchInChannelsResult,
+} from '#/client/features/search/in-channels';
 import { Avatar } from '#/client/shared/components/avatar';
 import { Divider } from '#/client/shared/components/divider';
+import { Dialog } from '#/domain/dialog';
+import { User } from '#/domain/user';
 
 import classes from './chat-layout.module.scss';
 
 export interface ChatLayoutProps {
-  sidebar: JSX.Element;
-  content: JSX.Element;
+  query: string;
+  dialogs: Dialog[];
+  messageArea: JSX.Element;
+
+  setQuery(value: string): void;
+  onDialogClick(value: Dialog): void;
+  onUserClick(value: User): void;
 }
 
-export const ChatLayout = ({ content, sidebar }: ChatLayoutProps) => {
+export const ChatLayout = ({
+  messageArea,
+  dialogs,
+  query,
+  setQuery,
+  onDialogClick,
+  onUserClick,
+}: ChatLayoutProps) => {
   const viewer = useViewer();
 
   if (!viewer.user) return;
@@ -25,11 +44,27 @@ export const ChatLayout = ({ content, sidebar }: ChatLayoutProps) => {
       <Divider vertical />
 
       <main className={classes.main}>
-        {sidebar}
+        <aside className={classes.sidebar}>
+          <SearchInChannelsInput search={query} onChange={setQuery} />
+
+          <Divider />
+
+          <div style={{ overflowY: 'auto' }}>
+            {!query ? (
+              <DialogsList dialogs={dialogs} onClick={onDialogClick} />
+            ) : (
+              <SearchInChannelsResult
+                query={query}
+                onDialogClick={onDialogClick}
+                onUserClick={onUserClick}
+              />
+            )}
+          </div>
+        </aside>
 
         <Divider vertical />
 
-        <div className={classes.content}>{content}</div>
+        <div className={classes.content}>{messageArea}</div>
       </main>
     </div>
   );

@@ -2,47 +2,65 @@ import { Fragment } from 'react';
 
 import { DialogsContext } from '#/client/entities/dialog';
 import { MessageInput, MessagesContext } from '#/client/entities/message';
-import { ChannelsListAndSearch } from '#/client/widgets/channels-list-and-search';
+import { SearchContext } from '#/client/features/search/in-channels';
 import { Layout } from '#/client/widgets/layouts';
 import { MessagesArea } from '#/client/widgets/messages-area';
 import { MessageAreaHeader } from '#/client/widgets/messages-area-header';
 
 const ChatPage = () => {
   return (
-    <DialogsContext>
-      {({ currentDialog }) => {
+    <SearchContext>
+      {({ query, setQuery }) => {
         return (
-          <MessagesContext currentDialog={currentDialog}>
-            {({ messages, isLoadingMessages, isErrorWhileLoadingMessages, sendMessage }) => {
+          <DialogsContext>
+            {({ selectedItem, dialogs, setSelectedDialog, setSelectedUser }) => {
               return (
-                <Layout.Chat
-                  sidebar={<ChannelsListAndSearch />}
-                  content={
-                    <Fragment>
-                      {currentDialog && (
-                        <MessageAreaHeader
-                          title={currentDialog.user.login}
-                          isOnline={false}
-                          // TODO add isOnline
-                          // isOnline={currentDialog.partner.isOnline}
-                        />
-                      )}
-                      <MessagesArea
-                        messages={messages}
-                        dialog={currentDialog}
-                        isError={isErrorWhileLoadingMessages}
-                        isLoading={isLoadingMessages}
+                <MessagesContext selectedItem={selectedItem}>
+                  {({ messages, isLoadingMessages, isErrorWhileLoadingMessages, sendMessage }) => {
+                    return (
+                      <Layout.Chat
+                        query={query}
+                        setQuery={setQuery}
+                        dialogs={dialogs}
+                        onUserClick={setSelectedUser}
+                        onDialogClick={setSelectedDialog}
+                        messageArea={
+                          <Fragment>
+                            {selectedItem?.type === 'dialog' && (
+                              <MessageAreaHeader
+                                title={selectedItem.dialog.user.login}
+                                isOnline={false}
+                                // TODO add isOnline
+                                // isOnline={currentDialog.partner.isOnline}
+                              />
+                            )}
+                            {selectedItem?.type === 'user' && (
+                              <MessageAreaHeader
+                                title={selectedItem.user.login}
+                                isOnline={false}
+                                // TODO add isOnline
+                                // isOnline={currentDialog.partner.isOnline}
+                              />
+                            )}
+                            <MessagesArea
+                              messages={messages}
+                              noDialog={!selectedItem}
+                              isError={isErrorWhileLoadingMessages}
+                              isLoading={isLoadingMessages}
+                            />
+                            <MessageInput onSubmit={sendMessage} />
+                          </Fragment>
+                        }
                       />
-                      {currentDialog && <MessageInput onSubmit={sendMessage} />}
-                    </Fragment>
-                  }
-                />
+                    );
+                  }}
+                </MessagesContext>
               );
             }}
-          </MessagesContext>
+          </DialogsContext>
         );
       }}
-    </DialogsContext>
+    </SearchContext>
   );
 };
 

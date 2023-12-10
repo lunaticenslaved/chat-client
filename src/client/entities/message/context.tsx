@@ -13,8 +13,21 @@ import { useViewer } from '#/client/entities/viewer';
 import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
-import { Dialog, isExistingDialog } from '#/domain/dialog';
+import { Dialog } from '#/domain/dialog';
 import { Message } from '#/domain/message';
+import { User } from '#/domain/user';
+
+// TODO: should I unite message and dialog context as messenger context in features/messenger?
+
+type SelectedItem =
+  | {
+      type: 'dialog';
+      dialog: Dialog;
+    }
+  | {
+      type: 'user';
+      user: User;
+    };
 
 export interface IMessagesContext {
   messages: Message[];
@@ -25,18 +38,18 @@ export interface IMessagesContext {
 }
 
 export type MessagesContextProps = {
-  currentDialog?: Dialog;
+  selectedItem?: SelectedItem;
   children?: ReactNode | ((value: IMessagesContext) => ReactNode | JSX.Element);
 };
 
 const Context = createContext<IMessagesContext | undefined>(undefined);
 
-function Provider({ children, currentDialog }: MessagesContextProps) {
+function Provider({ children, selectedItem }: MessagesContextProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const loadingMessagesToggle = useToggle();
   const errorMessagesToggle = useToggle();
   const viewer = useViewer();
-  const dialogId = currentDialog && isExistingDialog(currentDialog) ? currentDialog.id : undefined;
+  const dialogId = selectedItem?.type === 'dialog' ? selectedItem.dialog?.id : undefined;
 
   const { socket } = useSocketContext();
   const messagesEmitter = useMemo(() => new MessageEventsEmitter(socket), [socket]);
@@ -46,27 +59,28 @@ function Provider({ children, currentDialog }: MessagesContextProps) {
     (text: string) => {
       const userId = viewer.user?.id;
 
-      if (!currentDialog || !userId) return false;
+      if (!userId) return false;
+      if (!selectedItem) return false;
 
-      if (isExistingDialog(currentDialog)) {
+      if (selectedItem.type === 'dialog') {
         messagesEmitter.sendMessage({
           text,
           type: 'old_dialog',
-          dialogId: currentDialog.id,
+          dialogId: selectedItem.dialog.id,
           viewerId: userId,
         });
-      } else {
+      } else if (selectedItem.type === 'user') {
         messagesEmitter.sendMessage({
           text,
           type: 'new_dialog',
-          userId: currentDialog.user.id,
+          userId: selectedItem.user.id,
           viewerId: userId,
         });
       }
 
       return true;
     },
-    [viewer.user?.id, currentDialog, messagesEmitter],
+    [viewer.user?.id, selectedItem, messagesEmitter],
   );
 
   const value: IMessagesContext = useMemo(

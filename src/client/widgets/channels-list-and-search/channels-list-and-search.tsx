@@ -11,7 +11,7 @@ import classes from './channels-list-and-search.module.scss';
 
 export const ChannelsListAndSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { setCurrentDialog, dialogs } = useDialogsContext();
+  const { dialogs, setSelectedDialog, setSelectedUser } = useDialogsContext();
 
   return (
     <section className={classes.sidebar}>
@@ -19,11 +19,17 @@ export const ChannelsListAndSearch = () => {
 
       <Divider />
 
-      {!searchQuery ? (
-        <DialogsList dialogs={dialogs} onClick={setCurrentDialog} />
-      ) : (
-        <SearchInChannelsResult query={searchQuery} onClick={setCurrentDialog} />
-      )}
+      <div style={{ overflowY: 'auto' }}>
+        {!searchQuery ? (
+          <DialogsList dialogs={dialogs} onClick={setSelectedDialog} />
+        ) : (
+          <SearchInChannelsResult
+            query={searchQuery}
+            onDialogClick={setSelectedDialog}
+            onUserClick={setSelectedUser}
+          />
+        )}
+      </div>
     </section>
   );
 };

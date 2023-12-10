@@ -1,17 +1,11 @@
 import { User } from './user';
 
-export type ExistingDialog = {
+export type Dialog = {
   user: User;
   id: string;
   notReadMessagesCount?: number;
   lastMessage?: LastMessage;
 };
-
-export type NewDialog = {
-  user: User;
-};
-
-export type Dialog = ExistingDialog | NewDialog;
 
 interface LastMessage {
   id: string;
@@ -19,20 +13,4 @@ interface LastMessage {
   createdAt: string;
   text: string;
   isRead: boolean;
-}
-
-export function getDialogIdentifier(dialog: Dialog): string {
-  if (isExistingDialog(dialog)) {
-    return dialog.id;
-  }
-
-  return dialog.user.id;
-}
-
-export function isExistingDialog(dialog: Dialog): dialog is ExistingDialog {
-  return 'id' in dialog && !!dialog.id;
-}
-
-export function createNewDialog(user: User): Dialog {
-  return { user };
 }

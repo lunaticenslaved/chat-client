@@ -1,18 +1,38 @@
-import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { DialogEventsListener } from '#/api/dialog';
 import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
-import { Dialog, isExistingDialog } from '#/domain/dialog';
+import { Dialog } from '#/domain/dialog';
+import { User } from '#/domain/user';
+
+type SelectedItem =
+  | {
+      type: 'dialog';
+      dialog: Dialog;
+    }
+  | {
+      type: 'user';
+      user: User;
+    };
 
 export interface IDialogsContext {
   dialogs: Dialog[];
-  currentDialog?: Dialog;
+  selectedItem?: SelectedItem;
   isLoadingDialogs: boolean;
   isErrorWhileLoadingDialogs: boolean;
 
-  setCurrentDialog(dialog: Dialog): void;
+  setSelectedUser(user: User): void;
+  setSelectedDialog(dialog: Dialog): void;
 }
 
 export type DialogsContextProps = {
@@ -23,23 +43,33 @@ const Context = createContext<IDialogsContext | undefined>(undefined);
 
 function Provider({ children }: DialogsContextProps) {
   const [dialogs, setDialogs] = useState<Dialog[]>([]);
-  const [currentDialog, setCurrentDialog] = useState<Dialog>();
+  const [selectedItem, setSelectedItem] = useState<SelectedItem>();
   const loadingDialogsToggle = useToggle();
   const errorDialogsToggle = useToggle();
 
   const { socket } = useSocketContext();
   const dialogsListener = useMemo(() => new DialogEventsListener(socket), [socket]);
 
+  const setSelectedDialog = useCallback((value: Dialog) => {
+    setSelectedItem({ dialog: value, type: 'dialog' });
+  }, []);
+
+  const setSelectedUser = useCallback((value: User) => {
+    setSelectedItem({ user: value, type: 'user' });
+  }, []);
+
   const value: IDialogsContext = useMemo(
     () => ({
       dialogs,
-      currentDialog,
       isLoadingDialogs: false,
       isErrorWhileLoadingDialogs: false,
 
-      setCurrentDialog,
+      selectedItem,
+
+      setSelectedUser,
+      setSelectedDialog,
     }),
-    [dialogs, currentDialog],
+    [dialogs, selectedItem, setSelectedDialog, setSelectedUser],
   );
 
   useEffect(() => {
@@ -58,10 +88,7 @@ function Provider({ children }: DialogsContextProps) {
         console.log('DIALOG UPDATED', data);
 
         setDialogs(arr => {
-          const index = arr.findIndex(dialog => {
-            // FIXME use ALWAYS get from server existing dialog
-            return isExistingDialog(dialog) && isExistingDialog(data) && dialog.id === data.id;
-          });
+          const index = arr.findIndex(dialog => dialog.id === data.id);
 
           if (index < 0) return arr;
 

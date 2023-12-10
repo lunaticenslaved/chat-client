@@ -1,3 +1,5 @@
+@import '#/client/shared/styles/index.scss';
+
 .root {
   display: flex;
   flex-wrap: nowrap;
@@ -23,6 +25,16 @@
 
 .content {
   flex: 1 1 auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar {
+  max-width: 400px;
+  min-width: 400px;
+  width: 400px;
+  background-color: $sidebar-background;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

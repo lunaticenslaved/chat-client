@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Flex, List, Tooltip, Typography } from 'antd';
 
 import { Avatar } from '#/client/shared/components/avatar';
-import { Dialog, isExistingDialog } from '#/domain/dialog';
+import { Dialog } from '#/domain/dialog';
 import { formatMessageTime } from '#/domain/message';
 
 export interface DialogListItemProps {
@@ -20,7 +20,7 @@ export function DialogListItem({ dialog, onClick }: DialogListItemProps) {
   const { user } = dialog;
   const handleClick = useCallback(() => onClick?.(dialog), [onClick, dialog]);
 
-  const { lastMessage } = isExistingDialog(dialog) ? dialog : { lastMessage: undefined };
+  const { lastMessage } = dialog || { lastMessage: undefined };
 
   return (
     <List.Item style={style} onClick={onClick ? handleClick : undefined}>

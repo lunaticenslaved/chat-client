@@ -1,6 +1,6 @@
 import { List } from 'antd';
 
-import { Dialog, getDialogIdentifier } from '#/domain/dialog';
+import { Dialog } from '#/domain/dialog';
 
 import { DialogListItem } from './list-item';
 
@@ -13,9 +13,7 @@ export function DialogsList({ dialogs, onClick }: DialogsListProps) {
   return (
     <List>
       {dialogs.map(dialog => {
-        return (
-          <DialogListItem key={getDialogIdentifier(dialog)} dialog={dialog} onClick={onClick} />
-        );
+        return <DialogListItem key={dialog.id} dialog={dialog} onClick={onClick} />;
       })}
     </List>
   );
