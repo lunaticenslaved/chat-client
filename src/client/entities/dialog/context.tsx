@@ -74,33 +74,29 @@ function Provider({ children }: DialogsContextProps) {
 
   useEffect(() => {
     // FIXME handle error
-    dialogsListener.dialogCreated(({ data }) => {
-      if (data) {
-        console.log('DIALOG CREATED', data);
+    dialogsListener.dialogCreated(data => {
+      console.log('DIALOG CREATED', data);
 
-        setDialogs([data, ...dialogs]);
-      }
+      setDialogs([data, ...dialogs]);
     });
 
     // FIXME handle error
-    dialogsListener.dialogUpdated(({ data }) => {
-      if (data) {
-        console.log('DIALOG UPDATED', data);
+    dialogsListener.dialogUpdated(data => {
+      console.log('DIALOG UPDATED', data);
 
-        setDialogs(arr => {
-          const index = arr.findIndex(dialog => dialog.id === data.id);
+      setDialogs(arr => {
+        const index = arr.findIndex(dialog => dialog.id === data.id);
 
-          if (index < 0) return arr;
+        if (index < 0) return arr;
 
-          return arr.map((dialog, idx) => {
-            if (index === idx) {
-              return data;
-            }
+        return arr.map((dialog, idx) => {
+          if (index === idx) {
+            return data;
+          }
 
-            return dialog;
-          });
+          return dialog;
         });
-      }
+      });
     });
   }, [dialogs, dialogsListener]);
 

@@ -15,6 +15,7 @@ interface SocketContextProps {
 }
 
 const socket = io({
+  autoConnect: false,
   auth: {
     token: undefined,
   },
@@ -36,9 +37,9 @@ export function SocketContext({ children }: SocketContextProps) {
   const value = useMemo((): ISocketContext => ({ socket }), []);
 
   useEffect(() => {
+    // Need disconnect and connect with new token to update handshake
     updateToken(Token.get().token);
-
-    socket.open();
+    socket.disconnect().connect();
 
     return () => {
       socket.close();

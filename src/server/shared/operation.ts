@@ -1,6 +1,23 @@
 import { Request, Response } from 'express';
 
+import { Socket } from 'socket.io';
+
 import { Errors, Models } from '@lunaticenslaved/schema';
+
+export function createSocketOperationWithContext<TContext>(context: TContext) {
+  return <TRequest>(fn: (args: TRequest, socket: Socket, context: TContext) => Promise<void>) => {
+    return (socket: Socket, errorEvent: string) => {
+      // FIXME: handle error in socket operation
+      return (data: TRequest) => {
+        try {
+          fn(data, socket, context);
+        } catch (error) {
+          socket.emit(errorEvent, { data: null, error });
+        }
+      };
+    };
+  };
+}
 
 export type CreateOperationArg<TResponse, TRequest, TContext> = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
