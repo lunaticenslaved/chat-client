@@ -27,12 +27,21 @@ export const create = createSocketOperation(
     });
 
     if (data.type === 'new_dialog') {
-      const { id } = await context.service.dialog.create({
+      const foundDialog = await context.service.dialog.findOne({
         userId: data.userId,
         ownerId: author.id,
       });
 
-      dialogId = id;
+      if (foundDialog) {
+        dialogId = foundDialog.id;
+      } else {
+        const { id } = await context.service.dialog.create({
+          userId: data.userId,
+          ownerId: author.id,
+        });
+
+        dialogId = id;
+      }
     } else {
       dialogId = data.dialogId;
     }

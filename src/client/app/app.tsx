@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 
 import { Store } from '@reduxjs/toolkit';
 
+import { useViewer } from '#/client/entities/viewer';
+import { useLogout } from '#/client/features/auth/logout';
 import { PageLoader } from '#/client/shared/components/page-loader';
 import constants from '#/client/shared/constants';
 import { useToggle } from '#/client/shared/hooks';
@@ -18,6 +20,20 @@ const client = new QueryClient({
     },
   },
 });
+
+type ContentProps = {
+  isLoading: boolean;
+};
+
+function Content({ isLoading }: ContentProps) {
+  const { logout } = useLogout();
+  const { isAuthorized } = useViewer();
+  return (
+    <SocketContext onTokenInvalid={logout} isAuthorized={isAuthorized}>
+      {isLoading ? <PageLoader /> : <PagesWithStore />}
+    </SocketContext>
+  );
+}
 
 export interface AppProps {
   store: Store;
@@ -41,7 +57,7 @@ export function App({ store, renderingOnServer }: AppProps) {
   return (
     <QueryClientProvider client={client}>
       <Provider store={store}>
-        <SocketContext>{loading.isTrue ? <PageLoader /> : <PagesWithStore />}</SocketContext>
+        <Content isLoading={loading.isTrue} />
       </Provider>
     </QueryClientProvider>
   );

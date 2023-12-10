@@ -45,6 +45,7 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
       const { expiresAt } = Token.get();
 
       if (new Date() >= expiresAt) {
+        console.log('TOKEN IS EXPIRED');
         await callRefreshAndSetToken();
       }
 

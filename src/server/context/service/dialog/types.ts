@@ -1,4 +1,4 @@
-import { DialogFull } from '#/server/models';
+import { DialogBase, DialogFull } from '#/server/models';
 
 export interface CreateDialogRequest {
   userId: string;
@@ -18,3 +18,9 @@ export interface ListDialogRequest {
   origin: string;
 }
 export type ListDialogResponse = DialogFull[];
+
+export type FindOneDialogResponse = DialogBase | undefined;
+export interface FindOneDialogRequest {
+  userId: string;
+  ownerId: string;
+}

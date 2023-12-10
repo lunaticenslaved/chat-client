@@ -48,7 +48,7 @@ const ChatPage = () => {
                               isError={isErrorWhileLoadingMessages}
                               isLoading={isLoadingMessages}
                             />
-                            <MessageInput onSubmit={sendMessage} />
+                            {selectedItem && <MessageInput onSubmit={sendMessage} />}
                           </Fragment>
                         }
                       />

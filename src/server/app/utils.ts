@@ -8,9 +8,14 @@ import { Server } from 'http';
 import { resolve } from 'path';
 import { Server as WebSocketServer } from 'socket.io';
 
+import schema, { Errors } from '@lunaticenslaved/schema';
+import { AuthResponse } from '@lunaticenslaved/schema/dist/types/actions';
+
 import { addSocketEvents } from '#/server/controllers';
-import { addHeaders, addUser, logRequest } from '#/server/middlewares';
+import { addHeaders, logRequest } from '#/server/middlewares';
 import { logger } from '#/server/shared';
+
+import { AuthEventServer } from '../../api/auth/types';
 
 export function configureApp(app: Express) {
   app.disable('x-powered-by');
@@ -59,8 +64,26 @@ export function addSSRRoute({
     });
   }
 
-  app.use('*', addUser, async (req: Request, res, next) => {
-    logger.info('GET HTML');
+  app.use('*', async (req: Request, res, next) => {
+    logger.info('[GET HTML] Start');
+
+    let validatedRequest: AuthResponse | undefined;
+
+    try {
+      validatedRequest = await schema.actions.auth.validateRequest({
+        data: undefined,
+        config: {
+          headers: {
+            Origin: req.headers.origin,
+            Cookie: req.headers.cookie,
+          },
+        },
+      });
+
+      logger.info('[GET HTML] Request validated');
+    } catch {
+      logger.info('[GET HTML] User not found');
+    }
 
     try {
       const filePath = staticFiles.find(file => req.baseUrl.endsWith(file));
@@ -71,15 +94,19 @@ export function addSSRRoute({
       }
 
       const url = req.originalUrl;
-      const user = req.user;
-      const store = user ? createStore(user) : createStore();
+      const store = createStore(validatedRequest?.user);
       const appHtml = await renderFn(url, store);
       const content = await getContent(url);
 
       const storeIncrementHtml = `
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(store.getState())};
-          window.__IS_SSR__ = true
+          window.__IS_SSR__ = true;
+
+          (function() {
+            localStorage.setItem("token", "${validatedRequest?.token || ''}");
+            localStorage.setItem("expiresAt", "${validatedRequest?.expiresAt || ''}");
+          })();
         </script>`;
       const html = content
         .replace(`<!-- ssr-outlet -->`, appHtml)
@@ -99,33 +126,39 @@ export function addSSRRoute({
 export function addWebSocket(server: Server): WebSocketServer {
   const wsServer = new WebSocketServer(server);
 
-  // FIXME add auth middleware
+  wsServer.use(async (socket, next) => {
+    const token = socket.handshake.auth.token;
+    const { origin } = socket.handshake.headers;
 
-  // io.use(async (socket, next) => {
-  //   try {
-  //     const token = socket.handshake.auth.token;
+    try {
+      await schema.actions.auth.validateRequest({
+        token,
+        data: undefined,
+        config: { headers: { origin } },
+      });
 
-  //     // Verify and decode the JWT
-  //     const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      logger.info('[MIDDLEWARE][SOCKET] User found');
 
-  //     // Get the user information from the database
-  //     const user = await User.findById(decoded.userId);
-  //     if (!user) {
-  //       throw new Error('User not found');
-  //     }
+      next();
+    } catch (error) {
+      console.log('error', error);
+      logger.warn('[MIDDLEWARE][SOCKET] User not found');
 
-  //     // Attach the user object to the socket
-  //     socket.user = user;
-  //     next();
-  //   } catch (error) {
-  //     console.error('Authentication error', error);
-  //     next(new Error('Authentication error'));
-  //   }
-  // });
+      if (error instanceof Errors.TokenExpiredError) {
+        logger.warn('[MIDDLEWARE][SOCKET] Token expired');
+        socket.emit(AuthEventServer.ExpiredToken);
+      } else {
+        logger.warn('[MIDDLEWARE][SOCKET] Token invalid');
+        socket.emit(AuthEventServer.InvalidToken);
+      }
 
-  wsServer.on('connection', socket => {
-    logger.info(`[SOCKET] User connected`);
+      socket.disconnect();
 
+      next();
+    }
+  });
+
+  wsServer.on('connection', async socket => {
     addSocketEvents(socket);
   });
 

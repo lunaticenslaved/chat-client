@@ -4,6 +4,8 @@ import { Socket } from 'socket.io';
 
 import { Errors, Models } from '@lunaticenslaved/schema';
 
+import { AuthEventServer } from '#/api/auth/types';
+
 export function createSocketOperationWithContext<TContext>(context: TContext) {
   return <TRequest>(fn: (args: TRequest, socket: Socket, context: TContext) => Promise<void>) => {
     return (socket: Socket, errorEvent: string) => {
@@ -12,7 +14,13 @@ export function createSocketOperationWithContext<TContext>(context: TContext) {
         try {
           fn(data, socket, context);
         } catch (error) {
-          socket.emit(errorEvent, { data: null, error });
+          if (error instanceof Errors.TokenExpiredError) {
+            socket.emit(AuthEventServer.ExpiredToken);
+          } else if (error instanceof Errors.TokenInvalidError) {
+            socket.emit(AuthEventServer.InvalidToken);
+          } else {
+            socket.emit(errorEvent, { data: null, error });
+          }
         }
       };
     };

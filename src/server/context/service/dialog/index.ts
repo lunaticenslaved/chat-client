@@ -7,6 +7,8 @@ import { Helpers } from '#/server/shared/helpers';
 import {
   CreateDialogRequest,
   CreateDialogResponse,
+  FindOneDialogRequest,
+  FindOneDialogResponse,
   GetDialogRequest,
   GetDialogResponse,
   ListDialogRequest,
@@ -22,7 +24,6 @@ export class DialogService {
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
   }
-
   async create(data: CreateDialogRequest): Promise<CreateDialogResponse> {
     const dialog = await this.prisma.dialog.create({
       data: {
@@ -64,5 +65,17 @@ export class DialogService {
       dialog => dialog.lastMessage?.createdAt,
       'desc',
     );
+  }
+
+  async findOne(data: FindOneDialogRequest): Promise<FindOneDialogResponse> {
+    const dialog = await this.prisma.dialog.findFirst({
+      select: selectWithLastMessage,
+      where: {
+        userId: data.userId,
+        ownerId: data.ownerId,
+      },
+    });
+
+    return dialog || undefined;
   }
 }
