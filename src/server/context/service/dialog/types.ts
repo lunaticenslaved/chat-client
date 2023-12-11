@@ -12,7 +12,7 @@ export interface GetDialogRequest {
 export type GetDialogResponse = DialogFull;
 
 export interface ListDialogRequest {
-  ownerId: string;
+  userId: string;
   search?: string;
   take?: number;
   origin: string;

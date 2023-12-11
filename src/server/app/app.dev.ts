@@ -47,7 +47,7 @@ export async function createApp() {
     );
   });
 
-  addWebSocket(server);
+  addWebSocket(server, context);
   addRoutes(app);
   addSSRRoute({
     app,

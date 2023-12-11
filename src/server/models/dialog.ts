@@ -15,3 +15,8 @@ export type DialogFull = DialogBase & {
 export type DialogFullWithPartner = DialogFull & {
   user: User;
 };
+
+export type DialogFullWithUsers = DialogFull & {
+  user: User;
+  owner: User;
+};

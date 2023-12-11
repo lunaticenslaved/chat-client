@@ -4,7 +4,7 @@ import schema from '@lunaticenslaved/schema';
 
 import { SendMessageRequest } from '#/api/message';
 import { Context, createSocketOperation } from '#/server/context';
-import { DialogFullWithPartner } from '#/server/models';
+import { DialogFullWithUsers } from '#/server/models';
 import { logger } from '#/server/shared';
 
 export const create = createSocketOperation(
@@ -16,7 +16,7 @@ export const create = createSocketOperation(
     const { text } = data;
     const { token } = socket.handshake.auth;
     // TODO can I get userId from token? Add viewer.getUserId to auth server
-    const { user: author } = await schema.actions.viewer.get({
+    const { user: owner } = await schema.actions.viewer.get({
       token,
       data: undefined,
       config: {
@@ -29,7 +29,7 @@ export const create = createSocketOperation(
     if (data.type === 'new_dialog') {
       const foundDialog = await context.service.dialog.findOne({
         userId: data.userId,
-        ownerId: author.id,
+        ownerId: owner.id,
       });
 
       if (foundDialog) {
@@ -37,7 +37,7 @@ export const create = createSocketOperation(
       } else {
         const { id } = await context.service.dialog.create({
           userId: data.userId,
-          ownerId: author.id,
+          ownerId: owner.id,
         });
 
         dialogId = id;
@@ -49,7 +49,7 @@ export const create = createSocketOperation(
     const message = await context.service.message.create({
       dialogId,
       text,
-      authorId: author.id,
+      authorId: owner.id,
     });
 
     const rawDialog = await context.service.dialog.get({ dialogId });
@@ -63,14 +63,14 @@ export const create = createSocketOperation(
       },
     });
 
-    const dialog: DialogFullWithPartner = { ...rawDialog, user };
+    const dialog: DialogFullWithUsers = { ...rawDialog, user, owner };
 
     if (data.type === 'new_dialog') {
-      context.socketEvent.dialog.onDialogCreated(socket, dialog);
+      context.socketEvent.dialog.onDialogCreated({ ...dialog });
     }
 
-    context.socketEvent.dialog.onDialogUpdated(socket, dialog);
+    context.socketEvent.dialog.onDialogUpdated(dialog);
 
-    context.socketEvent.message.onMessageCreate(socket, { ...message, author });
+    context.socketEvent.message.onMessageCreate(dialog, { ...message, author: owner });
   },
 );

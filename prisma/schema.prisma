@@ -7,10 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model Dialog {
   id String @id @default(uuid())
 
-  userId String
+  userId    String
   ownerId   String
 
   createdAt DateTime @default(now())

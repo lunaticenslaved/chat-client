@@ -19,7 +19,7 @@ export const list = createOperation<ListDialogResponse, void>(async (req, _, con
   });
 
   const dialogs = await context.metaService.dialog.listWithPartners({
-    ownerId: user.id,
+    userId: user.id,
     origin,
   });
 

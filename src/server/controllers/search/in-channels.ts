@@ -32,7 +32,7 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
     });
 
     const dialogs = await context.metaService.dialog.listWithPartners({
-      ownerId: user.id,
+      userId: user.id,
       origin,
       search,
     });

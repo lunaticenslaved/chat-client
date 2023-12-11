@@ -1,3 +1,5 @@
+import { Context } from '..';
+
 import { DialogSocketEvents } from './dialog';
 import { MessageSocketEvents } from './message';
 
@@ -6,9 +8,9 @@ export interface ISocketEvent {
   message: MessageSocketEvents;
 }
 
-export function createSocketEvents(): ISocketEvent {
+export function createSocketEvents(context: Context): ISocketEvent {
   return {
-    dialog: new DialogSocketEvents(),
-    message: new MessageSocketEvents(),
+    dialog: new DialogSocketEvents(context),
+    message: new MessageSocketEvents(context),
   };
 }

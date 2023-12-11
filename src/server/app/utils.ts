@@ -11,6 +11,7 @@ import { Server as WebSocketServer } from 'socket.io';
 import schema, { Errors } from '@lunaticenslaved/schema';
 import { AuthResponse } from '@lunaticenslaved/schema/dist/types/actions';
 
+import { Context } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
 import { addHeaders, logRequest } from '#/server/middlewares';
 import { logger } from '#/server/shared';
@@ -123,19 +124,24 @@ export function addSSRRoute({
   });
 }
 
-export function addWebSocket(server: Server): WebSocketServer {
+export function addWebSocket(server: Server, context: Context): WebSocketServer {
   const wsServer = new WebSocketServer(server);
+
+  context.socketServer = wsServer;
 
   wsServer.use(async (socket, next) => {
     const token = socket.handshake.auth.token;
     const { origin } = socket.handshake.headers;
 
     try {
-      await schema.actions.auth.validateRequest({
+      const { user } = await schema.actions.auth.validateRequest({
         token,
         data: undefined,
         config: { headers: { origin } },
       });
+
+      socket.join(user.id);
+      context.socketMap.addUser({ userId: user.id, socketId: socket.id });
 
       logger.info('[MIDDLEWARE][SOCKET] User found');
 
@@ -159,6 +165,16 @@ export function addWebSocket(server: Server): WebSocketServer {
   });
 
   wsServer.on('connection', async socket => {
+    socket.on('disconnect', () => {
+      const userId = context.socketMap.getUserId(socket.id);
+
+      if (userId) {
+        socket.leave(userId);
+      }
+
+      console.log('USER DISCONNECTED');
+    });
+
     addSocketEvents(socket);
   });
 

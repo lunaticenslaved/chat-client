@@ -13,7 +13,7 @@ export type MessagesListProps = {
   messages: Message[];
 };
 
-export const MessagesList = (props: MessagesListProps) => {
+export const MessagesList = ({ messages }: MessagesListProps) => {
   const { user: viewer } = useViewer();
   const wrapperRef = createRef<HTMLDivElement>();
 
@@ -27,7 +27,7 @@ export const MessagesList = (props: MessagesListProps) => {
   return (
     <div className={classes.root} ref={wrapperRef}>
       <List className={classes.list}>
-        {props.messages.map(message => (
+        {messages.map(message => (
           <MessageListItem
             {...message}
             key={message.id}
