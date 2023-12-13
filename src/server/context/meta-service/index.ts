@@ -2,17 +2,17 @@ import { PrismaClient } from '@prisma/client';
 
 import { IService } from '#/server/context/service';
 
-import { DialogsMetaService } from './dialog';
+import { ConnectionMetaService } from './connection';
 import { MessagesMetaService } from './message';
 
 export interface IMetaService {
-  dialog: DialogsMetaService;
   message: MessagesMetaService;
+  connection: ConnectionMetaService;
 }
 
-export function createMetaServices(_: PrismaClient, services: IService): IMetaService {
+export function createMetaServices(prisma: PrismaClient, services: IService): IMetaService {
   return {
-    dialog: new DialogsMetaService(services),
-    message: new MessagesMetaService(services),
+    message: new MessagesMetaService(prisma, services),
+    connection: new ConnectionMetaService(prisma, services),
   };
 }

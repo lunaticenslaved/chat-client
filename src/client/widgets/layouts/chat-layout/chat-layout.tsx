@@ -7,18 +7,18 @@ import {
 } from '#/client/features/search/in-channels';
 import { Avatar } from '#/client/shared/components/avatar';
 import { Divider } from '#/client/shared/components/divider';
-import { Dialog } from '#/domain/dialog';
+import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
 
 import classes from './chat-layout.module.scss';
 
 export interface ChatLayoutProps {
   query: string;
-  dialogs: Dialog[];
+  dialogs: Connection[];
   messageArea: JSX.Element;
 
   setQuery(value: string): void;
-  onDialogClick(value: Dialog): void;
+  onDialogClick(value: Connection): void;
   onUserClick(value: User): void;
 }
 

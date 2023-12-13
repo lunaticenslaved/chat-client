@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { Dialog } from '../domain/dialog';
+import { Connection } from '#/domain/connection';
 
 interface DialogsState {
   search?: string;
-  currentDialog?: Dialog;
-  dialogs: Dialog[];
+  currentDialog?: Connection;
+  dialogs: Connection[];
 }
 
 const initialState: DialogsState = {
@@ -16,13 +16,13 @@ const slice = createSlice({
   name: 'dialogs',
   initialState,
   reducers: {
-    setCurrentDialog(state, action: PayloadAction<Dialog | undefined>) {
+    setCurrentDialog(state, action: PayloadAction<Connection | undefined>) {
       state.currentDialog = action.payload;
     },
     setSearch(state, action: PayloadAction<string | undefined>) {
       state.search = action.payload;
     },
-    setDialogs(state, action: PayloadAction<Dialog[]>) {
+    setDialogs(state, action: PayloadAction<Connection[]>) {
       state.dialogs = action.payload;
     },
   },

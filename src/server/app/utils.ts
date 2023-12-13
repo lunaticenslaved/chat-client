@@ -11,9 +11,9 @@ import { Server as WebSocketServer } from 'socket.io';
 import schema, { Errors } from '@lunaticenslaved/schema';
 import { AuthResponse } from '@lunaticenslaved/schema/dist/types/actions';
 
-import { Context } from '#/server/context';
+import { Context, SocketContext } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
-import { addHeaders, logRequest } from '#/server/middlewares';
+import { addHeaders, addUser, logRequest } from '#/server/middlewares';
 import { logger } from '#/server/shared';
 
 import { AuthEventServer } from '../../api/auth/types';
@@ -34,6 +34,8 @@ export function configureApp(app: Express) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(addHeaders);
+
+  app.use(addUser);
 }
 
 type RenderHTMLProps = {
@@ -165,9 +167,9 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
   });
 
   wsServer.on('connection', async socket => {
-    socket.on('disconnect', () => {
-      const userId = context.socketMap.getUserId(socket.id);
+    const userId = context.socketMap.getUserId(socket.id);
 
+    socket.on('disconnect', () => {
       if (userId) {
         socket.leave(userId);
       }
@@ -175,7 +177,25 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
       console.log('USER DISCONNECTED');
     });
 
-    addSocketEvents(socket);
+    if (userId) {
+      const existingConnections = await context.prisma.connection.findMany({
+        select: { id: true },
+        where: { users: { hasSome: [userId] } },
+      });
+
+      for (const existingConnection of existingConnections) {
+        socket.join(existingConnection.id);
+      }
+    }
+
+    const eventContext = new SocketContext({
+      socket,
+      userId: context.socketMap.getUserId(socket.id),
+      token: socket.handshake.auth.token,
+      origin: socket.request.headers.origin || '',
+    });
+
+    addSocketEvents(eventContext);
   });
 
   return wsServer;

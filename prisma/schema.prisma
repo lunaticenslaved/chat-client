@@ -7,35 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Dialog {
+model Connection {
   id String @id @default(uuid())
 
-  userId    String
-  ownerId   String
+  users    String[]
+  messages Message[]
+
+  oneToOneDialog OneToOneDialog?
+  groupDialog    GroupDialog?
+
+  @@map(name: "connections")
+}
+
+model OneToOneDialog {
+  id String @id @default(uuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  messages Message[]
+  connectionId String     @unique
+  connection   Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@map(name: "dialogs")
+  @@map(name: "oneToOneDialogs")
+}
+
+model GroupDialog {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  connectionId String     @unique
+  connection   Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map(name: "groupDialogs")
 }
 
 model Message {
   id String @id @default(uuid())
 
   authorId String
-
-  dialogId String
-  dialog   Dialog @relation(fields: [dialogId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  text String @db.VarChar(4096)
+  text     String @db.VarChar(4096)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  isRead Boolean @default(false)
+  connectionId String
+  connection   Connection @relation(fields: [connectionId], references: [id])
 
   @@map(name: "messages")
 }

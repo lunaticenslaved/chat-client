@@ -11,20 +11,16 @@ export enum MessageClientEvent {
 export type SendMessageResponse = Message;
 export type SendMessageRequest =
   | {
-      type: 'new_dialog';
       text: string;
       userId: string;
-      viewerId: string;
     }
   | {
-      type: 'old_dialog';
       text: string;
-      dialogId: string;
-      viewerId: string;
+      connectionId: string;
     };
 
 export type ListMessagesRequest = {
-  dialogId: string;
+  connectionId: string;
   take: number;
 };
 

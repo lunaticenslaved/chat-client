@@ -1,55 +1,44 @@
 import schema from '@lunaticenslaved/schema';
 
-import { User } from '#/domain/user';
+import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search';
+import { ConnectionType } from '#/domain/connection';
 import { createOperation } from '#/server/context';
-import { DialogFullWithPartner } from '#/server/models';
-import { getToken } from '#/server/shared/request';
-
-interface SearchInChannelsRequest {
-  search: string;
-}
-
-interface SearchInChannelsResponse {
-  dialogs: DialogFullWithPartner[];
-  users: User[];
-}
+import { prepareOneToOneConnectionToSend } from '#/server/models/connection';
 
 export const searchInChannels = createOperation<SearchInChannelsResponse, SearchInChannelsRequest>(
-  async (req, _, context) => {
+  async (req, requestContext, context) => {
     const { search } = req.body;
-    const token = getToken(req, 'strict');
-    const origin = req.headers.origin || '';
+    const userId = requestContext.userId;
 
-    // TODO: rewrite schema to not add headers every time
-    const { user } = await schema.actions.viewer.get({
-      token,
-      data: undefined,
-      config: {
-        headers: {
-          Origin: origin,
-        },
-      },
-    });
+    if (!userId) {
+      // FIXME add function to request context to get user id strict
+      throw new Error('User id not found');
+    }
 
-    const dialogs = await context.metaService.dialog.listWithPartners({
-      userId: user.id,
-      origin,
+    const connections = await context.metaService.connection.list(requestContext, {
+      userId,
       search,
     });
 
     const { users } = await schema.actions.users.list({
       data: { take: 20, search },
-      token: getToken(req),
+      token: requestContext.token,
       config: {
         headers: {
-          Origin: req.headers.origin,
+          Origin: requestContext.origin,
         },
       },
     });
 
     return {
-      dialogs,
       users,
+      connections: connections.map(connection => {
+        if (connection.type === ConnectionType.OneToOne) {
+          return prepareOneToOneConnectionToSend(userId, connection);
+        }
+
+        return connection;
+      }),
     };
   },
 );

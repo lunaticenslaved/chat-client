@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 
 import { api } from '#/client/shared/api';
 import { useDebouncedState } from '#/client/shared/hooks';
-import { Dialog } from '#/domain/dialog';
+import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
 
 export interface UseSearchInChannelsRequest {
@@ -13,7 +13,7 @@ export interface UseSearchInChannelsResponse {
   isLoading: boolean;
   isError: boolean;
   users: User[];
-  existingDialogs: Dialog[];
+  existingDialogs: Connection[];
 }
 
 export function useSearchInChannels(
@@ -31,8 +31,8 @@ export function useSearchInChannels(
       isError,
       isLoading,
       users: data?.users || [],
-      existingDialogs: data?.existingDialogs || [],
+      existingDialogs: data?.connections || [],
     }),
-    [data?.existingDialogs, data?.users, isLoading, isError],
+    [data?.connections, data?.users, isLoading, isError],
   );
 }

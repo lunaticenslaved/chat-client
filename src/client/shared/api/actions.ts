@@ -10,15 +10,11 @@ import {
   SignUpResponse,
 } from '@lunaticenslaved/schema/dist/types/actions';
 
+import { ListConnectionsRequest, ListConnectionsResponse } from '#/api/connection';
 import { ListMessagesRequest, ListMessagesResponse } from '#/api/message';
+import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search';
 
 import { client } from './client';
-import {
-  ListDialogsRequest,
-  ListDialogsResponse,
-  SearchInChannelsRequest,
-  SearchInChannelsResponse,
-} from './types';
 
 export const actions = {
   auth: {
@@ -54,9 +50,9 @@ export const actions = {
     }),
   },
   dialog: {
-    list: client.createAction<ListDialogsResponse, ListDialogsRequest>({
+    list: client.createAction<ListConnectionsResponse, ListConnectionsRequest>({
       endpoint: 'chat-api',
-      path: 'dialogs/list',
+      path: 'connections/list',
     }),
   },
   message: {

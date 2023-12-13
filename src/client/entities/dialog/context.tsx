@@ -8,17 +8,17 @@ import {
   useState,
 } from 'react';
 
-import { DialogEventsListener } from '#/api/dialog';
+import { ConnectionEventsListener } from '#/api/connection';
 import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
-import { Dialog } from '#/domain/dialog';
+import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
 
 type SelectedItem =
   | {
       type: 'dialog';
-      dialog: Dialog;
+      dialog: Connection;
     }
   | {
       type: 'user';
@@ -26,13 +26,13 @@ type SelectedItem =
     };
 
 export interface IDialogsContext {
-  dialogs: Dialog[];
+  dialogs: Connection[];
   selectedItem?: SelectedItem;
   isLoadingDialogs: boolean;
   isErrorWhileLoadingDialogs: boolean;
 
   setSelectedUser(user: User): void;
-  setSelectedDialog(dialog: Dialog): void;
+  setSelectedDialog(dialog: Connection): void;
 }
 
 export type DialogsContextProps = {
@@ -42,15 +42,15 @@ export type DialogsContextProps = {
 const Context = createContext<IDialogsContext | undefined>(undefined);
 
 function Provider({ children }: DialogsContextProps) {
-  const [dialogs, setDialogs] = useState<Dialog[]>([]);
+  const [dialogs, setDialogs] = useState<Connection[]>([]);
   const [selectedItem, setSelectedItem] = useState<SelectedItem>();
   const loadingDialogsToggle = useToggle();
   const errorDialogsToggle = useToggle();
 
   const { socket } = useSocketContext();
-  const dialogsListener = useMemo(() => new DialogEventsListener(socket), [socket]);
+  const connectionsListener = useMemo(() => new ConnectionEventsListener(socket), [socket]);
 
-  const setSelectedDialog = useCallback((value: Dialog) => {
+  const setSelectedDialog = useCallback((value: Connection) => {
     setSelectedItem({ dialog: value, type: 'dialog' });
   }, []);
 
@@ -74,14 +74,14 @@ function Provider({ children }: DialogsContextProps) {
 
   useEffect(() => {
     // FIXME handle error
-    dialogsListener.dialogCreated(data => {
-      console.log('DIALOG CREATED', data);
+    connectionsListener.connectionCreated(data => {
+      console.log('CONNECTION CREATED', data);
 
       setDialogs([data, ...dialogs]);
     });
 
     // FIXME handle error
-    dialogsListener.dialogUpdated(data => {
+    connectionsListener.connectionUpdated(data => {
       console.log('DIALOG UPDATED', data);
 
       setDialogs(arr => {
@@ -98,7 +98,7 @@ function Provider({ children }: DialogsContextProps) {
         });
       });
     });
-  }, [dialogs, dialogsListener]);
+  }, [connectionsListener, dialogs]);
 
   useEffect(() => {
     console.log('LIST DIALOGS');
@@ -109,7 +109,7 @@ function Provider({ children }: DialogsContextProps) {
     api.actions.dialog
       .list({ data: undefined })
       .then(data => {
-        setDialogs(data.dialogs);
+        setDialogs(data.connections);
       })
       .catch(() => {
         errorDialogsToggle.setTrue();

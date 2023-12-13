@@ -5,21 +5,42 @@ import { Socket } from 'socket.io';
 import { Errors, Models } from '@lunaticenslaved/schema';
 
 import { AuthEventServer } from '#/api/auth/types';
+import { RequestContext } from '#/server/context';
 
-export function createSocketOperationWithContext<TContext>(context: TContext) {
-  return <TRequest>(fn: (args: TRequest, socket: Socket, context: TContext) => Promise<void>) => {
-    return (socket: Socket, errorEvent: string) => {
+export interface IRequestContext {
+  userId?: string;
+  origin: string;
+  token?: string;
+}
+
+export interface ISocketContext extends IRequestContext {
+  socket: Socket;
+}
+
+export interface IRestContext<TResponse, TRequest> extends IRequestContext {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  request: Request<any, any, TRequest>;
+  response: Response<Models.OperationResponse<TResponse | null>>;
+}
+
+export function createSocketOperationWithContext<TEventContext extends ISocketContext, TAppContext>(
+  context: TAppContext,
+) {
+  return <TRequest>(
+    fn: (args: TRequest, eventContext: TEventContext, appContext: TAppContext) => Promise<void>,
+  ) => {
+    return (eventContext: TEventContext, errorEvent: string) => {
       // FIXME: handle error in socket operation
       return (data: TRequest) => {
         try {
-          fn(data, socket, context);
+          fn(data, eventContext, context);
         } catch (error) {
           if (error instanceof Errors.TokenExpiredError) {
-            socket.emit(AuthEventServer.ExpiredToken);
+            eventContext.socket.emit(AuthEventServer.ExpiredToken);
           } else if (error instanceof Errors.TokenInvalidError) {
-            socket.emit(AuthEventServer.InvalidToken);
+            eventContext.socket.emit(AuthEventServer.InvalidToken);
           } else {
-            socket.emit(errorEvent, { data: null, error });
+            eventContext.socket.emit(errorEvent, { data: null, error });
           }
         }
       };
@@ -30,8 +51,8 @@ export function createSocketOperationWithContext<TContext>(context: TContext) {
 export type CreateOperationArg<TResponse, TRequest, TContext> = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   request: Request<any, any, TRequest>,
-  response: Response<Models.OperationResponse<TResponse | null>>,
-  context: TContext,
+  requestContext: RequestContext<TResponse, TRequest>,
+  appContext: TContext,
 ) => Promise<TResponse> | TResponse;
 
 export function createOperationWithContext<TContext>(context: TContext) {
@@ -41,8 +62,16 @@ export function createOperationWithContext<TContext>(context: TContext) {
       request: Request<any, any, TRequest>,
       response: Response<Models.OperationResponse<TResponse | null>>,
     ) => {
+      const requestContext = new RequestContext<TResponse, TRequest>({
+        request,
+        response,
+        token: request.headers.authorization?.split(' ')[1],
+        origin: request.headers.origin || '',
+        userId: request.user?.id,
+      });
+
       try {
-        const result = await fn(request, response, context);
+        const result = await fn(request, requestContext, context);
 
         return response.status(200).json({ data: result || null, error: null });
       } catch (err) {

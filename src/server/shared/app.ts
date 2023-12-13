@@ -1,11 +1,12 @@
 import { Express } from 'express';
 
-import { Socket } from 'socket.io';
+import { ISocketContext } from '#/server/shared/operation';
 
 export const createRoutes = (fn: (app: Express) => void) => (app: Express) => {
   fn(app);
 };
 
-export const createSocketEvents = (fn: (socket: Socket) => void) => (socket: Socket) => {
-  fn(socket);
-};
+export const createSocketEvents =
+  (fn: (socketContext: ISocketContext) => void) => (socketContext: ISocketContext) => {
+    fn(socketContext);
+  };

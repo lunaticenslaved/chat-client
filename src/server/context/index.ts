@@ -11,6 +11,9 @@ import { IMetaService, createMetaServices } from './meta-service';
 import { IService, createServices } from './service';
 import { ISocketEvent, createSocketEvents } from './socket';
 
+export { RequestContext } from './rest-context';
+export { SocketContext } from './socket-context';
+
 export interface IContext {
   connectDB(): Promise<void>;
   service: IService;
@@ -24,6 +27,7 @@ const prisma = new PrismaClient();
 const service = createServices(prisma);
 
 export class Context implements IContext {
+  prisma = prisma;
   service: IService;
   metaService: IMetaService;
   socketEvent: ISocketEvent;

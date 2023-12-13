@@ -13,7 +13,7 @@ import { useViewer } from '#/client/entities/viewer';
 import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
-import { Dialog } from '#/domain/dialog';
+import { Connection } from '#/domain/connection';
 import { Message } from '#/domain/message';
 import { User } from '#/domain/user';
 
@@ -22,7 +22,7 @@ import { User } from '#/domain/user';
 type SelectedItem =
   | {
       type: 'dialog';
-      dialog: Dialog;
+      dialog: Connection;
     }
   | {
       type: 'user';
@@ -49,7 +49,7 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
   const loadingMessagesToggle = useToggle();
   const errorMessagesToggle = useToggle();
   const viewer = useViewer();
-  const dialogId = selectedItem?.type === 'dialog' ? selectedItem.dialog?.id : undefined;
+  const connectionId = selectedItem?.type === 'dialog' ? selectedItem.dialog?.id : undefined;
 
   const { socket } = useSocketContext();
   const messagesEmitter = useMemo(() => new MessageEventsEmitter(socket), [socket]);
@@ -65,16 +65,12 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
       if (selectedItem.type === 'dialog') {
         messagesEmitter.sendMessage({
           text,
-          type: 'old_dialog',
-          dialogId: selectedItem.dialog.id,
-          viewerId: userId,
+          connectionId: selectedItem.dialog.id,
         });
       } else if (selectedItem.type === 'user') {
         messagesEmitter.sendMessage({
           text,
-          type: 'new_dialog',
           userId: selectedItem.user.id,
-          viewerId: userId,
         });
       }
 
@@ -103,7 +99,7 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
   }, [messagesListener]);
 
   useEffect(() => {
-    if (!dialogId) return;
+    if (!connectionId) return;
 
     console.log('LIST MESSAGES');
 
@@ -112,7 +108,7 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
 
     api.actions.message
       .list({
-        data: { dialogId, take: 20 },
+        data: { connectionId, take: 20 },
       })
       .then(({ messages }) => {
         setMessages(messages);
@@ -124,7 +120,7 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
         loadingMessagesToggle.setFalse();
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dialogId]);
+  }, [connectionId]);
 
   return (
     <Context.Provider value={value}>

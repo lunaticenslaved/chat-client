@@ -9,6 +9,7 @@ export type Message = {
   isRead: boolean;
   authorId: string;
   author: User;
+  connectionId: string;
   attachments: MessageAttachment[];
 };
 

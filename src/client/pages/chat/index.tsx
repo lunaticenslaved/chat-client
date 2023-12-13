@@ -6,6 +6,7 @@ import { SearchContext } from '#/client/features/search/in-channels';
 import { Layout } from '#/client/widgets/layouts';
 import { MessagesArea } from '#/client/widgets/messages-area';
 import { MessageAreaHeader } from '#/client/widgets/messages-area-header';
+import { ConnectionType } from '#/domain/connection';
 
 const ChatPage = () => {
   return (
@@ -26,14 +27,15 @@ const ChatPage = () => {
                         onDialogClick={setSelectedDialog}
                         messageArea={
                           <Fragment>
-                            {selectedItem?.type === 'dialog' && (
-                              <MessageAreaHeader
-                                title={selectedItem.dialog.user.login}
-                                isOnline={false}
-                                // TODO add isOnline
-                                // isOnline={currentDialog.partner.isOnline}
-                              />
-                            )}
+                            {selectedItem?.type === 'dialog' &&
+                              selectedItem.dialog.type === ConnectionType.OneToOne && (
+                                <MessageAreaHeader
+                                  title={selectedItem.dialog.user.login}
+                                  isOnline={false}
+                                  // TODO add isOnline
+                                  // isOnline={currentDialog.partner.isOnline}
+                                />
+                              )}
                             {selectedItem?.type === 'user' && (
                               <MessageAreaHeader
                                 title={selectedItem.user.login}

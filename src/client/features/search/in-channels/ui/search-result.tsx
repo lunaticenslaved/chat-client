@@ -3,14 +3,14 @@ import { Fragment } from 'react';
 import { Typography } from 'antd';
 
 import { UsersList } from '#/client/entities/user';
-import { Dialog } from '#/domain/dialog';
+import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
 
 import { useSearchInChannels } from '../hooks';
 
 export interface SearchInChannelsResultProps {
   query: string;
-  onDialogClick(dialog: Dialog): void;
+  onDialogClick(dialog: Connection): void;
   onUserClick(user: User): void;
 }
 
