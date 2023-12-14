@@ -7,6 +7,7 @@ import {
 } from '#/server/shared/operation';
 import { SocketByUser } from '#/server/shared/socket';
 
+import { EventBus } from './event-bus';
 import { IMetaService, createMetaServices } from './meta-service';
 import { IService, createServices } from './service';
 import { ISocketEvent, createSocketEvents } from './socket';
@@ -15,19 +16,27 @@ export { RequestContext } from './rest-context';
 export { SocketContext } from './socket-context';
 
 export interface IContext {
-  connectDB(): Promise<void>;
   service: IService;
   metaService: IMetaService;
   socketEvent: ISocketEvent;
   socketMap: SocketByUser;
   socketServer: SocketServer;
+
+  connectDB(): Promise<void>;
+  addUserToConnection(data: AddUserToConnectionRequest): void;
 }
 
 const prisma = new PrismaClient();
 const service = createServices(prisma);
 
+type AddUserToConnectionRequest = {
+  userId: string;
+  connectionId: string;
+};
+
 export class Context implements IContext {
   prisma = prisma;
+  eventBus = new EventBus();
   service: IService;
   metaService: IMetaService;
   socketEvent: ISocketEvent;
@@ -36,10 +45,24 @@ export class Context implements IContext {
 
   constructor() {
     this.service = service;
-    this.metaService = createMetaServices(prisma, service);
+    this.metaService = createMetaServices(prisma, service, this.eventBus);
     this.socketEvent = createSocketEvents(this);
     this.socketMap = new SocketByUser();
     this.socketServer = new SocketServer();
+  }
+
+  addUserToConnection(data: AddUserToConnectionRequest): void {
+    const { connectionId, userId } = data;
+    const socketId = this.socketMap.getSocketId(userId);
+
+    if (!socketId) return;
+
+    const namespace = this.socketServer.of('/');
+    const socket = namespace.sockets.get(socketId);
+
+    if (!socket) return;
+
+    socket.join(connectionId);
   }
 
   connectDB() {

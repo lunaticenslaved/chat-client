@@ -13,6 +13,7 @@ import { AuthResponse } from '@lunaticenslaved/schema/dist/types/actions';
 
 import { Context, SocketContext } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
+import { addEventListeners } from '#/server/controllers/event';
 import { addHeaders, addUser, logRequest } from '#/server/middlewares';
 import { logger } from '#/server/shared';
 
@@ -197,6 +198,8 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
 
     addSocketEvents(eventContext);
   });
+
+  addEventListeners(context);
 
   return wsServer;
 }

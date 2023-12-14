@@ -3,7 +3,7 @@ import schema from '@lunaticenslaved/schema';
 import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search';
 import { ConnectionType } from '#/domain/connection';
 import { createOperation } from '#/server/context';
-import { prepareOneToOneConnectionToSend } from '#/server/models/connection';
+import { prepareConnectionToSend } from '#/server/models/connection';
 
 export const searchInChannels = createOperation<SearchInChannelsResponse, SearchInChannelsRequest>(
   async (req, requestContext, context) => {
@@ -34,7 +34,7 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
       users,
       connections: connections.map(connection => {
         if (connection.type === ConnectionType.OneToOne) {
-          return prepareOneToOneConnectionToSend(userId, connection);
+          return prepareConnectionToSend(userId, connection);
         }
 
         return connection;

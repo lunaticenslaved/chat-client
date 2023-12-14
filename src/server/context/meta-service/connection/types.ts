@@ -1,9 +1,6 @@
 import { Connection, OneToOneConnection } from '#/server/models/connection';
 
-export type CreateOneToOneResponse = {
-  connection: OneToOneConnection;
-  action: 'created' | 'updated';
-};
+export type CreateOneToOneResponse = OneToOneConnection;
 export type CreateOneToOneRequest = {
   partnerId: string;
   message?: {

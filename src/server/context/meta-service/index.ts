@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
-import { IService } from '#/server/context/service';
+import { EventBus } from '../event-bus';
+import { IService } from '../service';
 
 import { ConnectionMetaService } from './connection';
 import { MessagesMetaService } from './message';
@@ -10,9 +11,13 @@ export interface IMetaService {
   connection: ConnectionMetaService;
 }
 
-export function createMetaServices(prisma: PrismaClient, services: IService): IMetaService {
+export function createMetaServices(
+  prisma: PrismaClient,
+  services: IService,
+  eventBus: EventBus,
+): IMetaService {
   return {
-    message: new MessagesMetaService(prisma, services),
-    connection: new ConnectionMetaService(prisma, services),
+    message: new MessagesMetaService(prisma, services, eventBus),
+    connection: new ConnectionMetaService(prisma, services, eventBus),
   };
 }

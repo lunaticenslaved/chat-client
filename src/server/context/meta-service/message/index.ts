@@ -22,7 +22,7 @@ export class MessagesMetaService extends BaseMetaService {
   ): Promise<CreateMessageResponse> {
     const prisma = trx || this.prisma;
 
-    const message = await prisma.message.create({ select, data });
+    const rawMessage = await prisma.message.create({ select, data });
 
     const { user: author } = await schema.actions.users.get({
       token: requestContext.token,
@@ -34,16 +34,20 @@ export class MessagesMetaService extends BaseMetaService {
       throw new Error('Author not found');
     }
 
-    return {
+    const message: Message = {
       author,
       connectionId: data.connectionId,
-      id: message.id,
-      text: message.text,
-      authorId: message.authorId,
-      createdAt: message.createdAt.toISOString(),
+      id: rawMessage.id,
+      text: rawMessage.text,
+      authorId: rawMessage.authorId,
+      createdAt: rawMessage.createdAt.toISOString(),
       isRead: false,
       attachments: [],
     };
+
+    this.eventBus.emit('message-created', message);
+
+    return message;
   }
 
   async list(

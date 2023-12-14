@@ -1,5 +1,5 @@
 import { ConnectionType, OneToOneConnection as OneToOneConnectionBase } from '#/domain/connection';
-import { OneToOneConnection as OneToOneConnectionClient } from '#/domain/connection';
+import { Connection as ConnectionClient } from '#/domain/connection';
 import { Message } from '#/domain/message';
 import { User } from '#/domain/user';
 
@@ -15,20 +15,24 @@ export type OneToOneConnection = Omit<OneToOneConnectionBase, 'user'> & {
 
 export type Connection = OneToOneConnection | GroupConnection;
 
-export function prepareOneToOneConnectionToSend(
+export function prepareConnectionToSend(
   currentUserId: string,
-  connectionFromServer: OneToOneConnection,
-): OneToOneConnectionClient {
-  const { users, ...connection } = connectionFromServer;
+  connectionFromServer: Connection,
+): ConnectionClient {
+  if (connectionFromServer.type === ConnectionType.OneToOne) {
+    const { users, ...connection } = connectionFromServer;
 
-  const partner = users.find(({ id }) => currentUserId !== id);
+    const partner = users.find(({ id }) => currentUserId !== id);
 
-  if (!partner) {
-    throw new Error('Partner not found');
+    if (!partner) {
+      throw new Error('Partner not found');
+    }
+
+    return {
+      ...connection,
+      user: partner,
+    };
+  } else {
+    throw new Error('Not implemented!');
   }
-
-  return {
-    ...connection,
-    user: partner,
-  };
 }

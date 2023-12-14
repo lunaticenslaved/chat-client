@@ -84,7 +84,7 @@ export class ConnectionMetaService extends BaseMetaService {
         },
       });
 
-      const connection = existingConnection
+      const rawConnection = existingConnection
         ? await trx.connection.update({
             select,
             where: {
@@ -103,10 +103,17 @@ export class ConnectionMetaService extends BaseMetaService {
             },
           });
 
-      return {
-        connection: await this._processOneToOneConnection(requestContext, connection),
-        action: existingConnection ? 'updated' : 'created',
-      };
+      const connection = await this._processOneToOneConnection(requestContext, rawConnection);
+
+      if (existingConnection) {
+        this.eventBus.emit('connection-created', connection);
+      }
+
+      if (connection.lastMessage) {
+        this.eventBus.emit('message-created', connection.lastMessage);
+      }
+
+      return connection;
     });
   }
 

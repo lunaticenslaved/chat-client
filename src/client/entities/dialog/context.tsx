@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import { ConnectionEventsListener } from '#/api/connection';
+import { MessageEventsListener } from '#/api/message';
 import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { useSocketContext } from '#/client/shared/socket-context';
@@ -49,6 +50,7 @@ function Provider({ children }: DialogsContextProps) {
 
   const { socket } = useSocketContext();
   const connectionsListener = useMemo(() => new ConnectionEventsListener(socket), [socket]);
+  const messagesListener = useMemo(() => new MessageEventsListener(socket), [socket]);
 
   const setSelectedDialog = useCallback((value: Connection) => {
     setSelectedItem({ dialog: value, type: 'dialog' });
@@ -73,30 +75,27 @@ function Provider({ children }: DialogsContextProps) {
   );
 
   useEffect(() => {
-    // FIXME handle error
-    connectionsListener.connectionCreated(data => {
-      console.log('CONNECTION CREATED', data);
+    messagesListener.messageCreated(data => {
+      console.log('UPDATE LAST MESSAGE', data);
 
-      setDialogs([data, ...dialogs]);
-    });
-
-    // FIXME handle error
-    connectionsListener.connectionUpdated(data => {
-      console.log('DIALOG UPDATED', data);
-
-      setDialogs(arr => {
-        const index = arr.findIndex(dialog => dialog.id === data.id);
-
-        if (index < 0) return arr;
-
-        return arr.map((dialog, idx) => {
-          if (index === idx) {
-            return data;
+      setDialogs(dialogs => {
+        return dialogs.map(dialog => {
+          if (dialog.id === data.connectionId) {
+            dialog.lastMessage = data;
           }
 
           return dialog;
         });
       });
+    });
+  }, [messagesListener]);
+
+  useEffect(() => {
+    // FIXME handle error
+    connectionsListener.connectionCreated(data => {
+      console.log('CONNECTION CREATED', data);
+
+      setDialogs([data, ...dialogs]);
     });
   }, [connectionsListener, dialogs]);
 
