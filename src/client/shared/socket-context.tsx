@@ -19,7 +19,7 @@ interface SocketContextProps {
   onTokenInvalid(): void;
 }
 
-const socket = io({
+export const socket = io({
   withCredentials: false,
   autoConnect: false,
   auth: {

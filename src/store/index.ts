@@ -5,6 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Viewer } from '../domain/viewer';
 
 import { DialogsStore } from './dialog';
+import { MessagesStore } from './messages';
 import { ViewerStore } from './viewer';
 
 export const createStore = (viewer?: Viewer) => {
@@ -14,6 +15,7 @@ export const createStore = (viewer?: Viewer) => {
     reducer: {
       [DialogsStore.slice.name]: DialogsStore.slice.reducer,
       [ViewerStore.slice.name]: ViewerStore.slice.reducer,
+      [MessagesStore.slice.name]: MessagesStore.slice.reducer,
     },
     preloadedState: {
       viewer: {
@@ -32,4 +34,5 @@ export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 export const store = {
   [DialogsStore.slice.name]: DialogsStore,
   [ViewerStore.slice.name]: ViewerStore,
+  [MessagesStore.slice.name]: MessagesStore,
 };

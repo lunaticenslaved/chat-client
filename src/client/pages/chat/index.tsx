@@ -1,77 +1,58 @@
 import { Fragment } from 'react';
 
-import { DialogsContext } from '#/client/entities/dialog';
-import { MessageInput, MessagesContext } from '#/client/entities/message';
-import { SearchContext } from '#/client/features/search/in-channels';
+import { MessageInput } from '#/client/entities/message';
+import {
+  MessageAreaHeader,
+  useConnections,
+  useMessages,
+  useSearch,
+} from '#/client/features/messenger';
 import { Layout } from '#/client/widgets/layouts';
 import { MessagesArea } from '#/client/widgets/messages-area';
-import { MessageAreaHeader } from '#/client/widgets/messages-area-header';
-import { ConnectionType } from '#/domain/connection';
 
 const ChatPage = () => {
+  const { selectedUser, setSelectedUser, searchQuery, setSearchQuery } = useSearch();
+  const { connections, setCurrentConnection, currentConnection } = useConnections();
+  const {
+    messages,
+    isLoading: isLoadingMessages,
+    isLoadingError: isErrorWhileLoadingMessages,
+    fetchMoreMessages,
+    hasMoreMessages,
+    sendMessage,
+  } = useMessages({ currentConnectionId: currentConnection?.id });
+
+  const selectedItem = selectedUser || currentConnection;
+
   return (
-    <SearchContext>
-      {({ query, setQuery }) => {
-        return (
-          <DialogsContext>
-            {({ selectedItem, dialogs, setSelectedDialog, setSelectedUser }) => {
-              return (
-                <MessagesContext selectedItem={selectedItem}>
-                  {({
-                    messages,
-                    isLoadingMessages,
-                    isErrorWhileLoadingMessages,
-                    sendMessage,
-                    fetchMoreMessages,
-                    hasMoreMessages,
-                  }) => {
-                    return (
-                      <Layout.Chat
-                        query={query}
-                        setQuery={setQuery}
-                        dialogs={dialogs}
-                        onUserClick={setSelectedUser}
-                        onDialogClick={setSelectedDialog}
-                        messageArea={
-                          <Fragment>
-                            {selectedItem?.type === 'dialog' &&
-                              selectedItem.dialog.type === ConnectionType.OneToOne && (
-                                <MessageAreaHeader
-                                  title={selectedItem.dialog.user.login}
-                                  isOnline={false}
-                                  // TODO add isOnline
-                                  // isOnline={currentDialog.partner.isOnline}
-                                />
-                              )}
-                            {selectedItem?.type === 'user' && (
-                              <MessageAreaHeader
-                                title={selectedItem.user.login}
-                                isOnline={false}
-                                // TODO add isOnline
-                                // isOnline={currentDialog.partner.isOnline}
-                              />
-                            )}
-                            <MessagesArea
-                              messages={messages}
-                              noDialog={!selectedItem}
-                              isError={isErrorWhileLoadingMessages}
-                              isLoading={isLoadingMessages}
-                              hasMore={hasMoreMessages}
-                              onFetchMore={fetchMoreMessages}
-                            />
-                            {selectedItem && <MessageInput onSubmit={sendMessage} />}
-                          </Fragment>
-                        }
-                      />
-                    );
-                  }}
-                </MessagesContext>
-              );
-            }}
-          </DialogsContext>
-        );
-      }}
-    </SearchContext>
+    <Layout.Chat
+      query={searchQuery || ''}
+      setQuery={setSearchQuery}
+      dialogs={connections}
+      onUserClick={setSelectedUser}
+      onDialogClick={setCurrentConnection}
+      messageArea={
+        <Fragment>
+          {!!selectedItem && (
+            <MessageAreaHeader
+              selectedItem={selectedItem}
+              isOnline={false}
+              // TODO add isOnline
+              // isOnline={currentDialog.partner.isOnline}
+            />
+          )}
+          <MessagesArea
+            messages={messages}
+            noDialog={!currentConnection && !selectedUser}
+            isError={isErrorWhileLoadingMessages}
+            isLoading={isLoadingMessages}
+            hasMore={hasMoreMessages}
+            onFetchMore={fetchMoreMessages}
+          />
+          {selectedItem && <MessageInput onSubmit={sendMessage} />}
+        </Fragment>
+      }
+    />
   );
 };
 

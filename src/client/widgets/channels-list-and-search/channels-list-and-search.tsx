@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { DialogsList, useDialogsContext } from '#/client/entities/dialog';
+import { DialogsList } from '#/client/entities/dialog';
+import { useConnections, useSearch } from '#/client/features/messenger';
 import {
   SearchInChannelsInput,
   SearchInChannelsResult,
@@ -11,7 +12,8 @@ import classes from './channels-list-and-search.module.scss';
 
 export const ChannelsListAndSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { dialogs, setSelectedDialog, setSelectedUser } = useDialogsContext();
+  const { setSelectedUser } = useSearch();
+  const { connections, setCurrentConnection } = useConnections();
 
   return (
     <section className={classes.sidebar}>
@@ -21,11 +23,11 @@ export const ChannelsListAndSearch = () => {
 
       <div style={{ overflowY: 'auto' }}>
         {!searchQuery ? (
-          <DialogsList dialogs={dialogs} onClick={setSelectedDialog} />
+          <DialogsList dialogs={connections} onClick={setCurrentConnection} />
         ) : (
           <SearchInChannelsResult
             query={searchQuery}
-            onDialogClick={setSelectedDialog}
+            onDialogClick={setCurrentConnection}
             onUserClick={setSelectedUser}
           />
         )}

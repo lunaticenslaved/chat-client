@@ -6,6 +6,7 @@ import { Store } from '@reduxjs/toolkit';
 
 import { useViewer } from '#/client/entities/viewer';
 import { useLogout } from '#/client/features/auth/logout';
+import { ErrorBoundary } from '#/client/shared/components/error-boundary';
 import { PageLoader } from '#/client/shared/components/page-loader';
 import constants from '#/client/shared/constants';
 import { useToggle } from '#/client/shared/hooks';
@@ -29,9 +30,11 @@ function Content({ isLoading }: ContentProps) {
   const { logout } = useLogout();
   const { isAuthorized } = useViewer();
   return (
-    <SocketContext onTokenInvalid={logout} isAuthorized={isAuthorized}>
-      {isLoading ? <PageLoader /> : <PagesWithStore />}
-    </SocketContext>
+    <ErrorBoundary>
+      <SocketContext onTokenInvalid={logout} isAuthorized={isAuthorized}>
+        {isLoading ? <PageLoader /> : <PagesWithStore />}
+      </SocketContext>
+    </ErrorBoundary>
   );
 }
 
