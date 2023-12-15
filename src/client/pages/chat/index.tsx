@@ -17,7 +17,14 @@ const ChatPage = () => {
             {({ selectedItem, dialogs, setSelectedDialog, setSelectedUser }) => {
               return (
                 <MessagesContext selectedItem={selectedItem}>
-                  {({ messages, isLoadingMessages, isErrorWhileLoadingMessages, sendMessage }) => {
+                  {({
+                    messages,
+                    isLoadingMessages,
+                    isErrorWhileLoadingMessages,
+                    sendMessage,
+                    fetchMoreMessages,
+                    hasMoreMessages,
+                  }) => {
                     return (
                       <Layout.Chat
                         query={query}
@@ -49,6 +56,8 @@ const ChatPage = () => {
                               noDialog={!selectedItem}
                               isError={isErrorWhileLoadingMessages}
                               isLoading={isLoadingMessages}
+                              hasMore={hasMoreMessages}
+                              onFetchMore={fetchMoreMessages}
                             />
                             {selectedItem && <MessageInput onSubmit={sendMessage} />}
                           </Fragment>

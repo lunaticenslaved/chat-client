@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
@@ -33,8 +34,10 @@ export interface IMessagesContext {
   messages: Message[];
   isLoadingMessages: boolean;
   isErrorWhileLoadingMessages: boolean;
+  hasMoreMessages: boolean;
 
   sendMessage(text: string): boolean;
+  fetchMoreMessages(): void;
 }
 
 export type MessagesContextProps = {
@@ -50,6 +53,12 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
   const errorMessagesToggle = useToggle();
   const viewer = useViewer();
   const connectionId = selectedItem?.type === 'dialog' ? selectedItem.dialog?.id : undefined;
+  const lastLoadedMessagesIsEmpty = useToggle({ value: false });
+  const loadingMoreMessagesToggle = useToggle();
+
+  const hasMoreMessages = lastLoadedMessagesIsEmpty.isFalse && messages.length > 0;
+
+  console.log('hasMoreMessages', hasMoreMessages);
 
   const { socket } = useSocketContext();
   const messagesEmitter = useMemo(() => new MessageEventsEmitter(socket), [socket]);
@@ -79,15 +88,48 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
     [viewer.user?.id, selectedItem, messagesEmitter],
   );
 
+  const fetchMoreMessages = useCallback(() => {
+    if (loadingMessagesToggle.isTrue) return;
+    if (!connectionId) return;
+
+    loadingMoreMessagesToggle.setTrue();
+    api.actions.message
+      .list({
+        data: { connectionId, take: 20, prevLoadedMessageId: messages[0].id },
+      })
+      .then(({ messages }) => {
+        if (messages.length === 0) {
+          lastLoadedMessagesIsEmpty.setTrue();
+        } else {
+          console.log(messages);
+          setMessages(currentMessages => [...messages, ...currentMessages]);
+        }
+      })
+      .catch(() => {
+        console.log('Something when wrong when fetching more');
+      })
+      .finally(() => {
+        loadingMoreMessagesToggle.setFalse();
+      });
+  }, [
+    loadingMessagesToggle.isTrue,
+    lastLoadedMessagesIsEmpty,
+    connectionId,
+    messages,
+    loadingMoreMessagesToggle,
+  ]);
+
   const value: IMessagesContext = useMemo(
     () => ({
       messages,
       isLoadingMessages: false,
       isErrorWhileLoadingMessages: false,
+      hasMoreMessages,
 
       sendMessage,
+      fetchMoreMessages,
     }),
-    [messages, sendMessage],
+    [fetchMoreMessages, hasMoreMessages, messages, sendMessage],
   );
 
   useEffect(() => {
@@ -98,7 +140,7 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
     });
   }, [messagesListener]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!connectionId) return;
 
     console.log('LIST MESSAGES');
@@ -112,6 +154,7 @@ function Provider({ children, selectedItem }: MessagesContextProps) {
       })
       .then(({ messages }) => {
         setMessages(messages);
+        lastLoadedMessagesIsEmpty.setValue(messages.length === 0);
       })
       .catch(() => {
         errorMessagesToggle.setTrue();

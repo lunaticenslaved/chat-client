@@ -1,3 +1,5 @@
+import { createRef, useLayoutEffect } from 'react';
+
 import { MessagesList } from '#/client/entities/message';
 import { Message } from '#/domain/message';
 
@@ -11,9 +13,26 @@ export interface MessageAreaProps {
   noDialog: boolean;
   isLoading: boolean;
   isError: boolean;
+  hasMore: boolean;
+  onFetchMore(): void;
 }
 
-export const MessagesArea = ({ messages, noDialog, isError, isLoading }: MessageAreaProps) => {
+export const MessagesArea = ({
+  messages,
+  noDialog,
+  isError,
+  isLoading,
+  hasMore,
+  onFetchMore,
+}: MessageAreaProps) => {
+  const bottomElementRef = createRef<HTMLDivElement>();
+
+  useLayoutEffect(() => {
+    if (bottomElementRef.current) {
+      bottomElementRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
+    }
+  }, [bottomElementRef]);
+
   if (noDialog) {
     return <NoDialogView />;
   }
@@ -30,5 +49,14 @@ export const MessagesArea = ({ messages, noDialog, isError, isLoading }: Message
     return <HasErrorView />;
   }
 
-  return <MessagesList messages={messages} />;
+  return (
+    <div
+      id="scrollableDiv"
+      style={{ overflow: 'auto' }}
+      onScroll={hasMore ? onFetchMore : undefined}>
+      <MessagesList messages={messages} />
+
+      <div ref={bottomElementRef}></div>
+    </div>
+  );
 };

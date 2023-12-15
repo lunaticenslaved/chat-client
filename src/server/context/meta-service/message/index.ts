@@ -55,14 +55,17 @@ export class MessagesMetaService extends BaseMetaService {
     data: ListMessagesRequest,
     trx?: Transaction,
   ): Promise<ListMessagesResponse> {
+    const { connectionId, take, prevLoadedMessageId } = data;
     const prisma = trx || this.prisma;
 
     const messages = await prisma.message.findMany({
       select,
-      take: data.take,
-      where: { connectionId: data.connectionId },
+      take,
+      skip: prevLoadedMessageId ? take : undefined,
+      cursor: prevLoadedMessageId ? { id: prevLoadedMessageId } : undefined,
+      where: { connectionId },
       orderBy: {
-        createdAt: 'asc',
+        createdAt: 'desc',
       },
     });
 
@@ -80,7 +83,7 @@ export class MessagesMetaService extends BaseMetaService {
       const author = users.find(p => p.id === message.authorId);
 
       if (author) {
-        acc.push({
+        acc.unshift({
           ...message,
           createdAt: message.createdAt.toISOString(),
           author,

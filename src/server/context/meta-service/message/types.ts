@@ -3,6 +3,7 @@ import { Message } from '#/domain/message';
 export type ListMessagesResponse = Message[];
 export type ListMessagesRequest = {
   take: number;
+  prevLoadedMessageId?: string;
   connectionId: string;
 };
 

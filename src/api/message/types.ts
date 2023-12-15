@@ -22,6 +22,7 @@ export type SendMessageRequest =
 export type ListMessagesRequest = {
   connectionId: string;
   take: number;
+  prevLoadedMessageId?: string;
 };
 
 export type ListMessagesResponse = {
