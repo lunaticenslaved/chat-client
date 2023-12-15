@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { api } from '#/client/shared/api';
+import { searchActions } from '#/api/search';
 import { useDebouncedState } from '#/client/shared/hooks';
 import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
@@ -23,7 +23,7 @@ export function useSearchInChannels(
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['search/in-channels', query],
-    queryFn: () => api.actions.search.inChannels({ data: { search: query } }),
+    queryFn: () => searchActions.inChannels({ data: { search: query } }),
   });
 
   return useMemo(

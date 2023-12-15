@@ -1,8 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo } from 'react';
 
-import { ConnectionEventsListener } from '#/api/connection';
+import { ConnectionEventsListener, connectionsActions } from '#/api/connection';
 import { MessageEventsListener } from '#/api/message';
-import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { socket } from '#/client/shared/socket-context';
 import { Connection } from '#/domain/connection';
@@ -63,7 +62,7 @@ export function useConnections(): UseConnections {
     isLoading.setTrue();
     isLoadingError.setFalse();
 
-    api.actions.dialog
+    connectionsActions
       .list({ data: undefined })
       .then(data => setConnections(data.connections))
       .catch(() => isLoadingError.setTrue())

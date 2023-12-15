@@ -6,9 +6,9 @@ import { message } from 'antd';
 
 import { SignInRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
+import { authActions } from '#/api/auth';
 import { ROUTES } from '#/client/config/routes';
 import { useViewer } from '#/client/entities/viewer';
-import { api } from '#/client/shared/api';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';
@@ -27,7 +27,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
   const navigate = useNavigate();
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: 'sign-in',
-    mutationFn: api.actions.auth.signIn,
+    mutationFn: authActions.signIn,
   });
 
   const signIn = useCallback(

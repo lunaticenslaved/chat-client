@@ -2,15 +2,15 @@ import { useCallback } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
+import { authActions } from '#/api/auth';
 import { ROUTES } from '#/client/config/routes';
 import { useViewer } from '#/client/entities/viewer';
-import { api } from '#/client/shared/api';
 import { Token } from '#/client/shared/token';
 
 export const useLogout = () => {
   const { mutateAsync: callLogout, isLoading } = useMutation({
     mutationKey: 'logout',
-    mutationFn: api.actions.auth.logout,
+    mutationFn: authActions.logout,
   });
   const viewerHook = useViewer();
   const navigate = useNavigate();

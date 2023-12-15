@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from 'react-query';
 
-import { api } from '#/client/shared/api';
+import { viewerActions } from '#/api/viewer';
 import { Viewer } from '#/domain/viewer';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
@@ -26,7 +26,7 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
 
   const getViewerMutation = useMutation({
     mutationKey: 'viewer/get',
-    mutationFn: api.actions.viewer.get,
+    mutationFn: viewerActions.get,
   });
 
   const set = useCallback(

@@ -4,7 +4,8 @@ import libAxios, { AxiosError } from 'axios';
 
 import { Errors } from '@lunaticenslaved/schema';
 
-import { api } from '#/client/shared/api';
+import { authActions } from '#/api/auth';
+import { client } from '#/api/client';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 
@@ -20,7 +21,7 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
     async function callRefreshAndSetToken() {
       console.log('NEED REFRESH');
 
-      const response = await api.actions.auth.refresh(
+      const response = await authActions.refresh(
         {
           axios: libAxios.create({
             withCredentials: true,
@@ -77,7 +78,7 @@ export function ClientWrapper({ onRefreshTokenExpired, children }: ClientWrapper
       },
     );
 
-    api.client.setAxios(axios);
+    client.setAxios(axios);
   }, [onRefreshTokenExpired]);
 
   return <>{children}</>;

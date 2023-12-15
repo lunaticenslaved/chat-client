@@ -6,8 +6,8 @@ import { message } from 'antd';
 
 import { SignUpRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
+import { authActions } from '#/api/auth';
 import { useViewer } from '#/client/entities/viewer';
-import { api } from '#/client/shared/api';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';
@@ -33,7 +33,7 @@ export function useSignUp({
   const navigate = useNavigate();
   const { isLoading, mutateAsync } = useMutation({
     mutationKey: 'sign-up',
-    mutationFn: api.actions.auth.signUp,
+    mutationFn: authActions.signUp,
   });
 
   const signUp = useCallback(

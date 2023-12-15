@@ -3,8 +3,8 @@ import { useMutation } from 'react-query';
 
 import { ActivateRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
+import { authActions } from '#/api/auth';
 import { useViewer } from '#/client/entities/viewer';
-import { api } from '#/client/shared/api';
 import { Handlers } from '#/client/shared/types';
 
 export interface UseActivateAccountRequest extends Handlers {
@@ -23,7 +23,7 @@ export function useActivateAccount({
   const viewer = useViewer();
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: 'auth/activate',
-    mutationFn: api.actions.auth.activate,
+    mutationFn: authActions.activate,
   });
 
   const call = useCallback(

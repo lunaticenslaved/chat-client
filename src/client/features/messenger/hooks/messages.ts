@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 
-import { MessageEventsEmitter, MessageEventsListener } from '#/api/message';
+import { MessageEventsEmitter, MessageEventsListener, messagesActions } from '#/api/message';
 import { useViewer } from '#/client/entities/viewer';
-import { api } from '#/client/shared/api';
 import { useToggle } from '#/client/shared/hooks';
 import { socket } from '#/client/shared/socket-context';
 import { Message } from '#/domain/message';
@@ -64,7 +63,7 @@ export function useMessages({
     isFetchingMore.setTrue();
     isFetchingMoreError.setFalse();
 
-    api.actions.message
+    messagesActions
       .list({
         data: {
           connectionId: currentConnectionId,
@@ -128,7 +127,7 @@ export function useMessages({
     isLoading.setTrue();
     isLoadingError.setFalse();
 
-    api.actions.message
+    messagesActions
       .list({ data: { connectionId: currentConnectionId, take: AMOUNT } })
       .then(({ messages }) => {
         setMessages(messages);
