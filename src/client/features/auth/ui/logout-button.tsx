@@ -13,10 +13,10 @@ export function LogoutButton() {
     <Button
       onClick={logout}
       disabled={isLoading}
-      type="text"
       size="large"
-      shape="circle"
       loading={isLoading}
+      type="dashed"
+      shape="circle"
       icon={<LogoutOutlined />}
     />
   ) : null;

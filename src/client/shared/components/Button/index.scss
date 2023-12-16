@@ -1,18 +1,7 @@
 .ant-btn {
-  height: 42px;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  border-radius: 4px !important;
   justify-content: center;
-
-  &.ant-btn-sm {
-    height: 32px !important;
-    font-size: 12px;
-  }
-
-  &.ant-btn-lg {
-    height: 56px !important;
-    font-size: 14px;
-  }
 }
+
