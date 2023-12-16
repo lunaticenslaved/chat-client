@@ -1,6 +1,6 @@
 import { DialogsList } from '#/client/entities/dialog';
 import { useViewer } from '#/client/entities/viewer';
-import { LogoutButton } from '#/client/features/auth/logout';
+import { LogoutButton } from '#/client/features/auth';
 import {
   SearchInChannelsInput,
   SearchInChannelsResult,

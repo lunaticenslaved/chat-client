@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { Store } from '@reduxjs/toolkit';
 
 import { useViewer } from '#/client/entities/viewer';
-import { useLogout } from '#/client/features/auth/logout';
+import { useLogout } from '#/client/features/auth';
 import { ErrorBoundary } from '#/client/shared/components/error-boundary';
 import { PageLoader } from '#/client/shared/components/page-loader';
 import constants from '#/client/shared/constants';

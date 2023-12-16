@@ -4,10 +4,11 @@ import { Form, Input } from 'antd';
 import Schema from '@lunaticenslaved/schema';
 
 import { ROUTES } from '#/client/config/routes';
-import { AuthForm } from '#/client/entities/viewer';
 import { createAntdValidator } from '#/client/shared/lib/validators';
 
-import { useSignIn } from '../hooks';
+import { useSignIn } from '../hooks/sign-in';
+
+import { AuthForm } from './auth-form/auth-form';
 
 type Values = {
   login: string;

@@ -7,10 +7,11 @@ import { RuleObject } from 'antd/es/form';
 import Schema from '@lunaticenslaved/schema';
 
 import { ROUTES } from '#/client/config/routes';
-import { AuthForm } from '#/client/entities/viewer';
 import { createAntdValidator } from '#/client/shared/lib/validators';
 
-import { useSignUp } from '../hooks';
+import { useSignUp } from '../hooks/sign-up';
+
+import { AuthForm } from './auth-form/auth-form';
 
 interface Values {
   login: string;

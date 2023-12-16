@@ -3,7 +3,7 @@ import { LogoutOutlined } from '@ant-design/icons';
 import { useViewer } from '#/client/entities/viewer';
 import { Button } from '#/client/shared/components/Button';
 
-import { useLogout } from '../hooks';
+import { useLogout } from '../hooks/logout';
 
 export function LogoutButton() {
   const { logout, isLoading } = useLogout();

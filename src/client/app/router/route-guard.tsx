@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '#/client/config/routes';
 import { useViewer } from '#/client/entities/viewer';
-import { useLogout } from '#/client/features/auth/logout';
+import { useLogout } from '#/client/features/auth';
 
 import { PageAccessType } from './pages';
 

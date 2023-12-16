@@ -7,7 +7,7 @@ import { Button, Flex, Form, Input, Result } from 'antd';
 import schema from '@lunaticenslaved/schema';
 
 import { ROUTES } from '#/client/config/routes';
-import { ResendEmailButton, useActivateAccount } from '#/client/features/auth/activate-account';
+import { ResendEmailButton, useActivateAccount } from '#/client/features/auth';
 import { useToggle } from '#/client/shared/hooks';
 import { createAntdValidator } from '#/client/shared/lib/validators';
 import { Layout } from '#/client/widgets/layouts';
