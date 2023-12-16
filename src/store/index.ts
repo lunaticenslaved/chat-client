@@ -6,6 +6,7 @@ import { Viewer } from '../domain/viewer';
 
 import { DialogsStore } from './dialog';
 import { MessagesStore } from './messages';
+import { SearchStore } from './search';
 import { ViewerStore } from './viewer';
 
 export const createStore = (viewer?: Viewer) => {
@@ -16,6 +17,7 @@ export const createStore = (viewer?: Viewer) => {
       [DialogsStore.slice.name]: DialogsStore.slice.reducer,
       [ViewerStore.slice.name]: ViewerStore.slice.reducer,
       [MessagesStore.slice.name]: MessagesStore.slice.reducer,
+      [SearchStore.slice.name]: SearchStore.slice.reducer,
     },
     preloadedState: {
       viewer: {
@@ -35,4 +37,5 @@ export const store = {
   [DialogsStore.slice.name]: DialogsStore,
   [ViewerStore.slice.name]: ViewerStore,
   [MessagesStore.slice.name]: MessagesStore,
+  [SearchStore.slice.name]: SearchStore,
 };

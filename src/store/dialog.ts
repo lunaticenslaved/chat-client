@@ -4,7 +4,6 @@ import { Connection } from '#/domain/connection';
 import { Message } from '#/domain/message';
 
 interface DialogsState {
-  search?: string;
   currentDialog?: Connection;
   dialogs: Connection[];
 }
@@ -19,9 +18,6 @@ const slice = createSlice({
   reducers: {
     setCurrentDialog(state, action: PayloadAction<Connection | undefined>) {
       state.currentDialog = action.payload;
-    },
-    setSearch(state, action: PayloadAction<string | undefined>) {
-      state.search = action.payload;
     },
     setDialogs(state, action: PayloadAction<Connection[]>) {
       state.dialogs = action.payload;
@@ -49,7 +45,6 @@ const slice = createSlice({
 const selectors = {
   selectCurrentDialog: (state: { dialogs: DialogsState }) => state.dialogs.currentDialog,
   selectDialogs: (state: { dialogs: DialogsState }) => state.dialogs.dialogs,
-  selectSearch: (state: { dialogs: DialogsState }) => state.dialogs.search,
 };
 
 export const DialogsStore = {

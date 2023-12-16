@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useMemo } from 'react';
 
 import { User } from '#/domain/user';
 import { store, useAppDispatch, useAppSelector } from '#/store';
@@ -11,13 +11,19 @@ export interface UseSearch {
 }
 
 export function useSearch(): UseSearch {
-  const [selectedUser, setSelectedUser] = useState<User>();
-  const searchQuery = useAppSelector(store.dialogs.selectors.selectSearch);
+  const selectedUser = useAppSelector(store.search.selectors.selectUser);
+  const searchQuery = useAppSelector(store.search.selectors.selectQuery);
   const dispatch = useAppDispatch();
-  const setSearchQuery = useCallback(
-    (value?: string) => {
-      dispatch(store.dialogs.actions.setSearch(value));
-    },
+
+  const { setSearchQuery, setSelectedUser } = useMemo(
+    () => ({
+      setSearchQuery(value?: string) {
+        dispatch(store.search.actions.setQuery(value));
+      },
+      setSelectedUser(value?: User) {
+        dispatch(store.search.actions.setSelectedUser(value));
+      },
+    }),
     [dispatch],
   );
 
