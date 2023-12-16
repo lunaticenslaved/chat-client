@@ -1,11 +1,10 @@
-import { SignUpForm } from '#/client/features/auth';
-import { AuthLayout } from '#/client/widgets/layouts';
+import { AuthCard, SignUpForm } from '#/client/features/auth';
 
 export const SignUpPage = () => {
   return (
-    <AuthLayout header="Зарегистрироваться" description="Для входа в чат нужно зарегистрироваться">
+    <AuthCard header="Зарегистрироваться" description="Для входа в чат нужно зарегистрироваться">
       <SignUpForm />
-    </AuthLayout>
+    </AuthCard>
   );
 };
 

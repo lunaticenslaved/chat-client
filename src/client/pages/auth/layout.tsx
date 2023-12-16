@@ -4,7 +4,7 @@ import { Flex } from 'antd';
 
 export function AuthLayout() {
   return (
-    <Flex style={{ width: '100%', height: '100%' }}>
+    <Flex style={{ width: '100%', height: '100%' }} vertical align="center" justify="center">
       <Outlet />
     </Flex>
   );

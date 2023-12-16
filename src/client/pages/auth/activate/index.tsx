@@ -5,11 +5,10 @@ import { Button, Flex, Form, Input, Result } from 'antd';
 
 import schema from '@lunaticenslaved/schema';
 
-import { ResendEmailButton, useActivateAccount } from '#/client/features/auth';
+import { AuthCard, ResendEmailButton, useActivateAccount } from '#/client/features/auth';
 import { useAuthNavigation } from '#/client/pages/auth/navigation';
 import { useToggle } from '#/client/shared/hooks';
 import { createAntdValidator } from '#/client/shared/lib/validators';
-import { AuthLayout } from '#/client/widgets/layouts';
 
 import classes from './index.module.scss';
 
@@ -34,7 +33,7 @@ export const ConfirmRequiredPage = () => {
   });
 
   return (
-    <AuthLayout header="Подтвердите e-mail" description="Пожалуйста, подтвердите свой e-mail адрес">
+    <AuthCard header="Подтвердите e-mail" description="Пожалуйста, подтвердите свой e-mail адрес">
       <section className={classes.root}>
         {success.isTrue ? (
           <Result status="success" title="E-mail подтвержден" />
@@ -79,7 +78,7 @@ export const ConfirmRequiredPage = () => {
           </>
         )}
       </section>
-    </AuthLayout>
+    </AuthCard>
   );
 };
 

@@ -6,11 +6,9 @@ import { RootLayout } from './layout';
 const Chat = lazy(() => import('./chat/page'));
 const Settings = lazy(() => import('./settings/page'));
 
-export function useRootPages() {
-  return (
-    <Route element={<RootLayout />}>
-      <Route path="/chat" element={<Chat />} />
-      <Route path="/settings" element={<Settings />} />
-    </Route>
-  );
-}
+export const rootPages = (
+  <Route element={<RootLayout />}>
+    <Route path="/chat" element={<Chat />} />
+    <Route path="/settings" element={<Settings />} />
+  </Route>
+);
