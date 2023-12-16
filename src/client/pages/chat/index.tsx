@@ -7,7 +7,7 @@ import {
   useMessages,
   useSearch,
 } from '#/client/features/messenger';
-import { Layout } from '#/client/widgets/layouts';
+import { ChatLayout } from '#/client/widgets/layouts';
 import { MessagesArea } from '#/client/widgets/messages-area';
 
 const ChatPage = () => {
@@ -25,7 +25,7 @@ const ChatPage = () => {
   const selectedItem = selectedUser || currentConnection;
 
   return (
-    <Layout.Chat
+    <ChatLayout
       query={searchQuery || ''}
       setQuery={setSearchQuery}
       dialogs={connections}

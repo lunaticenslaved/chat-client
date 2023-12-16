@@ -1,14 +1,14 @@
 import { DialogsList } from '#/client/entities/dialog';
 import { useViewer } from '#/client/entities/viewer';
-import { LogoutButton } from '#/client/features/auth';
 import {
   SearchInChannelsInput,
   SearchInChannelsResult,
 } from '#/client/features/search/in-channels';
-import { Avatar } from '#/client/shared/components/avatar';
 import { Divider } from '#/client/shared/components/divider';
 import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
+
+import { TheNavbar } from '../../ui/the-navbar';
 
 import classes from './chat-layout.module.scss';
 
@@ -36,10 +36,7 @@ export const ChatLayout = ({
 
   return (
     <div className={classes.root}>
-      <nav className={classes.nav}>
-        <Avatar name={viewer.user.login} url={viewer.user.avatar?.link} />
-        <LogoutButton />
-      </nav>
+      <TheNavbar />
 
       <Divider vertical />
 

@@ -7,6 +7,7 @@ const SignUpPage = lazy(() => import('#/client/pages/auth/sign-up'));
 const ActivateAccountPage = lazy(() => import('#/client/pages/auth/activate'));
 const ChatPage = lazy(() => import('#/client/pages/chat'));
 const PageNotFound = lazy(() => import('#/client/pages/not-found'));
+const Settings = lazy(() => import('#/client/pages/settings'));
 
 export enum PageAccessType {
   PrivateCommon = 'private-common',
@@ -40,5 +41,10 @@ export const PAGES = [
     path: ROUTES.error404,
     component: PageNotFound,
     accessType: PageAccessType.Common,
+  },
+  {
+    path: ROUTES.settings,
+    component: Settings,
+    accessType: PageAccessType.PrivateConfirmed,
   },
 ];

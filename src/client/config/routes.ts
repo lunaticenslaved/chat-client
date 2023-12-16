@@ -7,4 +7,5 @@ export const ROUTES = Object.freeze({
     confirmEmailRequired: '/confirm-email-required',
     confirmEmailActivate: '/activate/:link',
   },
+  settings: '/settings',
 });
