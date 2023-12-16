@@ -1,13 +1,9 @@
 @import '#/client/shared/styles/index.scss';
 
-.root {
-  display: flex;
-  flex-wrap: nowrap;
-  height: 100%;
-  align-items: stretch;
-}
 
 .main {
+  height: 100%;
+  width: 100%;
   flex-grow: 1;
   display: flex;
   flex-wrap: nowrap;

@@ -7,7 +7,7 @@ import { SignUpRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
 import { authActions } from '#/api/auth';
 import { useViewer } from '#/client/entities/viewer';
-import { useChatNavigation } from '#/client/pages/chat';
+import { useChatNavigation } from '#/client/pages/root/chat';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';

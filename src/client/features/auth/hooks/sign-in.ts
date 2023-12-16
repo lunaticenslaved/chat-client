@@ -8,7 +8,7 @@ import { SignInRequest } from '@lunaticenslaved/schema/dist/types/actions';
 import { authActions } from '#/api/auth';
 import { useViewer } from '#/client/entities/viewer';
 import { useAuthNavigation } from '#/client/pages/auth';
-import { useChatNavigation } from '#/client/pages/chat';
+import { useChatNavigation } from '#/client/pages/root/chat/navigation';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';
@@ -45,10 +45,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
         Token.set(data);
         viewerHook.set(user);
 
-        console.log('sign-in done', user.isActivated);
-
         if (user.isActivated) {
-          console.log('navigate to chat');
           chatNavigation.toChat();
         } else {
           authNavigation.toActivate();

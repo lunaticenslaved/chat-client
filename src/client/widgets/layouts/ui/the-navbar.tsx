@@ -6,6 +6,8 @@ import { Flex, theme } from 'antd';
 
 import { useViewer } from '#/client/entities/viewer';
 import { LogoutButton } from '#/client/features/auth';
+import { chatRoutes } from '#/client/pages/root/chat';
+import { settingsRoutes } from '#/client/pages/root/settings';
 import { Avatar } from '#/client/shared/components/avatar';
 
 const sections: Array<{
@@ -15,12 +17,12 @@ const sections: Array<{
 }> = [
   {
     title: 'Chat',
-    to: '/',
+    to: chatRoutes.chat,
     icon: style => <MessageOutlined style={style} />,
   },
   {
     title: 'Settings',
-    to: '/settings',
+    to: settingsRoutes.settings,
     icon: style => <SettingOutlined style={style} />,
   },
 ];

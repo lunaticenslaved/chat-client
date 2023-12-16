@@ -8,8 +8,6 @@ import { Divider } from '#/client/shared/components/divider';
 import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
 
-import { TheNavbar } from '../../ui/the-navbar';
-
 import classes from './chat-layout.module.scss';
 
 export interface ChatLayoutProps {
@@ -35,34 +33,28 @@ export const ChatLayout = ({
   if (!viewer.user) return;
 
   return (
-    <div className={classes.root}>
-      <TheNavbar />
+    <div className={classes.main}>
+      <aside className={classes.sidebar}>
+        <SearchInChannelsInput search={query} onChange={setQuery} />
+
+        <Divider />
+
+        <div style={{ overflowY: 'auto' }}>
+          {!query ? (
+            <DialogsList dialogs={dialogs} onClick={onDialogClick} />
+          ) : (
+            <SearchInChannelsResult
+              query={query}
+              onDialogClick={onDialogClick}
+              onUserClick={onUserClick}
+            />
+          )}
+        </div>
+      </aside>
 
       <Divider vertical />
 
-      <main className={classes.main}>
-        <aside className={classes.sidebar}>
-          <SearchInChannelsInput search={query} onChange={setQuery} />
-
-          <Divider />
-
-          <div style={{ overflowY: 'auto' }}>
-            {!query ? (
-              <DialogsList dialogs={dialogs} onClick={onDialogClick} />
-            ) : (
-              <SearchInChannelsResult
-                query={query}
-                onDialogClick={onDialogClick}
-                onUserClick={onUserClick}
-              />
-            )}
-          </div>
-        </aside>
-
-        <Divider vertical />
-
-        <div className={classes.content}>{messageArea}</div>
-      </main>
+      <div className={classes.content}>{messageArea}</div>
     </div>
   );
 };

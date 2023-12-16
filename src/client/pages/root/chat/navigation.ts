@@ -6,10 +6,7 @@ export function useChatNavigation() {
 
   return useMemo(
     () => ({
-      toChat: () => {
-        console.log('navigate to chat');
-        return navigate('/chat');
-      },
+      toChat: () => navigate('/chat'),
     }),
     [navigate],
   );

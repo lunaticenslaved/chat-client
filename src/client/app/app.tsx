@@ -30,6 +30,8 @@ function Content({ isLoading }: ContentProps) {
   const { logout } = useLogout();
   const { isAuthorized } = useViewer();
 
+  console.log('APP CONTENT RERENDER');
+
   return (
     <ErrorBoundary>
       <SocketContext onTokenInvalid={logout} isAuthorized={isAuthorized}>

@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import cn from 'classnames';
 
@@ -24,11 +24,3 @@ export function AuthLayout({ header, description, children }: AuthLayoutProps) {
     </section>
   );
 }
-
-interface DescriptionProps extends PropsWithChildren {
-  className?: string;
-}
-
-export const Description = (props: DescriptionProps) => (
-  <p className={cn(classes.description, props.className)}>{props.children}</p>
-);
