@@ -1,13 +1,12 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { InfoCircleTwoTone } from '@ant-design/icons';
 import { Button, Flex, Form, Input, Result } from 'antd';
 
 import schema from '@lunaticenslaved/schema';
 
-import { ROUTES } from '#/client/config/routes';
 import { ResendEmailButton, useActivateAccount } from '#/client/features/auth';
+import { useAuthNavigation } from '#/client/pages/auth/navigation';
 import { useToggle } from '#/client/shared/hooks';
 import { createAntdValidator } from '#/client/shared/lib/validators';
 import { AuthLayout } from '#/client/widgets/layouts';
@@ -21,16 +20,14 @@ interface Values {
 export const ConfirmRequiredPage = () => {
   const [form] = Form.useForm<Values>();
   const success = useToggle();
-  const navigate = useNavigate();
+  const authNavigation = useAuthNavigation();
 
   const showSuccess = useCallback(() => {
     success.setTrue();
 
     // TODO it's better to show an animation while waiting
-    setTimeout(() => {
-      navigate(ROUTES.auth.signIn);
-    }, 3000);
-  }, [navigate, success]);
+    setTimeout(() => authNavigation.toSignIn(), 3000);
+  }, [authNavigation, success]);
 
   const activation = useActivateAccount({
     onSuccess: showSuccess,

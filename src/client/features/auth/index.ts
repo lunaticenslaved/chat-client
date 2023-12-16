@@ -6,3 +6,4 @@ export { LogoutButton } from './ui/logout-button';
 
 export { useActivateAccount } from './hooks/activate-account';
 export { useLogout } from './hooks/logout';
+export { useIsActivatedCheck, useIsAuthorizedCheck } from './hooks/checks';

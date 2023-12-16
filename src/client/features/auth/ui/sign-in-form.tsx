@@ -3,7 +3,7 @@ import { Form, Input } from 'antd';
 
 import Schema from '@lunaticenslaved/schema';
 
-import { ROUTES } from '#/client/config/routes';
+import { authRoutes } from '#/client/pages/auth';
 import { createAntdValidator } from '#/client/shared/lib/validators';
 
 import { useSignIn } from '../hooks/sign-in';
@@ -25,7 +25,7 @@ export function SignInForm() {
     <AuthForm<Values>
       buttonText="Войти в аккаунт"
       linkText="Зарегистрироваться"
-      link={ROUTES.auth.signUp}
+      link={authRoutes.signUp}
       onSubmit={signIn}
       isSubmitting={isLoading}
       formInstance={form}>

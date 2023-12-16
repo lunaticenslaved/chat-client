@@ -29,6 +29,7 @@ type ContentProps = {
 function Content({ isLoading }: ContentProps) {
   const { logout } = useLogout();
   const { isAuthorized } = useViewer();
+
   return (
     <ErrorBoundary>
       <SocketContext onTokenInvalid={logout} isAuthorized={isAuthorized}>
@@ -53,14 +54,16 @@ export function App({ store, renderingOnServer }: AppProps) {
 
   if (renderingOnServer) {
     return (
-      <Provider store={store}>{loading.isTrue ? <PageLoader /> : <PagesWithStore />}</Provider>
+      <Provider store={store}>
+        <PageLoader />
+      </Provider>
     );
   }
 
   return (
     <QueryClientProvider client={client}>
       <Provider store={store}>
-        <Content isLoading={loading.isTrue} />
+        <Content isLoading={loading.value} />
       </Provider>
     </QueryClientProvider>
   );

@@ -6,7 +6,7 @@ import { RuleObject } from 'antd/es/form';
 
 import Schema from '@lunaticenslaved/schema';
 
-import { ROUTES } from '#/client/config/routes';
+import { authRoutes } from '#/client/pages/auth';
 import { createAntdValidator } from '#/client/shared/lib/validators';
 
 import { useSignUp } from '../hooks/sign-up';
@@ -22,9 +22,7 @@ interface Values {
 const signUpValidators = Schema.validators.auth.signUp;
 
 export function SignUpForm() {
-  const { signUp, isLoading } = useSignUp({
-    redirectTo: ROUTES.home,
-  });
+  const { signUp, isLoading } = useSignUp();
   const [form] = Form.useForm<Values>();
 
   const validators = useMemo(
@@ -52,7 +50,7 @@ export function SignUpForm() {
     <AuthForm<Values>
       buttonText="Зарегистрироваться"
       linkText="Уже есть аккаунт? Войти"
-      link={ROUTES.auth.signIn}
+      link={authRoutes.signIn}
       onSubmit={signUp}
       isSubmitting={isLoading}
       formInstance={form}>

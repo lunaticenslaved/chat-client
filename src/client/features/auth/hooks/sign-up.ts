@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
 import { message } from 'antd';
 
@@ -8,29 +7,24 @@ import { SignUpRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
 import { authActions } from '#/api/auth';
 import { useViewer } from '#/client/entities/viewer';
+import { useChatNavigation } from '#/client/pages/chat';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';
 
 type Values = Omit<SignUpRequest, 'fingerprint'>;
 
-export type UseSignUpRequest = Handlers & {
-  redirectTo?: string;
-};
+export type UseSignUpRequest = Handlers;
 
 export type UseSignUpResponse = {
   isLoading: boolean;
   signUp(values: Values): Promise<void>;
 };
 
-export function useSignUp({
-  onError,
-  onSuccess,
-  redirectTo,
-}: UseSignUpRequest = {}): UseSignUpResponse {
+export function useSignUp({ onError, onSuccess }: Handlers = {}): UseSignUpResponse {
   const viewerHook = useViewer();
+  const chatNavigation = useChatNavigation();
   // TODO replace with app navigation
-  const navigate = useNavigate();
   const { isLoading, mutateAsync } = useMutation({
     mutationKey: 'sign-up',
     mutationFn: authActions.signUp,
@@ -50,7 +44,8 @@ export function useSignUp({
         viewerHook.set(user);
 
         if (onSuccess) onSuccess();
-        if (redirectTo) navigate(redirectTo);
+
+        chatNavigation.toChat();
       } catch (e) {
         const error = e as Error;
 
@@ -59,7 +54,7 @@ export function useSignUp({
         if (onError) onError(error);
       }
     },
-    [mutateAsync, navigate, onError, onSuccess, redirectTo, viewerHook],
+    [chatNavigation, mutateAsync, onError, onSuccess, viewerHook],
   );
 
   return useMemo(

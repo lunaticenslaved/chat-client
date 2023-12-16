@@ -1,59 +1,14 @@
-import { Fragment } from 'react';
+import { lazy } from 'react';
+import { Outlet, Route } from 'react-router-dom';
 
-import { MessageInput } from '#/client/entities/message';
-import {
-  MessageAreaHeader,
-  useConnections,
-  useMessages,
-  useSearch,
-} from '#/client/features/messenger';
-import { ChatLayout } from '#/client/widgets/layouts';
-import { MessagesArea } from '#/client/widgets/messages-area';
+const ChatPage = lazy(() => import('./page'));
 
-const ChatPage = () => {
-  const { selectedUser, setSelectedUser, searchQuery, setSearchQuery } = useSearch();
-  const { connections, setCurrentConnection, currentConnection } = useConnections();
-  const {
-    messages,
-    isLoading: isLoadingMessages,
-    isLoadingError: isErrorWhileLoadingMessages,
-    fetchMoreMessages,
-    hasMoreMessages,
-    sendMessage,
-  } = useMessages({ currentConnectionId: currentConnection?.id });
+export { useChatNavigation } from './navigation';
 
-  const selectedItem = selectedUser || currentConnection;
-
+export function useChatPages() {
   return (
-    <ChatLayout
-      query={searchQuery || ''}
-      setQuery={setSearchQuery}
-      dialogs={connections}
-      onUserClick={setSelectedUser}
-      onDialogClick={setCurrentConnection}
-      messageArea={
-        <Fragment>
-          {!!selectedItem && (
-            <MessageAreaHeader
-              selectedItem={selectedItem}
-              isOnline={false}
-              // TODO add isOnline
-              // isOnline={currentDialog.partner.isOnline}
-            />
-          )}
-          <MessagesArea
-            messages={messages}
-            noDialog={!currentConnection && !selectedUser}
-            isError={isErrorWhileLoadingMessages}
-            isLoading={isLoadingMessages}
-            hasMore={hasMoreMessages}
-            onFetchMore={fetchMoreMessages}
-          />
-          {selectedItem && <MessageInput onSubmit={sendMessage} />}
-        </Fragment>
-      }
-    />
+    <Route path="chat" element={<Outlet />}>
+      <Route index element={<ChatPage />} />
+    </Route>
   );
-};
-
-export default ChatPage;
+}

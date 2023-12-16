@@ -1,7 +1,8 @@
-import { BaseLayout } from '../../widgets/layouts/layouts/base-layout/base-layout';
+import { lazy } from 'react';
+import { Route } from 'react-router-dom';
 
-function SettingsPage() {
-  return <BaseLayout>wow settings</BaseLayout>;
+const SettingsPage = lazy(() => import('./page'));
+
+export function useSettingsPages() {
+  return <Route path="/settings" element={<SettingsPage />} />;
 }
-
-export default SettingsPage;

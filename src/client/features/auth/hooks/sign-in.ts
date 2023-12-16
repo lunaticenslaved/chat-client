@@ -1,14 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
 import { message } from 'antd';
 
 import { SignInRequest } from '@lunaticenslaved/schema/dist/types/actions';
 
 import { authActions } from '#/api/auth';
-import { ROUTES } from '#/client/config/routes';
 import { useViewer } from '#/client/entities/viewer';
+import { useAuthNavigation } from '#/client/pages/auth';
+import { useChatNavigation } from '#/client/pages/chat';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';
@@ -24,7 +24,8 @@ export type UseSignInResponse = {
 
 export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInResponse {
   const viewerHook = useViewer();
-  const navigate = useNavigate();
+  const authNavigation = useAuthNavigation();
+  const chatNavigation = useChatNavigation();
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: 'sign-in',
     mutationFn: authActions.signIn,
@@ -44,10 +45,13 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
         Token.set(data);
         viewerHook.set(user);
 
+        console.log('sign-in done', user.isActivated);
+
         if (user.isActivated) {
-          navigate(ROUTES.home, {});
+          console.log('navigate to chat');
+          chatNavigation.toChat();
         } else {
-          navigate(ROUTES.auth.confirmEmailRequired);
+          authNavigation.toActivate();
         }
 
         if (onSuccess) {
@@ -61,7 +65,7 @@ export function useSignIn({ onError, onSuccess }: UseSignInRequest): UseSignInRe
         }
       }
     },
-    [mutateAsync, navigate, onError, onSuccess, viewerHook],
+    [authNavigation, chatNavigation, mutateAsync, onError, onSuccess, viewerHook],
   );
 
   return useMemo(

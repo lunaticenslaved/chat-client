@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -14,21 +13,19 @@ import 'normalize.css';
 
 const element = document.getElementById('root') as HTMLElement;
 
-function Wrapper({ children }: { children: ReactNode }) {
-  return <BrowserRouter>{children}</BrowserRouter>;
-}
+console.log('index.client.tsx');
 
 if (constants.IS_SSR) {
   hydrateRoot(
     element,
-    <Wrapper>
+    <BrowserRouter>
       <App store={createStore(window.__INITIAL_STATE__?.viewer.viewer)} renderingOnServer={false} />
-    </Wrapper>,
+    </BrowserRouter>,
   );
 } else {
   createRoot(element).render(
-    <Wrapper>
+    <BrowserRouter>
       <App store={createStore()} renderingOnServer={false} />
-    </Wrapper>,
+    </BrowserRouter>,
   );
 }

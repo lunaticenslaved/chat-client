@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '#/api/auth';
-import { ROUTES } from '#/client/config/routes';
 import { useViewer } from '#/client/entities/viewer';
+import { useAuthNavigation } from '#/client/pages/auth';
 import { Token } from '#/client/shared/token';
 
 export const useLogout = () => {
@@ -12,19 +11,19 @@ export const useLogout = () => {
     mutationKey: 'logout',
     mutationFn: authActions.logout,
   });
+  const authNavigation = useAuthNavigation();
   const viewerHook = useViewer();
-  const navigate = useNavigate();
 
   const logout = useCallback(() => {
     try {
-      navigate(ROUTES.auth.signIn);
+      authNavigation.toSignIn();
       Token.remove();
       viewerHook.set(undefined);
       callLogout({ data: undefined });
     } catch (error) {
       // TODO: do I need any info here?
     }
-  }, [callLogout, navigate, viewerHook]);
+  }, [authNavigation, callLogout, viewerHook]);
 
   return {
     logout,
