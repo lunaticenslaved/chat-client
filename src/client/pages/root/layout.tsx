@@ -5,7 +5,7 @@ import { Flex } from 'antd';
 import { useViewer } from '#/client/entities/viewer';
 import { useIsActivatedCheck, useIsAuthorizedCheck } from '#/client/features/auth';
 import { Divider } from '#/client/shared/components/divider';
-import { TheNavbar } from '#/client/widgets/layouts';
+import { TheNavbar } from '#/client/widgets/the-navbar';
 
 export const RootLayout = () => {
   const viewer = useViewer();

@@ -1,11 +1,13 @@
 import { lazy } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 
+import { withLoadPage } from '#/client/shared/hoc/loadPage';
+
 import { AuthLayout } from './layout';
 
-const SignIn = lazy(() => import('./sign-in'));
-const SignUp = lazy(() => import('./sign-up'));
-const Activate = lazy(() => import('./activate'));
+const SignIn = withLoadPage(lazy(() => import('./sign-in')));
+const SignUp = withLoadPage(lazy(() => import('./sign-up')));
+const Activate = withLoadPage(lazy(() => import('./activate')));
 
 export const authPages = (
   <Route path="auth" element={<AuthLayout />}>
