@@ -1,11 +1,12 @@
 import { Fragment, ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { MessageOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Divider, Flex, theme } from 'antd';
 
 import { useViewer } from '#/client/entities/viewer';
 import { LogoutButton } from '#/client/features/auth';
+import { MessengerIcon } from '#/client/features/messenger';
 import { SETTINGS_TITLE, SettingsIcon } from '#/client/features/settings';
 import { chatRoutes } from '#/client/pages/root/chat';
 import { settingsRoutes } from '#/client/pages/root/settings';
@@ -22,7 +23,7 @@ const sections: Array<{
     {
       title: 'Chat',
       to: chatRoutes.chat,
-      icon: <MessageOutlined style={{ fontSize: ICON_SIZE }} />,
+      icon: <MessengerIcon size={ICON_SIZE} />,
     },
     {
       title: 'Contacts',

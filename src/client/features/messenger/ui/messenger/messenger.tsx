@@ -1,5 +1,3 @@
-import { Divider } from '#/client/shared/components/divider';
-
 import { useConnections } from '../../hooks/connections';
 import { useMessages } from '../../hooks/messages';
 import { useSearch } from '../../hooks/search';
@@ -44,9 +42,8 @@ export const Messenger = () => {
         onUserClick={setSelectedUser}
         foundConnections={foundConnections}
         foundUsers={foundUsers}
+        currentConnection={currentConnection}
       />
-
-      <Divider vertical />
 
       <div className={classes.content}>
         <>

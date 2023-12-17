@@ -1,1 +1,0 @@
-export { MessengerSidebar } from './sidebar';

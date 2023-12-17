@@ -13,15 +13,11 @@ export interface SearchResultsProps {
   onUserClick(user: User): void;
 }
 
-const style = {
-  padding: '20px 20px',
-};
-
 export function SearchResults({ users, onUserClick }: SearchResultsProps) {
   return (
     <Fragment>
       {!!users.length && (
-        <section style={style}>
+        <section>
           <Typography.Title level={4}>Users</Typography.Title>
           <UsersList users={users} onClick={onUserClick} />
         </section>

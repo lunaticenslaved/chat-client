@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
 
-import { List, Typography } from 'antd';
+import { Typography } from 'antd';
 
 import { Avatar } from '#/client/shared/components/avatar';
+import { ListItem } from '#/client/shared/list-item';
 import { User } from '#/domain/user';
 
 export interface UserListItemProps {
@@ -14,12 +15,12 @@ export function UserListItem({ user, onClick }: UserListItemProps) {
   const handleClick = useCallback(() => onClick?.(user), [onClick, user]);
 
   return (
-    <List.Item onClick={onClick ? handleClick : undefined}>
-      <List.Item.Meta
-        avatar={<Avatar url={user.avatar?.link} name={user.login} />}
-        title={<Typography.Title level={5}>{user.login}</Typography.Title>}
-        description={<Typography.Paragraph>{user.email}</Typography.Paragraph>}
-      />
-    </List.Item>
+    <ListItem
+      onClick={onClick ? handleClick : undefined}
+      isActive={false}
+      avatar={<Avatar url={user.avatar?.link} name={user.login} />}
+      title={<Typography.Text style={{ fontWeight: 'bold' }}>{user.login}</Typography.Text>}
+      description={<Typography.Text>{user.email}</Typography.Text>}
+    />
   );
 }

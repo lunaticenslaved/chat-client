@@ -1,22 +1,22 @@
 import { useCallback } from 'react';
 
-import { Flex, List, Tooltip, Typography } from 'antd';
+import { Flex, Tooltip, Typography } from 'antd';
 
 import { Avatar } from '#/client/shared/components/avatar';
+import { ListItem } from '#/client/shared/list-item';
 import { Connection, ConnectionType } from '#/domain/connection';
 import { formatMessageTime } from '#/domain/message';
 
+// TODO: update time here and in messages fir just send messages
+// TODO: add 'you:'  if the last message was sent from viewer
+
 export interface DialogListItemProps {
   dialog: Connection;
+  isActive: boolean;
   onClick?(user: Connection): void;
 }
 
-const style = {
-  padding: '10px 20px',
-  cursor: 'pointer',
-};
-
-export function DialogListItem({ dialog, onClick }: DialogListItemProps) {
+export function DialogListItem({ dialog, isActive, onClick }: DialogListItemProps) {
   const handleClick = useCallback(() => onClick?.(dialog), [onClick, dialog]);
 
   const { lastMessage } = dialog || { lastMessage: undefined };
@@ -28,21 +28,36 @@ export function DialogListItem({ dialog, onClick }: DialogListItemProps) {
   const { partner } = dialog.oneToOneDialog;
 
   return (
-    <List.Item style={style} onClick={onClick ? handleClick : undefined}>
-      <List.Item.Meta
-        avatar={<Avatar url={partner.avatar?.link} name={partner.login} />}
-        title={
-          <Flex justify="space-between">
-            <Typography.Title level={5}>{partner.login}</Typography.Title>
-            {!!lastMessage && (
-              <Tooltip title={formatMessageTime(lastMessage.createdAt, 'exact')}>
-                <Typography.Text>{formatMessageTime(lastMessage.createdAt)}</Typography.Text>
-              </Tooltip>
-            )}
-          </Flex>
-        }
-        description={<Typography.Text>{lastMessage?.text}</Typography.Text>}
-      />
-    </List.Item>
+    <ListItem
+      isActive={isActive}
+      onClick={onClick ? handleClick : undefined}
+      avatar={<Avatar url={partner.avatar?.link} name={partner.login} />}
+      title={
+        <Flex justify="space-between" wrap="nowrap">
+          <Typography.Text
+            style={{
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              paddingRight: '15px',
+            }}>
+            {partner.login}
+          </Typography.Text>
+          {!!lastMessage && (
+            <Tooltip title={formatMessageTime(lastMessage.createdAt, 'exact')}>
+              <Typography.Text
+                style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
+                {formatMessageTime(lastMessage.createdAt)}
+              </Typography.Text>
+            </Tooltip>
+          )}
+        </Flex>
+      }
+      description={<Typography.Text>{lastMessage?.text}</Typography.Text>}
+    />
   );
 }
