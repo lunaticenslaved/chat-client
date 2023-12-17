@@ -4,14 +4,17 @@ import { EditOutlined } from '@ant-design/icons';
 import { Avatar, Button } from 'antd';
 
 import { UserIcon } from '#/client/entities/user';
-import { useViewer } from '#/client/entities/viewer';
+import { User } from '#/domain/user';
 
 import { useEditAvatar } from '../hooks/edit-avatar';
 
-export function EditAvatar() {
+export type EditAccountAvatarProps = {
+  user: User;
+};
+
+export function EditAccountAvatar({ user: viewer }: EditAccountAvatarProps) {
   const inputRef = createRef<HTMLInputElement>();
   const { uploadAvatar, isLoading } = useEditAvatar();
-  const { user: viewer } = useViewer();
 
   const openDialog = useCallback(() => {
     inputRef.current?.click();
