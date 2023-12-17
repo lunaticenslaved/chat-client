@@ -26,17 +26,17 @@ const stringToColor = function (str: string) {
   return tinycolor(color);
 };
 
-export const Avatar = (props: AvatarProps) => {
+export const Avatar = ({ url, name, className, isOnline }: AvatarProps) => {
   let image: JSX.Element | null = null;
 
-  if (props.url) {
-    image = <img src={props.url} alt={'Аватар ' + props.name} />;
+  if (url) {
+    image = <img src={url} alt={'Аватар ' + name} />;
   } else {
-    const color = stringToColor(props.name);
+    const color = stringToColor(name);
     const c1 = color.toHex();
     const c2 = color.lighten().toHex();
 
-    const [l1, l2] = props.name
+    const [l1, l2] = name
       .split(' ')
       .slice(0, 2)
       .map(w => w[0]);
@@ -54,10 +54,10 @@ export const Avatar = (props: AvatarProps) => {
   }
 
   return (
-    <div className={cn(classes.root, props.className)}>
+    <div className={cn(classes.root, className)}>
       <div className={classes.image}>{image}</div>
       <div className={classes.status}>
-        <OnlineStatus isOnline={!!props.isOnline} />
+        <OnlineStatus isOnline={!!isOnline} />
       </div>
     </div>
   );

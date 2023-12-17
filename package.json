@@ -44,7 +44,7 @@
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "@fingerprintjs/fingerprintjs": "^4.2.1",
-    "@lunaticenslaved/schema": "^0.0.50",
+    "@lunaticenslaved/schema": "file:../schema/lunaticenslaved-schema-0.0.50.tgz",
     "@prisma/client": "^5.6.0",
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.11.0",

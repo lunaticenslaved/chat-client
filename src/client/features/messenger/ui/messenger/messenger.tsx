@@ -1,4 +1,3 @@
-import { DialogsList } from '#/client/entities/dialog';
 import { Divider } from '#/client/shared/components/divider';
 
 import { useConnections } from '../../hooks/connections';
@@ -7,12 +6,12 @@ import { useSearch } from '../../hooks/search';
 import { MessageInput } from '../message-input';
 import { MessagesArea } from '../messages-area';
 import { MessageAreaHeader } from '../messages-area-header/messages-area-header';
-import { SearchInput } from '../search-input/search';
-import { SearchResults } from '../search-results/search-results';
+import { MessengerSidebar } from '../sidebar';
 
 import classes from './messenger.module.scss';
 
 export const Messenger = () => {
+  // FIXME not it search on mount
   const {
     selectedUser,
     setSelectedUser,
@@ -37,24 +36,15 @@ export const Messenger = () => {
 
   return (
     <div className={classes.main}>
-      <aside className={classes.sidebar}>
-        <SearchInput search={searchQuery || ''} onChange={setSearchQuery} />
-
-        <Divider />
-
-        <div style={{ overflowY: 'auto' }}>
-          {!searchQuery ? (
-            <DialogsList dialogs={connections} onClick={setCurrentConnection} />
-          ) : (
-            <SearchResults
-              connections={foundConnections}
-              users={foundUsers}
-              onUserClick={setSelectedUser}
-              onConnectionClick={setCurrentConnection}
-            />
-          )}
-        </div>
-      </aside>
+      <MessengerSidebar
+        query={searchQuery}
+        onQueryChange={setSearchQuery}
+        connections={connections}
+        onConnectionClick={setCurrentConnection}
+        onUserClick={setSelectedUser}
+        foundConnections={foundConnections}
+        foundUsers={foundUsers}
+      />
 
       <Divider vertical />
 

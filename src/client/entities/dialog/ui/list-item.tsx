@@ -25,7 +25,7 @@ export function DialogListItem({ dialog, onClick }: DialogListItemProps) {
     return null;
   }
 
-  const { user: partner } = dialog;
+  const { partner } = dialog.oneToOneDialog;
 
   return (
     <List.Item style={style} onClick={onClick ? handleClick : undefined}>

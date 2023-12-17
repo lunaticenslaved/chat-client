@@ -93,13 +93,9 @@ export function addSSRRoute({
       const filePath = staticFiles.find(file => req.baseUrl.endsWith(file));
 
       if (filePath && assetsFolder) {
-        console.log('FILE', filePath);
-
         res.sendFile(resolve(assetsFolder, filePath));
         return;
       }
-
-      console.log('LOCATION', req.originalUrl);
 
       const url = req.originalUrl;
       const store = createStore(validatedRequest?.user);

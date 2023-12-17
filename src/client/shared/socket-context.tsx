@@ -50,7 +50,9 @@ export function SocketContext({ children, onTokenInvalid, isAuthorized }: Socket
     } else {
       // Need disconnect and connect with new token to update handshake
       updateToken(Token.get().token);
-      socket.disconnect().connect();
+      socket.disconnect();
+
+      setTimeout(() => socket.connect());
 
       authListener.onTokenInvalid(() => {
         onTokenInvalid();

@@ -59,7 +59,7 @@ export function addRoutes(app: Express) {
   app.use('/api/*', (_, response) => {
     response.status(404).json(
       new Errors.NotFoundError({
-        messages: ['Resource not found for chat'],
+        messages: ['Resource not found'],
         status: 400,
       }),
     );

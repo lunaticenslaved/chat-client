@@ -27,7 +27,10 @@ export const list = createOperation<ListConnectionsResponse, ListConnectionsRequ
 
           const response: OneToOneConnection = {
             ...data,
-            user: partner,
+            oneToOneDialog: {
+              ...data.oneToOneDialog,
+              partner,
+            },
           };
 
           return response;

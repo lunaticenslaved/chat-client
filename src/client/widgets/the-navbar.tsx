@@ -1,51 +1,52 @@
-import { CSSProperties, ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { MessageOutlined, PhoneOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { MessageOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Divider, Flex, theme } from 'antd';
 
 import { useViewer } from '#/client/entities/viewer';
 import { LogoutButton } from '#/client/features/auth';
+import { SETTINGS_TITLE, SettingsIcon } from '#/client/features/settings';
 import { chatRoutes } from '#/client/pages/root/chat';
 import { settingsRoutes } from '#/client/pages/root/settings';
 import { Avatar } from '#/client/shared/components/avatar';
 
+const ICON_SIZE = '20px';
+
 const sections: Array<{
   title: string;
   to: string;
-  icon: (style: CSSProperties) => ReactNode;
+  icon: ReactNode;
 }>[] = [
   [
     {
       title: 'Chat',
       to: chatRoutes.chat,
-      icon: style => <MessageOutlined style={style} />,
+      icon: <MessageOutlined style={{ fontSize: ICON_SIZE }} />,
     },
     {
       title: 'Contacts',
       to: '/',
-      icon: style => <UserOutlined style={style} />,
+      icon: <UserOutlined style={{ fontSize: ICON_SIZE }} />,
     },
     {
       title: 'Phone',
       to: '/',
-      icon: style => <PhoneOutlined style={style} />,
+      icon: <PhoneOutlined style={{ fontSize: ICON_SIZE }} />,
     },
   ],
   [
     {
-      title: 'Settings',
+      title: SETTINGS_TITLE,
       to: settingsRoutes.settings,
-      icon: style => <SettingOutlined style={style} />,
+      icon: <SettingsIcon size={ICON_SIZE} />,
     },
   ],
 ];
 
 export function TheNavbar() {
   const { user: viewer } = useViewer();
-
   const { getDesignToken } = theme;
-
   const token = getDesignToken();
 
   if (!viewer) return;
@@ -65,13 +66,13 @@ export function TheNavbar() {
       <Flex vertical align="center" flex="1 1 auto" style={{ padding: '40px 0', width: '100%' }}>
         {sections.map((section, index) => {
           return (
-            <>
+            <Fragment key={index}>
               {section.map(({ title, to, icon }, index) => (
                 <NavLink key={title} to={to}>
                   {({ isActive }) => (
                     <Button
                       type={isActive ? 'primary' : 'text'}
-                      icon={icon({ fontSize: '20px' })}
+                      icon={icon}
                       style={{
                         height: '45px',
                         width: '45px',
@@ -87,7 +88,7 @@ export function TheNavbar() {
               {sections.length - 1 > index ? (
                 <Divider type="horizontal" style={{ width: '60%', minWidth: '60%' }} />
               ) : null}
-            </>
+            </Fragment>
           );
         })}
       </Flex>

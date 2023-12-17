@@ -14,7 +14,7 @@ export const MessageAreaHeader = ({ selectedItem, isOnline }: MessageAreaHeaderP
     'email' in selectedItem
       ? selectedItem.login
       : selectedItem.type === ConnectionType.OneToOne
-        ? selectedItem.type
+        ? selectedItem.oneToOneDialog.partner.login
         : null;
 
   return (

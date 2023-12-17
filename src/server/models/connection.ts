@@ -9,8 +9,11 @@ export type GroupConnection = {
   lastMessage?: Message;
 };
 
-export type OneToOneConnection = Omit<OneToOneConnectionBase, 'user'> & {
+export type OneToOneConnection = Omit<OneToOneConnectionBase, 'oneToOneDialog'> & {
   users: User[];
+  oneToOneDialog: {
+    id: string;
+  };
 };
 
 export type Connection = OneToOneConnection | GroupConnection;
@@ -30,7 +33,10 @@ export function prepareConnectionToSend(
 
     return {
       ...connection,
-      user: partner,
+      oneToOneDialog: {
+        ...connection.oneToOneDialog,
+        partner,
+      },
     };
   } else {
     throw new Error('Not implemented!');

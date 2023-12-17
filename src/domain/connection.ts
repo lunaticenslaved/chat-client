@@ -16,9 +16,9 @@ export type OneToOneConnection = {
   type: ConnectionType.OneToOne;
   id: string;
   lastMessage?: Message;
-  user: User;
   oneToOneDialog: {
     id: string;
+    partner: User;
   };
 };
 

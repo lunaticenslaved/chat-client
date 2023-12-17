@@ -7,6 +7,9 @@ export function useSettingsNavigation() {
   return useMemo(
     () => ({
       toSettings: () => navigate('/settings'),
+      toAccountSettings: () => navigate('/settings/account'),
+      toAppearanceSettings: () => navigate('/settings/appearance'),
+      toSessionsSettings: () => navigate('/settings/sessions'),
     }),
     [navigate],
   );
