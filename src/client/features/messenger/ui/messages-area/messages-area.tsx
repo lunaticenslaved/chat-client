@@ -1,4 +1,12 @@
-import { createRef, useEffect, useLayoutEffect, useState } from 'react';
+import {
+  UIEventHandler,
+  createRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { MessagesList } from '#/client/entities/message';
 import { Message } from '#/domain/message';
@@ -30,6 +38,7 @@ export const MessagesArea = ({
   const scrollArea = createRef<HTMLDivElement>();
   const bottomElementRef = createRef<HTMLDivElement>();
   const topElementRef = createRef<HTMLDivElement>();
+  const scrollBottom = useRef(0);
 
   useEffect(() => {
     const area = scrollArea.current;
@@ -59,12 +68,26 @@ export const MessagesArea = ({
     };
   }, [hasMore, onFetchMore, scrollArea, scrolledToBottom, topElementRef]);
 
+  useEffect(() => {
+    if (!scrollArea.current) return;
+
+    const scrollTop = (scrollArea.current.scrollHeight ?? 0) - scrollBottom.current;
+
+    scrollArea.current.scrollTo({ top: scrollTop, behavior: 'instant' });
+    scrollArea.current.scrollTop = scrollTop;
+  }, [scrollArea, messages]);
+
   useLayoutEffect(() => {
-    if (bottomElementRef.current) {
+    if (bottomElementRef.current && !scrolledToBottom) {
       bottomElementRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
       setScrolledToBottom(true);
     }
-  }, [bottomElementRef]);
+  }, [bottomElementRef, scrolledToBottom]);
+
+  const setScrollBottom: UIEventHandler<HTMLDivElement> = useCallback(event => {
+    scrollBottom.current =
+      (event.currentTarget.scrollHeight ?? 0) - (event.currentTarget.scrollTop ?? 0);
+  }, []);
 
   if (noDialog) {
     return <NoDialogView />;
@@ -83,7 +106,7 @@ export const MessagesArea = ({
   }
 
   return (
-    <div style={{ overflow: 'auto' }} ref={scrollArea}>
+    <div style={{ overflow: 'auto' }} ref={scrollArea} onScroll={setScrollBottom}>
       {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }}></div>}
 
       <MessagesList messages={messages} />
