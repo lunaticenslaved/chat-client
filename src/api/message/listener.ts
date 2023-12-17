@@ -1,11 +1,18 @@
+import { MessageServerEvent } from '#/api/message/types';
 import { Message } from '#/domain/message';
 
 import { SocketEventListener } from '../socket-listener';
 
-import { MessageServerEvent } from './types';
+type MessageEvents = {
+  created: Message;
+};
 
-export class MessageEventsListener extends SocketEventListener {
-  messageCreated(fn: (data: Message) => void) {
-    this.addListener(MessageServerEvent.Created, fn);
-  }
+export class MessageEventsListener extends SocketEventListener<
+  MessageEvents,
+  keyof MessageEvents,
+  MessageServerEvent
+> {
+  override eventsMap = {
+    created: MessageServerEvent.Created,
+  };
 }

@@ -116,8 +116,11 @@ export function useMessages({
 
   useEffect(() => {
     // FIXME handle error
-    // FIXME handle unsubscribe
-    messagesListener.messageCreated(data => addMessage(data));
+    messagesListener.on('created', addMessage);
+
+    return () => {
+      messagesListener.off('created', addMessage);
+    };
   }, [addMessage]);
 
   // List messages for the new connection

@@ -39,6 +39,10 @@ socket.on('connect', () => {
   console.log('SOCKET CONNECTED');
 });
 
+socket.on('disconnect', () => {
+  console.log('SOCKET DISCONNECTED');
+});
+
 const authListener = new AuthEventsListener(socket);
 
 export function SocketContext({ children, onTokenInvalid, isAuthorized }: SocketContextProps) {
@@ -46,26 +50,29 @@ export function SocketContext({ children, onTokenInvalid, isAuthorized }: Socket
 
   useEffect(() => {
     if (!isAuthorized) {
+      console.log('not isAuthorized');
       socket.disconnect();
     } else {
+      console.log('onTokenInvalid changed');
       // Need disconnect and connect with new token to update handshake
       updateToken(Token.get().token);
       socket.disconnect();
 
       setTimeout(() => socket.connect());
 
-      authListener.onTokenInvalid(() => {
+      authListener.on('token-invalid', () => {
         onTokenInvalid();
         socket.disconnect();
       });
-      authListener.onTokenExpired(() => {
+      authListener.on('token-expired', () => {
         schema.actions.auth.refresh().then(() => socket.disconnect().connect());
       });
-    }
 
-    return () => {
-      socket.close();
-    };
+      return () => {
+        socket.close();
+        authListener.offAll();
+      };
+    }
   }, [isAuthorized, onTokenInvalid]);
 
   return <SocketContextBase.Provider value={value}>{children}</SocketContextBase.Provider>;

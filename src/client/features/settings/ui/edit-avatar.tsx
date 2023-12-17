@@ -4,12 +4,14 @@ import { EditOutlined } from '@ant-design/icons';
 import { Avatar, Button } from 'antd';
 
 import { UserIcon } from '#/client/entities/user';
+import { useViewer } from '#/client/entities/viewer';
 
 import { useEditAvatar } from '../hooks/edit-avatar';
 
 export function EditAvatar() {
   const inputRef = createRef<HTMLInputElement>();
   const { uploadAvatar, isLoading } = useEditAvatar();
+  const { user: viewer } = useViewer();
 
   const openDialog = useCallback(() => {
     inputRef.current?.click();
@@ -20,7 +22,6 @@ export function EditAvatar() {
       const file = event.target.files?.[0];
 
       if (file && !isLoading) {
-        console.log('change avatar', file);
         uploadAvatar(file);
       }
 
@@ -40,7 +41,7 @@ export function EditAvatar() {
       />
 
       <div style={{ position: 'relative' }}>
-        <Avatar size={240} icon={<UserIcon size={'160px'} />} />
+        <Avatar size={240} icon={<UserIcon size={'160px'} />} src={viewer?.avatar?.link} />
         <Button
           icon={<EditOutlined />}
           style={{ position: 'absolute', bottom: '8%', right: '8%' }}

@@ -48,13 +48,19 @@ export function useConnections(): UseConnections {
   );
 
   useEffect(() => {
-    // FIXME handle disconnect
-    messagesListener.messageCreated(data => updateLastMessage(data));
+    messagesListener.on('created', updateLastMessage);
+
+    return () => {
+      messagesListener.off('created', updateLastMessage);
+    };
   }, [updateLastMessage]);
 
   useEffect(() => {
-    // FIXME handle error
-    connectionsListener.connectionCreated(data => addConnection(data));
+    connectionsListener.on('created', addConnection);
+
+    return () => {
+      connectionsListener.off('created', addConnection);
+    };
   }, [addConnection]);
 
   // List connections on mount

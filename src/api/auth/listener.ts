@@ -1,19 +1,19 @@
+import { AuthEventServer } from '#/api/auth/types';
+
 import { SocketEventListener } from '../socket-listener';
 
-import { AuthEventServer } from './types';
+type AuthEvents = {
+  'token-invalid': void;
+  'token-expired': void;
+};
 
-export class AuthEventsListener extends SocketEventListener {
-  onTokenInvalid(fn: () => void) {
-    this.addListener(AuthEventServer.InvalidToken, () => {
-      console.log('INVALID TOKEN IN SOCKET');
-      fn();
-    });
-  }
-
-  onTokenExpired(fn: () => void) {
-    this.addListener(AuthEventServer.ExpiredToken, () => {
-      console.log('EXPIRED TOKEN IN SOCKET');
-      fn();
-    });
-  }
+export class AuthEventsListener extends SocketEventListener<
+  AuthEvents,
+  keyof AuthEvents,
+  AuthEventServer
+> {
+  override eventsMap = {
+    'token-invalid': AuthEventServer.InvalidToken,
+    'token-expired': AuthEventServer.ExpiredToken,
+  };
 }
