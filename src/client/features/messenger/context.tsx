@@ -1,10 +1,14 @@
-import { ReactNode, createContext, useContext, useMemo } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo } from 'react';
 
+import { ConnectionEventsListener } from '#/api/connection';
+import { MessageEventsListener } from '#/api/message';
+import { socket } from '#/client/shared/socket-context';
 import { Connection } from '#/domain/connection';
 import { Message } from '#/domain/message';
 import { User } from '#/domain/user';
 
 import { useConnections } from './hooks/connections';
+import { IMessage, useMessage } from './hooks/message';
 import { useMessages } from './hooks/messages';
 import { useSearch } from './hooks/search';
 import { SelectedItem } from './types';
@@ -24,7 +28,8 @@ interface IMessengerContext {
   isLoadingMessagesError: boolean;
   hasMoreMessages: boolean;
   fetchMoreMessages(): void;
-  sendMessage(text: string): boolean;
+  deleteMessage: IMessage['deleteMessage'];
+  sendMessage: IMessage['sendMessage'];
 
   // Connections
   connections: Connection[];
@@ -52,6 +57,9 @@ function getSelectedItem(user?: User, connection?: Connection): SelectedItem | u
   return undefined;
 }
 
+const messagesListener = new MessageEventsListener(socket);
+const connectionsListener = new ConnectionEventsListener(socket);
+
 function useMessenger(): IMessengerContext {
   const {
     searchQuery,
@@ -61,7 +69,8 @@ function useMessenger(): IMessengerContext {
     foundConnections,
     foundUsers,
   } = useSearch();
-  const { connections, setCurrentConnection, currentConnection } = useConnections();
+  const { connections, setCurrentConnection, currentConnection, updateLastMessage, addConnection } =
+    useConnections();
 
   const selectedItem = useMemo(
     () => getSelectedItem(selectedUser, currentConnection),
@@ -74,8 +83,25 @@ function useMessenger(): IMessengerContext {
     isLoadingError: isLoadingMessagesError,
     fetchMoreMessages,
     hasMoreMessages,
-    sendMessage,
+    addMessage,
+    removeMessageFromList,
   } = useMessages({ selectedItem });
+
+  const { sendMessage, deleteMessage } = useMessage({ selectedItem });
+
+  useEffect(() => {
+    // FIXME handle error
+    messagesListener.on('created', addMessage);
+    messagesListener.on('created', updateLastMessage);
+    messagesListener.on('deleted', removeMessageFromList);
+    connectionsListener.on('created', addConnection);
+
+    return () => {
+      messagesListener.off('created', addMessage);
+      messagesListener.off('created', updateLastMessage);
+      connectionsListener.off('created', addConnection);
+    };
+  }, [addConnection, addMessage, removeMessageFromList, updateLastMessage]);
 
   return useMemo(
     (): IMessengerContext => ({
@@ -94,6 +120,7 @@ function useMessenger(): IMessengerContext {
       fetchMoreMessages,
       hasMoreMessages,
       sendMessage,
+      deleteMessage,
 
       // Connections
       connections,
@@ -107,6 +134,7 @@ function useMessenger(): IMessengerContext {
     }),
     [
       connections,
+      deleteMessage,
       fetchMoreMessages,
       foundConnections,
       foundUsers,

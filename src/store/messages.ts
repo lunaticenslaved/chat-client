@@ -22,6 +22,11 @@ const slice = createSlice({
 
       state.messages = [...state.messages, action.payload];
     },
+    removeMessage(state, action: PayloadAction<{ messageId: string }>) {
+      console.log('MESSAGE REMOVED', action.payload);
+
+      state.messages = state.messages.filter(({ id }) => id !== action.payload.messageId);
+    },
     prependMessages(state, action: PayloadAction<Message[]>) {
       console.log('PREPEND MESSAGES', action.payload);
 

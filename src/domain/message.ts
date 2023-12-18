@@ -27,3 +27,12 @@ export function formatMessageTime(date: string | Date, type?: 'exact'): string {
 
   return dayjs(date).fromNow();
 }
+
+type CanDeleteMessage = {
+  viewerId: string;
+  message: Pick<Message, 'authorId'>;
+};
+
+export function canDeleteMessage({ viewerId, message }: CanDeleteMessage) {
+  return message.authorId === viewerId;
+}

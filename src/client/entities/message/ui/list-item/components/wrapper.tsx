@@ -35,21 +35,19 @@ export const MessageWrapper = (props: MessageProps) => {
 
   return (
     <div className={rootClassName}>
-      <>
-        <Avatar className={classes.avatar} url={props.avatarSrc} name={props.ownerName} />
-        <div>
-          <div className={classes.content}>
-            {props.children}
-            {status && <div className={classes.readStatus}>{status}</div>}
-          </div>
-
-          {attachments && <div className={classes.attachments}>{attachments}</div>}
-
-          <time dateTime={props.createdAt} className={classes.date}>
-            {dayjs(props.createdAt).fromNow()}
-          </time>
+      <Avatar className={classes.avatar} url={props.avatarSrc} name={props.ownerName} />
+      <div>
+        <div className={classes.content}>
+          {props.children}
+          {status && <div className={classes.readStatus}>{status}</div>}
         </div>
-      </>
+
+        {attachments && <div className={classes.attachments}>{attachments}</div>}
+
+        <time dateTime={props.createdAt} className={classes.date}>
+          {dayjs(props.createdAt).fromNow()}
+        </time>
+      </div>
     </div>
   );
 };

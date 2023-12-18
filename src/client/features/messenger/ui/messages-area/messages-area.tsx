@@ -8,9 +8,11 @@ import {
   useState,
 } from 'react';
 
-import { Flex } from 'antd';
+import { Flex, List } from 'antd';
 
-import { MessagesList } from '#/client/entities/message';
+import { MessageListItem, MessageMenu } from '#/client/entities/message';
+import { useViewer } from '#/client/entities/viewer';
+import { canDeleteMessage } from '#/domain/message';
 
 import { useMessengerContext } from '../../context';
 
@@ -27,8 +29,10 @@ export const MessagesArea = () => {
     hasMoreMessages,
     fetchMoreMessages,
     selectedItem,
+    deleteMessage,
   } = useMessengerContext();
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
+  const { user: viewer } = useViewer();
 
   const scrollArea = createRef<HTMLDivElement>();
   const bottomElementRef = createRef<HTMLDivElement>();
@@ -79,6 +83,15 @@ export const MessagesArea = () => {
     }
   }, [bottomElementRef, scrolledToBottom]);
 
+  const wrapperRef = createRef<HTMLDivElement>();
+
+  useEffect(() => {
+    wrapperRef.current?.scrollTo({
+      top: Number.MAX_SAFE_INTEGER,
+      behavior: 'auto',
+    });
+  }, [wrapperRef]);
+
   const setScrollBottom: UIEventHandler<HTMLDivElement> = useCallback(event => {
     scrollBottom.current =
       (event.currentTarget.scrollHeight ?? 0) - (event.currentTarget.scrollTop ?? 0);
@@ -106,11 +119,36 @@ export const MessagesArea = () => {
       style={{ overflow: 'auto', flex: '1 1 auto' }}
       ref={scrollArea}
       onScroll={setScrollBottom}>
-      {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }}></div>}
+      {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }} />}
 
-      <MessagesList messages={messages} style={{ flex: '1 1 auto' }} />
+      <Flex vertical justify="flex-end" ref={wrapperRef} style={{ flex: '1 1 auto' }}>
+        <Flex component={List} vertical justify="flex-end" style={{ padding: '20px 0' }}>
+          {messages.map(message => {
+            const isMe = message.author.id === viewer?.id;
 
-      <div ref={bottomElementRef}></div>
+            return (
+              <MessageMenu
+                key={message.id}
+                message={message}
+                deleteMessage={
+                  viewer && canDeleteMessage({ viewerId: viewer?.id, message })
+                    ? deleteMessage
+                    : undefined
+                }
+                placement={isMe ? 'right' : 'left'}>
+                <MessageListItem
+                  {...message}
+                  avatarSrc={message.author.avatar?.link}
+                  ownerName={message.author.login}
+                  isMe={isMe}
+                />
+              </MessageMenu>
+            );
+          })}
+        </Flex>
+      </Flex>
+
+      <div ref={bottomElementRef} />
     </Flex>
   );
 };

@@ -29,10 +29,8 @@ export abstract class SocketEventListener<
     const wrappedListener = (data: OperationResponse<Events[TEvent]>) => {
       try {
         const response = ResponseUtils.unwrapResponse(data);
-        console.log(serverEvent, data);
         return fn(response);
       } catch (error) {
-        console.error(serverEvent, data);
         onError && onError(error as Error);
       }
     };

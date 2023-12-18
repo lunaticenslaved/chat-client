@@ -1,6 +1,7 @@
 import schema from '@lunaticenslaved/schema';
 
-import { Message } from '#/domain/message';
+import { DeleteMessageRequest } from '#/api/message';
+import { Message, canDeleteMessage } from '#/domain/message';
 import { IRequestContext } from '#/server/shared/operation';
 import { Transaction } from '#/server/shared/prisma';
 
@@ -94,5 +95,28 @@ export class MessagesMetaService extends BaseMetaService {
 
       return acc;
     }, []);
+  }
+
+  async delete(requestContext: IRequestContext, data: DeleteMessageRequest) {
+    const { messageId } = data;
+
+    this.prisma.$transaction(async trx => {
+      const { userId: viewerId } = requestContext;
+      const message = await trx.message.findFirst({
+        where: { id: messageId },
+        select: { authorId: true, id: true, connectionId: true },
+      });
+
+      if (!viewerId) {
+        throw new Error('User required');
+      }
+
+      if (!message) {
+        this.eventBus.emit('message-deleted', data);
+      } else if (canDeleteMessage({ viewerId, message })) {
+        await trx.message.delete({ where: { id: message.id } });
+        this.eventBus.emit('message-deleted', data);
+      }
+    });
   }
 }

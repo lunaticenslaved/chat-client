@@ -1,9 +1,11 @@
+import { DeleteMessageResponse } from '#/api/message';
 import { Message } from '#/domain/message';
 import { Connection } from '#/server/models/connection';
 
 type Events = {
   'connection-created': [Connection];
   'message-created': [Message];
+  'message-deleted': [DeleteMessageResponse];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

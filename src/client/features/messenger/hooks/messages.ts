@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
+import { useCallback, useLayoutEffect, useMemo } from 'react';
 
-import { MessageEventsEmitter, MessageEventsListener, messagesActions } from '#/api/message';
+import { DeleteMessageResponse, MessageEventsEmitter, messagesActions } from '#/api/message';
 import { useViewer } from '#/client/entities/viewer';
 import { useToggle } from '#/client/shared/hooks';
 import { socket } from '#/client/shared/socket-context';
@@ -21,11 +21,12 @@ export interface UseMessages {
   hasMoreMessages: boolean;
   fetchMoreMessages(): void;
   sendMessage(text: string): boolean;
+  addMessage(message: Message): void;
+  removeMessageFromList(data: DeleteMessageResponse): void;
 }
 
 const AMOUNT = 20;
 
-const messagesListener = new MessageEventsListener(socket);
 const messagesEmitter = new MessageEventsEmitter(socket);
 
 export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
@@ -38,7 +39,7 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
   const isFetchingMore = useToggle();
   const isFetchingMoreError = useToggle();
 
-  const { setMessages, addMessage, prependMessages } = useMemo(
+  const { setMessages, addMessage, prependMessages, removeMessage } = useMemo(
     () => ({
       setMessages(messages: Message[]) {
         dispatch(store.messages.actions.setMessages(messages));
@@ -48,6 +49,9 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
       },
       addMessage(message: Message) {
         dispatch(store.messages.actions.addMessage(message));
+      },
+      removeMessage(messageId: string) {
+        dispatch(store.messages.actions.removeMessage({ messageId }));
       },
     }),
     [dispatch],
@@ -130,14 +134,16 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
     [viewer.user?.id, selectedItem],
   );
 
-  useEffect(() => {
-    // FIXME handle error
-    messagesListener.on('created', addMessage);
+  const removeMessageFromList = useCallback(
+    (data: DeleteMessageResponse) => {
+      if (!selectedItem) return;
+      if (selectedItem.type !== 'connection') return;
+      if (selectedItem.connection.id !== data.connectionId) return;
 
-    return () => {
-      messagesListener.off('created', addMessage);
-    };
-  }, [addMessage]);
+      removeMessage(data.messageId);
+    },
+    [removeMessage, selectedItem],
+  );
 
   // List messages for the new connection
   useLayoutEffect(() => {
@@ -173,6 +179,8 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
     sendMessage,
     messages,
     fetchMoreMessages,
+    addMessage,
+    removeMessageFromList,
     isLoading: isLoading.value,
     isLoadingError: isLoadingError.value,
     hasMoreMessages: hasMoreMessages.value,

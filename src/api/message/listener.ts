@@ -1,10 +1,11 @@
-import { MessageServerEvent } from '#/api/message/types';
+import { DeleteMessageResponse, MessageServerEvent } from '#/api/message/types';
 import { Message } from '#/domain/message';
 
 import { SocketEventListener } from '../socket-listener';
 
 type MessageEvents = {
   created: Message;
+  deleted: DeleteMessageResponse;
 };
 
 export class MessageEventsListener extends SocketEventListener<
@@ -14,5 +15,6 @@ export class MessageEventsListener extends SocketEventListener<
 > {
   override eventsMap = {
     created: MessageServerEvent.Created,
+    deleted: MessageServerEvent.Deleted,
   };
 }
