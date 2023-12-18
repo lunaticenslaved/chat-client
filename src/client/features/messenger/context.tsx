@@ -53,7 +53,6 @@ function getSelectedItem(user?: User, connection?: Connection): SelectedItem | u
 }
 
 function useMessenger(): IMessengerContext {
-  // FIXME not it search on mount
   const {
     searchQuery,
     setSearchQuery,
@@ -61,7 +60,7 @@ function useMessenger(): IMessengerContext {
     setSelectedUser,
     foundConnections,
     foundUsers,
-  } = useSearch({ fetch: true });
+  } = useSearch();
   const { connections, setCurrentConnection, currentConnection } = useConnections();
 
   const selectedItem = useMemo(
@@ -98,7 +97,10 @@ function useMessenger(): IMessengerContext {
 
       // Connections
       connections,
-      setSelectedConnection: setCurrentConnection,
+      setSelectedConnection(value) {
+        setSearchQuery('');
+        setCurrentConnection(value);
+      },
 
       // User
       setSelectedUser,

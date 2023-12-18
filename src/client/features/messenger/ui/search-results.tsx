@@ -2,24 +2,27 @@ import { Fragment } from 'react';
 
 import { Typography } from 'antd';
 
+import { DialogsList } from '#/client/entities/dialog';
 import { UsersList } from '#/client/entities/user';
-import { Connection } from '#/domain/connection';
-import { User } from '#/domain/user';
 
-export interface SearchResultsProps {
-  connections: Connection[];
-  users: User[];
-  onConnectionClick(dialog: Connection): void;
-  onUserClick(user: User): void;
-}
+import { useMessengerContext } from '../context';
 
-export function SearchResults({ users, onUserClick }: SearchResultsProps) {
+export function SearchResults() {
+  const { foundConnections, foundUsers, setSelectedConnection, setSelectedUser } =
+    useMessengerContext();
+
   return (
     <Fragment>
-      {!!users.length && (
+      {!!foundUsers.length && (
         <section>
           <Typography.Title level={4}>Users</Typography.Title>
-          <UsersList users={users} onClick={onUserClick} />
+          <UsersList users={foundUsers} onClick={setSelectedUser} />
+        </section>
+      )}
+      {!!foundConnections.length && (
+        <section style={{ marginTop: '20px' }}>
+          <Typography.Title level={4}>Connections</Typography.Title>
+          <DialogsList dialogs={foundConnections} onClick={setSelectedConnection} />
         </section>
       )}
     </Fragment>

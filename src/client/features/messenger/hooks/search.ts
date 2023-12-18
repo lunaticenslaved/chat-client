@@ -7,10 +7,6 @@ import { Connection } from '#/domain/connection';
 import { User } from '#/domain/user';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
-export type UseSearchProps = {
-  fetch: boolean;
-};
-
 export interface UseSearch {
   foundUsers: User[];
   foundConnections: Connection[];
@@ -22,17 +18,16 @@ export interface UseSearch {
   setSelectedUser(value?: User): void;
 }
 
-export function useSearch({ fetch }: UseSearchProps): UseSearch {
+export function useSearch(): UseSearch {
   const selectedUser = useAppSelector(store.search.selectors.selectUser);
   const searchQuery = useAppSelector(store.search.selectors.selectQuery);
   const dispatch = useAppDispatch();
-
   const [query] = useDebouncedState(searchQuery, 300);
 
   const { data, isLoading, isError } = useQuery(
-    ['search/in-connections', searchQuery || ''],
+    ['search/in-connections', query || ''],
     () => searchActions.inChannels({ data: { search: query || '' } }),
-    { enabled: fetch },
+    { refetchOnMount: false, enabled: !!query },
   );
 
   const { setSearchQuery, setSelectedUser } = useMemo(

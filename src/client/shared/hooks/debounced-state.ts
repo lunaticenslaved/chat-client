@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-
-import { debounce } from 'lodash';
+import { useState } from 'react';
+import { useDebounce } from 'react-use';
 
 export type UseDebouncedStateResponse<T> = [T, (newState: T) => void];
 
@@ -10,12 +9,7 @@ export function useDebouncedState<T>(
 ): UseDebouncedStateResponse<T> {
   const [state, setState] = useState(initialState);
 
-  const debouncedSetState = useMemo(() => debounce(setState, timeout), [timeout]);
-
-  useEffect(() => {
-    debouncedSetState(initialState);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialState]);
+  const [debouncedSetState] = useDebounce(() => setState(initialState), timeout, [initialState]);
 
   return [state, debouncedSetState];
 }

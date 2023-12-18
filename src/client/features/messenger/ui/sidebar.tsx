@@ -20,16 +20,8 @@ function getConnectionId(selectedItem?: SelectedItem) {
 }
 
 export function MessengerSidebar() {
-  const {
-    foundConnections,
-    foundUsers,
-    searchQuery,
-    setSearchQuery,
-    connections,
-    setSelectedConnection,
-    selectedItem,
-    setSelectedUser,
-  } = useMessengerContext();
+  const { searchQuery, setSearchQuery, connections, setSelectedConnection, selectedItem } =
+    useMessengerContext();
 
   return (
     <Sidebar title={MESSENGER_TITLE} icon={({ size }) => <MessengerIcon size={size} />}>
@@ -52,12 +44,7 @@ export function MessengerSidebar() {
             currentConnectionId={getConnectionId(selectedItem)}
           />
         ) : (
-          <SearchResults
-            connections={foundConnections}
-            users={foundUsers}
-            onUserClick={setSelectedUser}
-            onConnectionClick={setSelectedConnection}
-          />
+          <SearchResults />
         )}
       </div>
     </Sidebar>
