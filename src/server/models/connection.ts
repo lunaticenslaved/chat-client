@@ -25,7 +25,11 @@ export function prepareConnectionToSend(
   if (connectionFromServer.type === ConnectionType.OneToOne) {
     const { users, ...connection } = connectionFromServer;
 
-    const partner = users.find(({ id }) => currentUserId !== id);
+    console.log(users);
+
+    const partner = users.every(({ id }) => id === currentUserId)
+      ? users[0]
+      : users.find(({ id }) => currentUserId !== id);
 
     if (!partner) {
       throw new Error('Partner not found');

@@ -8,31 +8,26 @@ import {
   useState,
 } from 'react';
 
+import { Flex } from 'antd';
+
 import { MessagesList } from '#/client/entities/message';
-import { Message } from '#/domain/message';
+
+import { useMessengerContext } from '../../context';
 
 import { HasErrorView } from './views/has-error/has-error';
 import { LoadingMessagesView } from './views/loading-messages';
 import { NoDialogView } from './views/no-dialog';
 import { NoMessagesView } from './views/no-messages';
 
-export interface MessageAreaProps {
-  messages: Message[];
-  noDialog: boolean;
-  isLoading: boolean;
-  isError: boolean;
-  hasMore: boolean;
-  onFetchMore(): void;
-}
-
-export const MessagesArea = ({
-  messages,
-  noDialog,
-  isError,
-  isLoading,
-  hasMore,
-  onFetchMore,
-}: MessageAreaProps) => {
+export const MessagesArea = () => {
+  const {
+    messages,
+    isLoadingMessages,
+    isLoadingMessagesError,
+    hasMoreMessages,
+    fetchMoreMessages,
+    selectedItem,
+  } = useMessengerContext();
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
 
   const scrollArea = createRef<HTMLDivElement>();
@@ -54,8 +49,8 @@ export const MessagesArea = ({
       threshold: 1.0,
     };
     const io = new IntersectionObserver(([{ isIntersecting }]) => {
-      if (hasMore && isIntersecting) {
-        onFetchMore();
+      if (hasMoreMessages && isIntersecting) {
+        fetchMoreMessages();
       }
     }, options);
 
@@ -66,7 +61,7 @@ export const MessagesArea = ({
         io.unobserve(element);
       }
     };
-  }, [hasMore, onFetchMore, scrollArea, scrolledToBottom, topElementRef]);
+  }, [fetchMoreMessages, hasMoreMessages, scrollArea, scrolledToBottom, topElementRef]);
 
   useEffect(() => {
     if (!scrollArea.current) return;
@@ -89,11 +84,11 @@ export const MessagesArea = ({
       (event.currentTarget.scrollHeight ?? 0) - (event.currentTarget.scrollTop ?? 0);
   }, []);
 
-  if (noDialog) {
+  if (!selectedItem) {
     return <NoDialogView />;
   }
 
-  if (isLoading) {
+  if (isLoadingMessages) {
     return <LoadingMessagesView />;
   }
 
@@ -101,17 +96,21 @@ export const MessagesArea = ({
     return <NoMessagesView />;
   }
 
-  if (isError) {
+  if (isLoadingMessagesError) {
     return <HasErrorView />;
   }
 
   return (
-    <div style={{ overflow: 'auto' }} ref={scrollArea} onScroll={setScrollBottom}>
+    <Flex
+      vertical
+      style={{ overflow: 'auto', flex: '1 1 auto' }}
+      ref={scrollArea}
+      onScroll={setScrollBottom}>
       {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }}></div>}
 
-      <MessagesList messages={messages} />
+      <MessagesList messages={messages} style={{ flex: '1 1 auto' }} />
 
       <div ref={bottomElementRef}></div>
-    </div>
+    </Flex>
   );
 };

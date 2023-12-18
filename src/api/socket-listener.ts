@@ -19,14 +19,24 @@ export abstract class SocketEventListener<
     this.socket = socket;
   }
 
-  on<TEvent extends Keys>(event: TEvent, fn: (args: Events[TEvent]) => void) {
+  on<TEvent extends Keys>(
+    event: TEvent,
+    fn: (args: Events[TEvent]) => void,
+    onError?: (error: Error) => void,
+  ) {
+    const serverEvent = this.eventsMap[event];
+
     const wrappedListener = (data: OperationResponse<Events[TEvent]>) => {
-      const response = ResponseUtils.unwrapResponse(data);
-      console.log(event, data);
-      return fn(response);
+      try {
+        const response = ResponseUtils.unwrapResponse(data);
+        console.log(serverEvent, data);
+        return fn(response);
+      } catch (error) {
+        console.error(serverEvent, data);
+        onError && onError(error as Error);
+      }
     };
 
-    const serverEvent = this.eventsMap[event];
     const arr = this.listeners[event] || [];
 
     arr.push(wrappedListener);

@@ -2,8 +2,8 @@ import { Flex } from 'antd';
 
 import { useViewer } from '#/client/entities/viewer';
 
-import { EditAccountAvatar } from '../account-edit-avatar';
-import { EditAccountData } from '../account-edit-data';
+import { EditAccountAvatar } from './account-edit-avatar';
+import { EditAccountData } from './account-edit-data';
 
 export function SettingsAccount() {
   const { user } = useViewer();

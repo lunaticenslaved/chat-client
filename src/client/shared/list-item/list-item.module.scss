@@ -1,17 +1,16 @@
 .listItemActive {
-    * {
-        color: white !important;
-    }
+  * {
+    color: white !important;
+  }
 }
 
 .listItem {
-    padding: 20px 20px !important;
-    border-radius: 10px;
-    cursor: pointer;
-    border-block-end: none !important;
+  padding: 20px 20px !important;
+  border-radius: 10px;
+  cursor: pointer;
+  border-block-end: none !important;
 
-    &:not(:last-child) {
-        margin-bottom: 20px;
-    }
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 }
-

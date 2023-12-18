@@ -76,11 +76,15 @@ export class ConnectionMetaService extends BaseMetaService {
       throw new Errors.UnauthorizedError({ messages: 'No user found' });
     }
 
+    if (authorId === partnerId) {
+      throw new Errors.ConflictError({ messages: 'User cannot send a message to self' });
+    }
+
     return await this.prisma.$transaction(async trx => {
       const existingConnection = await trx.connection.findFirst({
         where: {
           oneToOneDialog: { isNot: null },
-          users: { hasEvery: [authorId, partnerId] },
+          users: { equals: [authorId, partnerId] },
         },
       });
 

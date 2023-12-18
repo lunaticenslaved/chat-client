@@ -8,7 +8,7 @@ export type CreateOneToOneRequest = {
   };
 };
 
-export type ListConnectionsRequest = { userId: string; search?: string };
+export type ListConnectionsRequest = { userId: string };
 export type ListConnectionsResponse = Connection[];
 
 export type GetConnectionRequest = { connectionId: string };

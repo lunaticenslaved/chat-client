@@ -3,40 +3,39 @@ import { Divider, Input } from 'antd';
 
 import { DialogsList } from '#/client/entities/dialog';
 import { Sidebar } from '#/client/shared/components/sidebar';
-import { Connection } from '#/domain/connection';
-import { User } from '#/domain/user';
 
 import { MESSENGER_TITLE } from '../constants';
+import { useMessengerContext } from '../context';
+import { SelectedItem } from '../types';
 
 import { MessengerIcon } from './icon';
 import { SearchResults } from './search-results';
 
-export type MessengerSidebarProps = {
-  query?: string;
-  foundConnections: Connection[];
-  foundUsers: User[];
-  connections: Connection[];
-  currentConnection?: Connection;
-  onQueryChange(value: string): void;
-  onConnectionClick(value: Connection): void;
-  onUserClick(value: User): void;
-};
+function getConnectionId(selectedItem?: SelectedItem) {
+  if (selectedItem?.type === 'connection') {
+    return selectedItem.connection.id;
+  }
 
-export function MessengerSidebar({
-  query,
-  onQueryChange,
-  foundConnections,
-  foundUsers,
-  connections,
-  onConnectionClick,
-  onUserClick,
-  currentConnection,
-}: MessengerSidebarProps) {
+  return undefined;
+}
+
+export function MessengerSidebar() {
+  const {
+    foundConnections,
+    foundUsers,
+    searchQuery,
+    setSearchQuery,
+    connections,
+    setSelectedConnection,
+    selectedItem,
+    setSelectedUser,
+  } = useMessengerContext();
+
   return (
     <Sidebar title={MESSENGER_TITLE} icon={({ size }) => <MessengerIcon size={size} />}>
       <Input
-        value={query}
-        onChange={e => onQueryChange(e.currentTarget.value)}
+        value={searchQuery}
+        onChange={e => setSearchQuery(e.currentTarget.value)}
         allowClear
         placeholder="Search"
         style={{ height: '50px' }}
@@ -46,18 +45,18 @@ export function MessengerSidebar({
       <Divider />
 
       <div style={{ overflowY: 'auto' }}>
-        {!query ? (
+        {!searchQuery ? (
           <DialogsList
             dialogs={connections}
-            onClick={onConnectionClick}
-            currentConnectionId={currentConnection?.id}
+            onClick={setSelectedConnection}
+            currentConnectionId={getConnectionId(selectedItem)}
           />
         ) : (
           <SearchResults
             connections={foundConnections}
             users={foundUsers}
-            onUserClick={onUserClick}
-            onConnectionClick={onConnectionClick}
+            onUserClick={setSelectedUser}
+            onConnectionClick={setSelectedConnection}
           />
         )}
       </div>

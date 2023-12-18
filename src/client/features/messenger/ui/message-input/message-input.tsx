@@ -3,8 +3,9 @@ import React, { KeyboardEventHandler, useCallback } from 'react';
 import { AudioOutlined, CameraOutlined, SmileOutlined } from '@ant-design/icons';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
-import { Button, Popover, Upload, UploadProps, message } from 'antd';
+import { Button, Flex, Popover, Upload, UploadProps, message } from 'antd';
 
+import { useMessengerContext } from '#/client/features/messenger/context';
 import { Input } from '#/client/shared/components/Input';
 
 import classes from './message-input.module.scss';
@@ -27,12 +28,9 @@ const props: UploadProps = {
   },
 };
 
-export type MessageInputProps = {
-  onSubmit(text: string): boolean;
-};
-
-export const MessageInput = ({ onSubmit }: MessageInputProps) => {
+export const MessageInput = () => {
   const [text, setText] = React.useState('');
+  const { sendMessage } = useMessengerContext();
 
   const onEmojiSelect = useCallback(
     (emoji: { native: unknown }) => {
@@ -43,19 +41,19 @@ export const MessageInput = ({ onSubmit }: MessageInputProps) => {
     [text],
   );
 
-  const sendMessage: KeyboardEventHandler = useCallback(
+  const listenSendMessage: KeyboardEventHandler = useCallback(
     event => {
       if (event.key !== 'Enter') return;
 
-      if (onSubmit(text)) {
+      if (sendMessage(text)) {
         setText('');
       }
     },
-    [onSubmit, text],
+    [sendMessage, text],
   );
 
   return (
-    <div className={classes.root}>
+    <Flex align="center" className={classes.root}>
       <Popover content={<Picker data={data} locale="ru" onEmojiSelect={onEmojiSelect} />}>
         <Button
           className={classes.smileButton}
@@ -68,7 +66,7 @@ export const MessageInput = ({ onSubmit }: MessageInputProps) => {
       <Input
         value={text}
         onChange={e => setText(e.currentTarget.value)}
-        onKeyDown={sendMessage}
+        onKeyDown={listenSendMessage}
         placeholder="Введите сообщение..."
         autoFocus
         suffix={
@@ -91,6 +89,6 @@ export const MessageInput = ({ onSubmit }: MessageInputProps) => {
           </div>
         }
       />
-    </div>
+    </Flex>
   );
 };

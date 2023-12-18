@@ -15,9 +15,9 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
       throw new Error('User id not found');
     }
 
+    // FIXME search in connections not work
     const connections = await context.metaService.connection.list(requestContext, {
       userId,
-      search,
     });
 
     const { users } = await schema.actions.users.list({
@@ -31,7 +31,7 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
     });
 
     return {
-      users,
+      users: users.filter(user => user.id !== userId),
       connections: connections.map(connection => {
         if (connection.type === ConnectionType.OneToOne) {
           return prepareConnectionToSend(userId, connection);

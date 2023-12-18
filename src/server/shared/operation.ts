@@ -6,6 +6,7 @@ import { Errors, Models } from '@lunaticenslaved/schema';
 
 import { AuthEventServer } from '#/api/auth/types';
 import { RequestContext } from '#/server/context';
+import { logger } from '#/server/shared/logger';
 
 export interface IRequestContext {
   userId?: string;
@@ -31,10 +32,14 @@ export function createSocketOperationWithContext<TEventContext extends ISocketCo
   ) => {
     return (eventContext: TEventContext, errorEvent: string) => {
       // FIXME: handle error in socket operation
-      return (data: TRequest) => {
+      return async (data: TRequest) => {
         try {
-          fn(data, eventContext, context);
+          await fn(data, eventContext, context);
         } catch (error) {
+          logger.error(errorEvent);
+
+          // FIXME send errors only to required connections
+
           if (error instanceof Errors.TokenExpiredError) {
             eventContext.socket.emit(AuthEventServer.ExpiredToken);
           } else if (error instanceof Errors.TokenInvalidError) {

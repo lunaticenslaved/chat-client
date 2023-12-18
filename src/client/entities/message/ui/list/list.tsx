@@ -1,4 +1,4 @@
-import { createRef, useEffect } from 'react';
+import { CSSProperties, createRef, useEffect } from 'react';
 
 import { List } from 'antd';
 
@@ -11,9 +11,10 @@ import classes from './list.module.scss';
 
 export type MessagesListProps = {
   messages: Message[];
+  style?: CSSProperties;
 };
 
-export const MessagesList = ({ messages }: MessagesListProps) => {
+export const MessagesList = ({ messages, style }: MessagesListProps) => {
   const { user: viewer } = useViewer();
   const wrapperRef = createRef<HTMLDivElement>();
 
@@ -25,7 +26,7 @@ export const MessagesList = ({ messages }: MessagesListProps) => {
   }, [wrapperRef]);
 
   return (
-    <div className={classes.root} ref={wrapperRef}>
+    <div className={classes.root} ref={wrapperRef} style={style}>
       <List className={classes.list}>
         {messages.map(message => (
           <MessageListItem

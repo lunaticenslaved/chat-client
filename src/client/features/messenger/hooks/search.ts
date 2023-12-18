@@ -39,6 +39,10 @@ export function useSearch({ fetch }: UseSearchProps): UseSearch {
     () => ({
       setSearchQuery(value?: string) {
         dispatch(store.search.actions.setQuery(value));
+
+        if (!value) {
+          dispatch(store.search.actions.setSelectedUser(undefined));
+        }
       },
       setSelectedUser(value?: User) {
         dispatch(store.search.actions.setSelectedUser(value));

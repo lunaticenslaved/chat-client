@@ -1,21 +1,36 @@
 import { OnlineStatus } from '#/client/shared/components/online-status';
-import { Connection, ConnectionType } from '#/domain/connection';
-import { User } from '#/domain/user';
+import { notReachable } from '#/client/shared/utils';
+import { ConnectionType } from '#/domain/connection';
+
+import { SelectedItem } from '../../types';
 
 import classes from './messages-area-header.module.scss';
 
 export type MessageAreaHeaderProps = {
-  selectedItem: User | Connection;
+  selectedItem: SelectedItem;
   isOnline: boolean;
 };
 
+function getTitle(selectedItem: SelectedItem): string {
+  if (selectedItem.type === 'user') {
+    return selectedItem.user.login;
+  } else if (selectedItem.type === 'connection') {
+    const connection = selectedItem.connection;
+
+    if (connection.type === ConnectionType.OneToOne) {
+      return connection.oneToOneDialog.partner.login;
+    } else if (connection.type === ConnectionType.Group) {
+      return 'Not implemented';
+    } else {
+      notReachable(connection);
+    }
+  } else {
+    notReachable(selectedItem);
+  }
+}
+
 export const MessageAreaHeader = ({ selectedItem, isOnline }: MessageAreaHeaderProps) => {
-  const title =
-    'email' in selectedItem
-      ? selectedItem.login
-      : selectedItem.type === ConnectionType.OneToOne
-        ? selectedItem.oneToOneDialog.partner.login
-        : null;
+  const title = getTitle(selectedItem);
 
   return (
     <div className={classes.chatHeader}>
