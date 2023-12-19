@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useMemo } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 
 import { ConnectionEventsListener } from '#/api/connection';
 import { MessageEventsListener } from '#/api/message';
@@ -93,19 +93,33 @@ function useMessenger(): IMessengerContext {
 
   const connectionInfo = useConnectionInfo(selectedItem);
 
+  const onConnectionCreated = useCallback(
+    (connection: Connection) => {
+      addConnection(connection);
+
+      if (searchQuery) {
+        setSearchQuery('');
+        // FIXME disable refetching messages in this case
+        setCurrentConnection(connection);
+      }
+    },
+    [addConnection, searchQuery, setCurrentConnection, setSearchQuery],
+  );
+
   useEffect(() => {
     // FIXME handle error
     messagesListener.on('created', addMessage);
     messagesListener.on('created', updateLastMessage);
     messagesListener.on('deleted', removeMessageFromList);
-    connectionsListener.on('created', addConnection);
+    connectionsListener.on('created', onConnectionCreated);
 
     return () => {
       messagesListener.off('created', addMessage);
       messagesListener.off('created', updateLastMessage);
-      connectionsListener.off('created', addConnection);
+      messagesListener.off('deleted', removeMessageFromList);
+      connectionsListener.off('created', onConnectionCreated);
     };
-  }, [addConnection, addMessage, removeMessageFromList, updateLastMessage]);
+  }, [addMessage, onConnectionCreated, removeMessageFromList, updateLastMessage]);
 
   return useMemo(
     (): IMessengerContext => ({

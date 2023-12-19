@@ -1,14 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { Server as SocketServer } from 'socket.io';
 
+import { socketsService } from '#/server/service/sockets';
 import {
   createOperationWithContext,
   createSocketOperationWithContext,
 } from '#/server/shared/operation';
-import { SocketByUser } from '#/server/shared/socket';
 
 import { eventBus } from './event-bus';
-import { IService, createServices } from './service';
 import { ISocketEvent, createSocketEvents } from './socket';
 
 export { RequestContext } from './rest-context';
@@ -16,9 +15,7 @@ export { SocketContext } from './socket-context';
 export { eventBus } from './event-bus';
 
 export interface IContext {
-  service: IService;
   socketEvent: ISocketEvent;
-  socketMap: SocketByUser;
   socketServer: SocketServer;
 
   connectDB(): Promise<void>;
@@ -26,7 +23,6 @@ export interface IContext {
 }
 
 export const prisma = new PrismaClient();
-const service = createServices(prisma);
 
 type AddUserToConnectionRequest = {
   userId: string;
@@ -36,30 +32,27 @@ type AddUserToConnectionRequest = {
 export class Context implements IContext {
   prisma = prisma;
   eventBus = eventBus;
-  service: IService;
   socketEvent: ISocketEvent;
-  socketMap: SocketByUser;
   socketServer: SocketServer;
 
   constructor() {
-    this.service = service;
     this.socketEvent = createSocketEvents(this);
-    this.socketMap = new SocketByUser();
     this.socketServer = new SocketServer();
   }
 
-  addUserToConnection(data: AddUserToConnectionRequest): void {
+  async addUserToConnection(data: AddUserToConnectionRequest): Promise<void> {
     const { connectionId, userId } = data;
-    const socketId = this.socketMap.getSocketId(userId);
 
-    if (!socketId) return;
+    const sockets = await socketsService.getSocketsForUser(userId);
 
-    const namespace = this.socketServer.of('/');
-    const socket = namespace.sockets.get(socketId);
+    for (const { id: socketId } of sockets) {
+      const namespace = this.socketServer.of('/');
+      const socket = namespace.sockets.get(socketId);
 
-    if (!socket) return;
+      if (!socket) return;
 
-    socket.join(connectionId);
+      socket.join(connectionId);
+    }
   }
 
   connectDB() {

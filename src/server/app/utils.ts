@@ -15,6 +15,7 @@ import { Context, SocketContext } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
 import { addEventListeners } from '#/server/controllers/event';
 import { addHeaders, addUser, logRequest } from '#/server/middlewares';
+import { socketsService } from '#/server/service/sockets';
 import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
 import { SERVICE } from '#/server/shared/constants';
@@ -145,14 +146,12 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
         config: { headers: { origin } },
       });
 
-      // FIXME await?
+      // await?
       usersService.createOrUpdate({
         id: user.id,
         socketId: socket.id,
         isOnline: true,
       });
-
-      context.socketMap.addUser({ userId: user.id, socketId: socket.id });
 
       logger.info('[MIDDLEWARE][SOCKET] User found');
 
@@ -176,7 +175,7 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
   });
 
   wsServer.on('connection', async socket => {
-    const userId = context.socketMap.getUserId(socket.id);
+    const userId = await socketsService.getUserForSocket(socket.id);
 
     socket.on('disconnect', () => {
       if (userId) {
@@ -202,7 +201,7 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
 
     const eventContext = new SocketContext({
       socket,
-      userId: context.socketMap.getUserId(socket.id),
+      userId,
       token: socket.handshake.auth.token,
       origin: socket.request.headers.origin || '',
     });

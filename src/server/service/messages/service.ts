@@ -2,6 +2,7 @@ import schema from '@lunaticenslaved/schema';
 
 import { DeleteMessageRequest } from '#/api/message';
 import { Message, canDeleteMessage } from '#/domain/message';
+import { eventBus, prisma } from '#/server/context';
 import { IRequestContext } from '#/server/shared/operation';
 import { Transaction } from '#/server/shared/prisma';
 
@@ -21,9 +22,7 @@ export class MessagesService extends BaseService {
     data: CreateMessageRequest,
     trx?: Transaction,
   ): Promise<CreateMessageResponse> {
-    const prisma = trx || this.prisma;
-
-    const rawMessage = await prisma.message.create({ select, data });
+    const rawMessage = await (trx || prisma).message.create({ select, data });
 
     const { user: author } = await schema.actions.users.get({
       token: requestContext.token,
@@ -46,7 +45,7 @@ export class MessagesService extends BaseService {
       attachments: [],
     };
 
-    this.eventBus.emit('message-created', message);
+    eventBus.emit('message-created', message);
 
     return message;
   }
@@ -57,9 +56,8 @@ export class MessagesService extends BaseService {
     trx?: Transaction,
   ): Promise<ListMessagesResponse> {
     const { connectionId, take, prevLoadedMessageId } = data;
-    const prisma = trx || this.prisma;
 
-    const messages = await prisma.message.findMany({
+    const messages = await (trx || prisma).message.findMany({
       select,
       take,
       skip: prevLoadedMessageId ? take : undefined,
@@ -100,7 +98,7 @@ export class MessagesService extends BaseService {
   async delete(requestContext: IRequestContext, data: DeleteMessageRequest) {
     const { messageId } = data;
 
-    this.prisma.$transaction(async trx => {
+    prisma.$transaction(async trx => {
       const { userId: viewerId } = requestContext;
       const message = await trx.message.findFirst({
         where: { id: messageId },
@@ -112,10 +110,10 @@ export class MessagesService extends BaseService {
       }
 
       if (!message) {
-        this.eventBus.emit('message-deleted', data);
+        eventBus.emit('message-deleted', data);
       } else if (canDeleteMessage({ viewerId, message })) {
         await trx.message.delete({ where: { id: message.id } });
-        this.eventBus.emit('message-deleted', data);
+        eventBus.emit('message-deleted', data);
       }
     });
   }

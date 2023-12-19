@@ -2,6 +2,7 @@ import schema from '@lunaticenslaved/schema';
 import { Errors } from '@lunaticenslaved/schema';
 
 import { ConnectionType } from '#/domain/connection';
+import { eventBus, prisma } from '#/server/context';
 import { Connection, OneToOneConnection } from '#/server/models/connection';
 import { IRequestContext } from '#/server/shared/operation';
 
@@ -80,7 +81,7 @@ export class ConnectionsService extends BaseService {
       throw new Errors.ConflictError({ messages: 'User cannot send a message to self' });
     }
 
-    return await this.prisma.$transaction(async trx => {
+    return await prisma.$transaction(async trx => {
       const existingConnection = await trx.connection.findFirst({
         where: {
           oneToOneDialog: { isNot: null },
@@ -122,12 +123,12 @@ export class ConnectionsService extends BaseService {
 
       const connection = await this._processOneToOneConnection(requestContext, rawConnection);
 
-      if (existingConnection) {
-        this.eventBus.emit('connection-created', connection);
+      if (!existingConnection) {
+        eventBus.emit('connection-created', connection);
       }
 
       if (connection.lastMessage) {
-        this.eventBus.emit('message-created', connection.lastMessage);
+        eventBus.emit('message-created', connection.lastMessage);
       }
 
       return connection;
@@ -140,7 +141,7 @@ export class ConnectionsService extends BaseService {
   ): Promise<ListConnectionsResponse> {
     const connections: Connection[] = [];
     const { userId } = data;
-    const rawConnections = await this.prisma.connection.findMany({
+    const rawConnections = await prisma.connection.findMany({
       select,
       where: {
         users: {
@@ -160,7 +161,7 @@ export class ConnectionsService extends BaseService {
     requestContext: IRequestContext,
     data: GetConnectionRequest,
   ): Promise<GetConnectionResponse> {
-    const rawConnection = await this.prisma.connection.findFirstOrThrow({
+    const rawConnection = await prisma.connection.findFirstOrThrow({
       select,
       where: {
         id: data.connectionId,

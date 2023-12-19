@@ -4,6 +4,8 @@ import { OperationResponse } from '@lunaticenslaved/schema/dist/types/models';
 import { ConnectionServerEvent, CreateConnectionResponse } from '#/api/connection';
 import { ConnectionType } from '#/domain/connection';
 import { Connection, prepareConnectionToSend } from '#/server/models/connection';
+import { socketsService } from '#/server/service/sockets';
+import { logger } from '#/server/shared';
 
 import { SocketEventEmitter } from './_base';
 
@@ -17,17 +19,14 @@ export class ConnectionSocketEvents extends SocketEventEmitter {
 
     const { users } = connectionBase;
 
+    logger.info(`Emit connection created for users: ${users.length}`);
+
     for (const user of users) {
       this.context.addUserToConnection({ userId: user.id, connectionId: connectionBase.id });
 
-      const socketId = this.context.socketMap.getSocketId(user.id);
-
-      if (!socketId) continue;
-
+      const sockets = await socketsService.getSocketsForUser(user.id);
       const preparedConnection = prepareConnectionToSend(user.id, connectionBase);
-
       const namespace = this.context.socketServer.of('/');
-      const socket = namespace.sockets.get(socketId);
 
       const response: OperationResponse<CreateConnectionResponse> = error
         ? { data: null, error }
@@ -36,7 +35,10 @@ export class ConnectionSocketEvents extends SocketEventEmitter {
             data: preparedConnection,
           };
 
-      socket?.emit(ConnectionServerEvent.Created, response);
+      for (const { id: socketId } of sockets) {
+        const socket = namespace.sockets.get(socketId);
+        socket?.emit(ConnectionServerEvent.Created, response);
+      }
     }
   }
 }

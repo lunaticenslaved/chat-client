@@ -1,7 +1,6 @@
-import { eventBus, prisma } from '#/server/context';
-
 import { UsersService } from './service';
 
 export * from './types';
+export { type User } from './utils';
 
-export const usersService = new UsersService(prisma, eventBus);
+export const usersService = new UsersService();

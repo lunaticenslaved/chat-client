@@ -27,6 +27,10 @@ export abstract class SocketEventListener<
     const serverEvent = this.eventsMap[event];
 
     const wrappedListener = (data: OperationResponse<Events[TEvent]>) => {
+      console.log(
+        `Event '${serverEvent}' occurred. Listeners - ${(this.listeners[event] || []).length}`,
+      );
+
       try {
         const response = ResponseUtils.unwrapResponse(data);
         return fn(response);
@@ -36,7 +40,6 @@ export abstract class SocketEventListener<
     };
 
     const arr = this.listeners[event] || [];
-
     arr.push(wrappedListener);
 
     const existingWrappedListener = this.listenersMap.get(fn);

@@ -1,6 +1,7 @@
 import { DeleteMessageResponse } from '#/api/message';
 import { Message } from '#/domain/message';
 import { Connection } from '#/server/models/connection';
+import { logger } from '#/server/shared';
 
 type Events = {
   'connection-created': [Connection];
@@ -29,7 +30,9 @@ export class EventBus {
   }
 
   emit<TEvent extends keyof Events>(event: TEvent, ...args: Events[TEvent]) {
-    for (const listener of this.listeners[event] || []) {
+    const listeners = this.listeners[event] || [];
+    logger.info(`[EVENT BUS] Event '${event}' occurred. Listeners: ${listeners.length}`);
+    for (const listener of listeners) {
       listener(...args);
     }
   }

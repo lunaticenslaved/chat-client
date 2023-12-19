@@ -1,4 +1,4 @@
-import { User } from '#/server/models/user';
+import { User } from './utils';
 
 export type CreateUserResponse = User;
 export type CreateUserRequest = {

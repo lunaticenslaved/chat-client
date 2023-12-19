@@ -1,3 +1,4 @@
+import { prisma } from '#/server/context';
 import { Transaction } from '#/server/shared/prisma';
 
 import { BaseService } from '../base-service';
@@ -14,15 +15,12 @@ import {
   UpdateUserRequest,
   UpdateUserResponse,
 } from './types';
+import { select } from './utils';
 
 export class UsersService extends BaseService {
   createUser(data: CreateUserRequest, trx?: Transaction): Promise<CreateUserResponse> {
-    return (trx || this.prisma).user.create({
-      select: {
-        id: true,
-        isOnline: true,
-        sockets: true,
-      },
+    return (trx || prisma).user.create({
+      select,
       data: {
         id: data.id,
         isOnline: data.isOnline || false,
@@ -39,13 +37,9 @@ export class UsersService extends BaseService {
   }
 
   updateUser(data: UpdateUserRequest, trx?: Transaction): Promise<UpdateUserResponse> {
-    return (trx || this.prisma).user.update({
+    return (trx || prisma).user.update({
       where: { id: data.id },
-      select: {
-        id: true,
-        isOnline: true,
-        sockets: true,
-      },
+      select,
       data: {
         isOnline: data.isOnline || false,
         sockets: data.socketId
@@ -61,7 +55,7 @@ export class UsersService extends BaseService {
   }
 
   createOrUpdate(data: CreateOrUpdateUserRequest): Promise<CreateOrUpdateUserResponse> {
-    return this.prisma.$transaction(async trx => {
+    return prisma.$transaction(async trx => {
       const existingUser = await this.findUser(data, trx);
 
       if (existingUser) {
@@ -73,20 +67,16 @@ export class UsersService extends BaseService {
   }
 
   findUser(data: FindUserRequest, trx?: Transaction): Promise<FindUserResponse> {
-    return (trx || this.prisma).user
+    return (trx || prisma).user
       .findFirst({
+        select,
         where: { id: data.id },
-        select: {
-          id: true,
-          isOnline: true,
-          sockets: true,
-        },
       })
       .then(user => user || undefined);
   }
 
   async removeSocket(data: RemoveSocketRequest): Promise<RemoveSocketResponse> {
-    await this.prisma.socket.deleteMany({
+    await prisma.socket.deleteMany({
       where: {
         id: data.socketId,
       },
