@@ -2,15 +2,8 @@
 
 .chatHeader {
   background-color: $sidebar-background;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex: 0 0 $header-height;
-  flex-direction: column;
-
-  * {
-    margin: 0;
-  }
+  padding: 0 20px;
 }
 
 .onlineStatus {

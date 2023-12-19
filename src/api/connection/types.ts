@@ -12,3 +12,8 @@ export type ListConnectionsRequest = void;
 export type ListConnectionsResponse = {
   connections: Connection[];
 };
+
+export type GetConnectionResponse = Connection;
+export type GetConnectionRequest = {
+  connectionId: string;
+};

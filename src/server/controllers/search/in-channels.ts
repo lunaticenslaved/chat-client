@@ -4,7 +4,7 @@ import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search'
 import { ConnectionType } from '#/domain/connection';
 import { createOperation } from '#/server/context';
 import { prepareConnectionToSend } from '#/server/models/connection';
-import { notReachable } from '#/server/shared/utils';
+import { notReachable } from '#/shared/utils';
 
 export const searchInChannels = createOperation<SearchInChannelsResponse, SearchInChannelsRequest>(
   async (req, requestContext, context) => {

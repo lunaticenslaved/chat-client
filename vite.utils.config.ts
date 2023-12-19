@@ -5,4 +5,5 @@ export const alias = {
   '#/store': resolve(__dirname, './src/store/index'),
   '#/api': resolve(__dirname, './src/api'),
   '#/client': resolve(__dirname, './src/client'),
+  '#/shared': resolve(__dirname, './src/shared'),
 };

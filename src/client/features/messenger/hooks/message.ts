@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import { MessageEventsEmitter } from '#/api/message';
 import { useViewer } from '#/client/entities/viewer';
 import { socket } from '#/client/shared/socket-context';
-import { notReachable } from '#/client/shared/utils';
 import { Message, canDeleteMessage } from '#/domain/message';
+import { notReachable } from '#/shared/utils';
 
 import { SelectedItem } from '../types';
 

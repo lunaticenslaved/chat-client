@@ -7,6 +7,7 @@ import { Connection } from '#/domain/connection';
 import { Message } from '#/domain/message';
 import { User } from '#/domain/user';
 
+import { IConnectionInfo, useConnectionInfo } from './hooks/connection-info';
 import { useConnections } from './hooks/connections';
 import { IMessage, useMessage } from './hooks/message';
 import { useMessages } from './hooks/messages';
@@ -34,6 +35,7 @@ interface IMessengerContext {
   // Connections
   connections: Connection[];
   setSelectedConnection(connection: Connection): void;
+  connectionInfo: IConnectionInfo;
 
   // User
   setSelectedUser(user: User): void;
@@ -89,6 +91,8 @@ function useMessenger(): IMessengerContext {
 
   const { sendMessage, deleteMessage } = useMessage({ selectedItem });
 
+  const connectionInfo = useConnectionInfo(selectedItem);
+
   useEffect(() => {
     // FIXME handle error
     messagesListener.on('created', addMessage);
@@ -124,6 +128,7 @@ function useMessenger(): IMessengerContext {
 
       // Connections
       connections,
+      connectionInfo,
       setSelectedConnection(value) {
         setSearchQuery('');
         setCurrentConnection(value);
@@ -133,6 +138,7 @@ function useMessenger(): IMessengerContext {
       setSelectedUser,
     }),
     [
+      connectionInfo,
       connections,
       deleteMessage,
       fetchMoreMessages,

@@ -1,7 +1,11 @@
-import { OnlineStatus } from '#/client/shared/components/online-status';
-import { notReachable } from '#/client/shared/utils';
-import { ConnectionType } from '#/domain/connection';
+import { LayoutOutlined } from '@ant-design/icons';
+import { Flex, Radio, Typography } from 'antd';
 
+import { OnlineStatus } from '#/client/shared/components/online-status';
+import { ConnectionType } from '#/domain/connection';
+import { notReachable } from '#/shared/utils';
+
+import { useMessengerContext } from '../../context';
 import { SelectedItem } from '../../types';
 
 import classes from './messages-area-header.module.scss';
@@ -31,14 +35,27 @@ function getTitle(selectedItem: SelectedItem): string {
 
 export const MessageAreaHeader = ({ selectedItem, isOnline }: MessageAreaHeaderProps) => {
   const title = getTitle(selectedItem);
+  const { connectionInfo } = useMessengerContext();
 
   return (
-    <div className={classes.chatHeader}>
-      <h3>{title}</h3>
-      <div className={classes.onlineStatus}>
-        <OnlineStatus isOnline={isOnline} />
-        <span>{isOnline ? 'онлайн' : 'оффлайн'}</span>
-      </div>
-    </div>
+    <Flex align="center" justify="space-between" className={classes.chatHeader}>
+      <Flex align="flex-start" justify="center" vertical>
+        <Typography.Title level={5} style={{ margin: 0 }}>
+          {title}
+        </Typography.Title>
+        <div className={classes.onlineStatus}>
+          <OnlineStatus isOnline={isOnline} />
+          <Typography.Text>{isOnline ? 'онлайн' : 'оффлайн'}</Typography.Text>
+        </div>
+      </Flex>
+
+      <Flex align="center">
+        <Radio.Group value={connectionInfo.isOpen}>
+          <Radio.Button value={true} onClick={connectionInfo.toggle}>
+            <LayoutOutlined />
+          </Radio.Button>
+        </Radio.Group>
+      </Flex>
+    </Flex>
   );
 };

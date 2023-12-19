@@ -4,8 +4,8 @@ import { DeleteMessageResponse, MessageEventsEmitter, messagesActions } from '#/
 import { useViewer } from '#/client/entities/viewer';
 import { useToggle } from '#/client/shared/hooks';
 import { socket } from '#/client/shared/socket-context';
-import { notReachable } from '#/client/shared/utils';
 import { Message } from '#/domain/message';
+import { notReachable } from '#/shared/utils';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
 import { SelectedItem } from '../types';

@@ -10,6 +10,7 @@ export type UseToggleResponse = {
   isFalse: boolean;
   setTrue(): void;
   setFalse(): void;
+  toggle(): void;
   setValue(value: boolean): void;
 };
 
@@ -18,6 +19,7 @@ export function useToggle(props: UseToggleRequest = {}): UseToggleResponse {
 
   const setTrue = useCallback(() => setValue(true), []);
   const setFalse = useCallback(() => setValue(false), []);
+  const toggle = useCallback(() => setValue(v => !v), []);
 
   useEffect(() => {
     setValue(!!props.value);
@@ -29,9 +31,10 @@ export function useToggle(props: UseToggleRequest = {}): UseToggleResponse {
       setValue,
       setTrue,
       setFalse,
+      toggle,
       isTrue: value === true,
       isFalse: value === false,
     }),
-    [setFalse, setTrue, value],
+    [setFalse, setTrue, toggle, value],
   );
 }
