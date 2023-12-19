@@ -4,10 +4,11 @@ import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search'
 import { ConnectionType } from '#/domain/connection';
 import { createOperation } from '#/server/context';
 import { prepareConnectionToSend } from '#/server/models/connection';
+import { connectionsService } from '#/server/service/connections';
 import { notReachable } from '#/shared/utils';
 
 export const searchInChannels = createOperation<SearchInChannelsResponse, SearchInChannelsRequest>(
-  async (req, requestContext, context) => {
+  async (req, requestContext) => {
     const { search } = req.body;
     const userId = requestContext.userId;
 
@@ -27,7 +28,7 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
     });
 
     // FIXME search in connections not work
-    const connections = await context.metaService.connection.list(requestContext, {
+    const connections = await connectionsService.list(requestContext, {
       userId,
     });
 

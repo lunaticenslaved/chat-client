@@ -1,16 +1,17 @@
 import { ListConnectionsRequest, ListConnectionsResponse } from '#/api/connection';
 import { ConnectionType, OneToOneConnection } from '#/domain/connection';
 import { createOperation } from '#/server/context';
+import { connectionsService } from '#/server/service/connections';
 
 export const list = createOperation<ListConnectionsResponse, ListConnectionsRequest>(
-  async (_, requestContext, appContext) => {
+  async (_, requestContext) => {
     const userId = requestContext.userId;
 
     if (!userId) {
       throw new Error('User id not found');
     }
 
-    const connections = await appContext.metaService.connection.list(requestContext, {
+    const connections = await connectionsService.list(requestContext, {
       userId,
     });
 

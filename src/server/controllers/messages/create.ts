@@ -2,6 +2,7 @@ import { Errors } from '@lunaticenslaved/schema';
 
 import { SendMessageRequest } from '#/api/message';
 import { createSocketOperation } from '#/server/context';
+import { connectionsService } from '#/server/service/connections';
 import { logger } from '#/server/shared';
 
 export const create = createSocketOperation<SendMessageRequest>(
@@ -17,7 +18,7 @@ export const create = createSocketOperation<SendMessageRequest>(
     }
 
     if ('userId' in data) {
-      await appContext.metaService.connection.createOneToOne(eventContext, {
+      await connectionsService.createOneToOne(eventContext, {
         partnerId: data.userId,
         message: {
           text: data.text,
