@@ -17,6 +17,7 @@ import { addEventListeners } from '#/server/controllers/event';
 import { addHeaders, addUser, logRequest } from '#/server/middlewares';
 import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
+import { SERVICE } from '#/server/shared/constants';
 
 import { AuthEventServer } from '../../api/auth/types';
 
@@ -76,7 +77,7 @@ export function addSSRRoute({
 
     try {
       validatedRequest = await schema.actions.auth.validateRequest({
-        data: undefined,
+        data: { service: SERVICE },
         config: {
           headers: {
             Origin: req.headers.origin,
@@ -140,7 +141,7 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
     try {
       const { user } = await schema.actions.auth.validateRequest({
         token,
-        data: undefined,
+        data: { service: SERVICE },
         config: { headers: { origin } },
       });
 

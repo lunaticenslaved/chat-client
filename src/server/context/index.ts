@@ -8,7 +8,6 @@ import {
 import { SocketByUser } from '#/server/shared/socket';
 
 import { eventBus } from './event-bus';
-import { IMetaService, createMetaServices } from './meta-service';
 import { IService, createServices } from './service';
 import { ISocketEvent, createSocketEvents } from './socket';
 
@@ -18,7 +17,6 @@ export { eventBus } from './event-bus';
 
 export interface IContext {
   service: IService;
-  metaService: IMetaService;
   socketEvent: ISocketEvent;
   socketMap: SocketByUser;
   socketServer: SocketServer;
@@ -39,14 +37,12 @@ export class Context implements IContext {
   prisma = prisma;
   eventBus = eventBus;
   service: IService;
-  metaService: IMetaService;
   socketEvent: ISocketEvent;
   socketMap: SocketByUser;
   socketServer: SocketServer;
 
   constructor() {
     this.service = service;
-    this.metaService = createMetaServices(prisma, service, this.eventBus);
     this.socketEvent = createSocketEvents(this);
     this.socketMap = new SocketByUser();
     this.socketServer = new SocketServer();

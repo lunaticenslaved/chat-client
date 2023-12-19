@@ -4,11 +4,12 @@ import schema from '@lunaticenslaved/schema';
 
 import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
+import { SERVICE } from '#/server/shared/constants';
 
 export async function addUser(request: Request, _: Response, next: NextFunction) {
   try {
     const { user } = await schema.actions.auth.validateRequest({
-      data: undefined,
+      data: { service: SERVICE },
       config: {
         headers: {
           Origin: request.headers.origin,

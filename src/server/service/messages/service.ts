@@ -5,7 +5,7 @@ import { Message, canDeleteMessage } from '#/domain/message';
 import { IRequestContext } from '#/server/shared/operation';
 import { Transaction } from '#/server/shared/prisma';
 
-import { BaseMetaService } from '../base-metaservice';
+import { BaseService } from '../base-service';
 
 import {
   CreateMessageRequest,
@@ -15,7 +15,7 @@ import {
 } from './types';
 import { select } from './utils';
 
-export class MessagesMetaService extends BaseMetaService {
+export class MessagesService extends BaseService {
   async create(
     requestContext: IRequestContext,
     data: CreateMessageRequest,

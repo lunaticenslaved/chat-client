@@ -12,6 +12,9 @@
   "compilerOptions": {
     "types": ["node", "jest"],
     "module": "CommonJS",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
 
     "outDir": "../../dist",
     "rootDir": ".."

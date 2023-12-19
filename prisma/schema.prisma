@@ -15,12 +15,16 @@ model User {
   ownedContacts      Contact[]    @relation("OwnedContacts")
   belongedToContacts Contact[]    @relation("BelongedToContact")
   connections        Connection[]
+
+  @@map("users")
 }
 
 model Socket {
   id     String @id
-  userId String @unique
+  userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("sockets")
 }
 
 model Contact {
@@ -29,6 +33,8 @@ model Contact {
   owner   User   @relation("OwnedContacts", fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId  String
   user    User   @relation("BelongedToContact", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("contacts")
 }
 
 model Connection {
