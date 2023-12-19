@@ -15,6 +15,7 @@ import { Context, SocketContext } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
 import { addEventListeners } from '#/server/controllers/event';
 import { addHeaders, addUser, logRequest } from '#/server/middlewares';
+import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
 
 import { AuthEventServer } from '../../api/auth/types';
@@ -143,7 +144,13 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
         config: { headers: { origin } },
       });
 
-      socket.join(user.id);
+      // FIXME await?
+      usersService.createOrUpdate({
+        id: user.id,
+        socketId: socket.id,
+        isOnline: true,
+      });
+
       context.socketMap.addUser({ userId: user.id, socketId: socket.id });
 
       logger.info('[MIDDLEWARE][SOCKET] User found');
@@ -172,6 +179,9 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
 
     socket.on('disconnect', () => {
       if (userId) {
+        // FIXME await?
+        usersService.removeSocket({ socketId: socket.id });
+
         socket.leave(userId);
       }
 
@@ -181,7 +191,7 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
     if (userId) {
       const existingConnections = await context.prisma.connection.findMany({
         select: { id: true },
-        where: { users: { hasSome: [userId] } },
+        where: { users: { some: { id: userId } } },
       });
 
       for (const existingConnection of existingConnections) {

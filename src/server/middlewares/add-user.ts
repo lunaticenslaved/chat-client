@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import schema from '@lunaticenslaved/schema';
 
+import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
 
 export async function addUser(request: Request, _: Response, next: NextFunction) {
@@ -15,6 +16,8 @@ export async function addUser(request: Request, _: Response, next: NextFunction)
         },
       },
     });
+
+    await usersService.createOrUpdate({ id: user.id });
 
     request.user = user;
 

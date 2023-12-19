@@ -34,7 +34,5 @@ export type SelectResponse = {
     authorId: string;
     connectionId: string;
   }>;
-  oneToOneDialog: {
-    id: string;
-  } | null;
+  oneToOneDialog: { id: string } | null;
 };

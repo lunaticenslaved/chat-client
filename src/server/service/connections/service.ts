@@ -3,9 +3,9 @@ import { Errors } from '@lunaticenslaved/schema';
 
 import { ConnectionType } from '#/domain/connection';
 import { Connection, OneToOneConnection } from '#/server/models/connection';
+import { IRequestContext } from '#/server/shared/operation';
 
-import { IRequestContext } from '../../../shared/operation';
-import { BaseMetaService } from '../base-metaservice';
+import { BaseService } from '../base-service';
 
 import {
   CreateOneToOneRequest,
@@ -17,7 +17,7 @@ import {
 } from './types';
 import { SelectResponse, select } from './utils';
 
-export class ConnectionMetaService extends BaseMetaService {
+export class ConnectionsService extends BaseService {
   private async _processOneToOneConnection(
     requestContext: IRequestContext,
     connection: SelectResponse,
@@ -84,7 +84,9 @@ export class ConnectionMetaService extends BaseMetaService {
       const existingConnection = await trx.connection.findFirst({
         where: {
           oneToOneDialog: { isNot: null },
-          users: { every: { id: { in: [authorId, partnerId] } } },
+          users: {
+            every: { id: { in: [authorId, partnerId] } },
+          },
         },
       });
 
@@ -141,7 +143,9 @@ export class ConnectionMetaService extends BaseMetaService {
     const rawConnections = await this.prisma.connection.findMany({
       select,
       where: {
-        users: { some: { id: { equals: userId } } },
+        users: {
+          some: { id: { equals: userId } },
+        },
       },
     });
 

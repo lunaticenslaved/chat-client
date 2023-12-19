@@ -7,13 +7,14 @@ import {
 } from '#/server/shared/operation';
 import { SocketByUser } from '#/server/shared/socket';
 
-import { EventBus } from './event-bus';
+import { eventBus } from './event-bus';
 import { IMetaService, createMetaServices } from './meta-service';
 import { IService, createServices } from './service';
 import { ISocketEvent, createSocketEvents } from './socket';
 
 export { RequestContext } from './rest-context';
 export { SocketContext } from './socket-context';
+export { eventBus } from './event-bus';
 
 export interface IContext {
   service: IService;
@@ -26,7 +27,7 @@ export interface IContext {
   addUserToConnection(data: AddUserToConnectionRequest): void;
 }
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 const service = createServices(prisma);
 
 type AddUserToConnectionRequest = {
@@ -36,7 +37,7 @@ type AddUserToConnectionRequest = {
 
 export class Context implements IContext {
   prisma = prisma;
-  eventBus = new EventBus();
+  eventBus = eventBus;
   service: IService;
   metaService: IMetaService;
   socketEvent: ISocketEvent;
