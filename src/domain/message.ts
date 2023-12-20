@@ -30,9 +30,9 @@ export function formatMessageTime(date: string | Date, type?: 'exact'): string {
 
 type CanDeleteMessage = {
   viewerId: string;
-  message: Pick<Message, 'authorId'>;
+  authorId: string;
 };
 
-export function canDeleteMessage({ viewerId, message }: CanDeleteMessage) {
-  return message.authorId === viewerId;
+export function canDeleteMessage({ viewerId, authorId }: CanDeleteMessage) {
+  return authorId === viewerId;
 }

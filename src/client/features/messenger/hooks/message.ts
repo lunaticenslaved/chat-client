@@ -46,11 +46,8 @@ export function useMessage({ selectedItem }: UseMessageProps): IMessage {
     (message: Message) => {
       if (!viewer) return false;
 
-      if (canDeleteMessage({ viewerId: viewer.id, message })) {
-        messagesEmitter.deleteMessage({
-          messageId: message.id,
-          connectionId: message.connectionId,
-        });
+      if (canDeleteMessage({ viewerId: viewer.id, authorId: message.authorId })) {
+        messagesEmitter.deleteMessage({ messageId: message.id });
       }
     },
     [viewer],

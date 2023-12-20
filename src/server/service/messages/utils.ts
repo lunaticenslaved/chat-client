@@ -9,7 +9,7 @@ export const select: Prisma.MessageSelect<Types.Extensions.DefaultArgs> = {
   createdAt: true,
 };
 
-export type SelectResponse = {
+export type Message = {
   id: string;
   text: string;
   authorId: string;

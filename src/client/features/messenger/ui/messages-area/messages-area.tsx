@@ -131,7 +131,7 @@ export const MessagesArea = () => {
                 key={message.id}
                 message={message}
                 deleteMessage={
-                  viewer && canDeleteMessage({ viewerId: viewer?.id, message })
+                  viewer && canDeleteMessage({ viewerId: viewer?.id, authorId: message.authorId })
                     ? deleteMessage
                     : undefined
                 }

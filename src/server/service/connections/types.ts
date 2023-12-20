@@ -1,15 +1,13 @@
-import { Connection, OneToOneConnection } from '#/server/models/connection';
-
-export type CreateOneToOneResponse = OneToOneConnection;
 export type CreateOneToOneRequest = {
+  authorId: string;
   partnerId: string;
-  message?: {
-    text: string;
-  };
 };
 
 export type ListConnectionsRequest = { userId: string };
-export type ListConnectionsResponse = Connection[];
 
 export type GetConnectionRequest = { connectionId: string };
-export type GetConnectionResponse = Connection;
+
+export interface FindOneToOneConnectionRequest {
+  userId1: string;
+  userId2: string;
+}

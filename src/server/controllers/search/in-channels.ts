@@ -3,7 +3,7 @@ import schema from '@lunaticenslaved/schema';
 import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search';
 import { ConnectionType } from '#/domain/connection';
 import { createOperation } from '#/server/context';
-import { prepareConnectionToSend } from '#/server/models/connection';
+import { connectionsPipe } from '#/server/pipes/connection';
 import { connectionsService } from '#/server/service/connections';
 import { SERVICE } from '#/server/shared/constants';
 import { notReachable } from '#/shared/utils';
@@ -18,21 +18,29 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
       throw new Error('User id not found');
     }
 
-    const connections = await connectionsService.list(requestContext, {
-      userId,
-    });
+    const connections = await connectionsService.list({ userId });
 
-    const excludeUsers: string[] = [];
+    const oneToOneUsers: string[] = [];
     connections.forEach(connection => {
-      if (connection.type === ConnectionType.OneToOne) {
-        excludeUsers.push(
+      if (connection.oneToOneDialog) {
+        oneToOneUsers.push(
           ...connection.users.filter(user => user.id !== userId).map(user => user.id),
         );
       }
     });
 
+    const { users: usersForConnection } = await schema.actions.users.list({
+      data: { take: 20, search, services: [SERVICE], userIds: oneToOneUsers, excludeIds: [userId] },
+      token: requestContext.token,
+      config: {
+        headers: {
+          Origin: requestContext.origin,
+        },
+      },
+    });
+
     const { users } = await schema.actions.users.list({
-      data: { take: 20, search, services: [SERVICE], excludeIds: excludeUsers },
+      data: { take: 20, search, services: [SERVICE], excludeIds: oneToOneUsers },
       token: requestContext.token,
       config: {
         headers: {
@@ -43,22 +51,15 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
 
     return {
       users: users,
-      connections: connections
-        .map(connection => {
+      connections: await Promise.all(
+        connections.map(connection =>
+          connectionsPipe.fromServiceToDomain(requestContext, connection),
+        ),
+      ).then(connections =>
+        connections.filter(connection => {
           if (connection.type === ConnectionType.OneToOne) {
-            return prepareConnectionToSend(userId, connection);
-          } else if (connection.type === ConnectionType.Group) {
-            throw new Error('Not implemented');
-          } else {
-            notReachable(connection);
-          }
-        })
-        .filter(connection => {
-          if (connection.type === ConnectionType.OneToOne) {
-            const { login, email } = connection.oneToOneDialog.partner;
-            return (
-              login.toLowerCase().includes(search.toLowerCase()) ||
-              email.toLowerCase().includes(search.toLowerCase())
+            return !!usersForConnection.find(
+              user => user.id === connection.oneToOneDialog.partner.id,
             );
           } else if (connection.type === ConnectionType.Group) {
             throw new Error('Not implemented');
@@ -66,6 +67,7 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
             notReachable(connection);
           }
         }),
+      ),
     };
   },
 );

@@ -7,12 +7,10 @@ import {
   createSocketOperationWithContext,
 } from '#/server/shared/operation';
 
-import { eventBus } from './event-bus';
 import { ISocketEvent, createSocketEvents } from './socket';
 
 export { RequestContext } from './rest-context';
 export { SocketContext } from './socket-context';
-export { eventBus } from './event-bus';
 
 export interface IContext {
   socketEvent: ISocketEvent;
@@ -31,7 +29,6 @@ type AddUserToConnectionRequest = {
 
 export class Context implements IContext {
   prisma = prisma;
-  eventBus = eventBus;
   socketEvent: ISocketEvent;
   socketServer: SocketServer;
 

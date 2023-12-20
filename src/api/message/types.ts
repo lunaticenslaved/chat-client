@@ -32,7 +32,6 @@ export type ListMessagesResponse = {
 };
 
 export type DeleteMessageRequest = {
-  connectionId: string;
   messageId: string;
 };
 export type DeleteMessageResponse = {

@@ -1,6 +1,6 @@
 import { GetConnectionRequest, GetConnectionResponse } from '#/api/connection';
 import { createOperation } from '#/server/context';
-import { prepareConnectionToSend } from '#/server/models/connection';
+import { connectionsPipe } from '#/server/pipes/connection';
 import { connectionsService } from '#/server/service/connections';
 
 export const get = createOperation<GetConnectionResponse, GetConnectionRequest>(
@@ -11,12 +11,10 @@ export const get = createOperation<GetConnectionResponse, GetConnectionRequest>(
       throw new Error('Unknown user');
     }
 
-    const connection = await connectionsService.get(requestContext, {
+    const connection = await connectionsService.get({
       connectionId: request.body.connectionId,
     });
 
-    const preparedConnection = prepareConnectionToSend(userId, connection);
-
-    return preparedConnection;
+    return connectionsPipe.fromServiceToDomain(requestContext, connection);
   },
 );

@@ -1,6 +1,6 @@
 import { ListConnectionsRequest, ListConnectionsResponse } from '#/api/connection';
-import { ConnectionType, OneToOneConnection } from '#/domain/connection';
 import { createOperation } from '#/server/context';
+import { connectionsPipe } from '#/server/pipes/connection';
 import { connectionsService } from '#/server/service/connections';
 
 export const list = createOperation<ListConnectionsResponse, ListConnectionsRequest>(
@@ -11,34 +11,14 @@ export const list = createOperation<ListConnectionsResponse, ListConnectionsRequ
       throw new Error('User id not found');
     }
 
-    const connections = await connectionsService.list(requestContext, {
-      userId,
-    });
+    const connections = await connectionsService.list({ userId });
 
     return {
-      connections: connections.map(connection => {
-        if (connection.type === ConnectionType.OneToOne) {
-          const { users, ...data } = connection;
-
-          const partner = users.find(user => user.id !== userId);
-
-          if (!partner) {
-            throw new Error('Partner not found');
-          }
-
-          const response: OneToOneConnection = {
-            ...data,
-            oneToOneDialog: {
-              ...data.oneToOneDialog,
-              partner,
-            },
-          };
-
-          return response;
-        }
-
-        return connection;
-      }),
+      connections: await Promise.all(
+        connections.map(connection =>
+          connectionsPipe.fromServiceToDomain(requestContext, connection),
+        ),
+      ),
     };
   },
 );
