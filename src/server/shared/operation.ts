@@ -24,17 +24,13 @@ export interface IRestContext<TResponse, TRequest> extends IRequestContext {
   response: Response<Models.OperationResponse<TResponse | null>>;
 }
 
-export function createSocketOperationWithContext<TEventContext extends ISocketContext, TAppContext>(
-  context: TAppContext,
-) {
-  return <TRequest>(
-    fn: (args: TRequest, eventContext: TEventContext, appContext: TAppContext) => Promise<void>,
-  ) => {
+export function createSocketOperationWithContext<TEventContext extends ISocketContext>() {
+  return <TRequest>(fn: (args: TRequest, eventContext: TEventContext) => Promise<void>) => {
     return (eventContext: TEventContext, errorEvent: string) => {
       // FIXME: handle error in socket operation
       return async (data: TRequest) => {
         try {
-          await fn(data, eventContext, context);
+          await fn(data, eventContext);
         } catch (error) {
           logger.error(errorEvent);
 
@@ -53,15 +49,13 @@ export function createSocketOperationWithContext<TEventContext extends ISocketCo
   };
 }
 
-export type CreateOperationArg<TResponse, TRequest, TContext> = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  request: Request<any, any, TRequest>,
+export type CreateOperationArg<TResponse, TRequest> = (
+  data: TRequest,
   requestContext: RequestContext<TResponse, TRequest>,
-  appContext: TContext,
 ) => Promise<TResponse> | TResponse;
 
-export function createOperationWithContext<TContext>(context: TContext) {
-  return <TResponse, TRequest>(fn: CreateOperationArg<TResponse, TRequest, TContext>) => {
+export function createOperationWithContext() {
+  return <TResponse, TRequest>(fn: CreateOperationArg<TResponse, TRequest>) => {
     return async (
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       request: Request<any, any, TRequest>,
@@ -76,7 +70,7 @@ export function createOperationWithContext<TContext>(context: TContext) {
       });
 
       try {
-        const result = await fn(request, requestContext, context);
+        const result = await fn(request.body, requestContext);
 
         return response.status(200).json({ data: result || null, error: null });
       } catch (err) {

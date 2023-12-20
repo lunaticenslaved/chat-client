@@ -3,7 +3,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { context } from '#/server/context';
+import { connectDB } from '#/server/context';
 import { addRoutes } from '#/server/controllers';
 import { logger } from '#/server/shared';
 import { PORT } from '#/server/shared/constants';
@@ -17,7 +17,7 @@ const STORE_FILE_PATH = path.resolve(ROOT_PATH, 'dist/store/index.js');
 const RENDER_FILE_PATH = path.resolve(ROOT_PATH, 'dist/client/server/index.umd.js');
 
 export async function createApp() {
-  await context.connectDB();
+  await connectDB();
 
   const app = express();
 
@@ -29,7 +29,7 @@ export async function createApp() {
     );
   });
 
-  addWebSocket(server, context);
+  addWebSocket(server);
   addRoutes(app);
   addSSRRoute({
     app,

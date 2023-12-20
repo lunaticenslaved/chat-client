@@ -11,13 +11,14 @@ import { Server as WebSocketServer } from 'socket.io';
 import schema, { Errors } from '@lunaticenslaved/schema';
 import { AuthResponse } from '@lunaticenslaved/schema/dist/types/actions';
 
-import { Context, SocketContext } from '#/server/context';
+import { SocketContext, prisma } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
 import { addHeaders, addUser, logRequest } from '#/server/middlewares';
 import { socketsService } from '#/server/service/sockets';
 import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
 import { SERVICE } from '#/server/shared/constants';
+import { SocketServer } from '#/server/socket-server';
 
 import { AuthEventServer } from '../../api/auth/types';
 
@@ -26,7 +27,6 @@ export function configureApp(app: Express) {
   app.disable('via');
 
   app.use(cookieParser());
-  // FIXME: set no cross origin
   app.use(
     cors({
       credentials: true,
@@ -129,10 +129,10 @@ export function addSSRRoute({
   });
 }
 
-export function addWebSocket(server: Server, context: Context): WebSocketServer {
+export function addWebSocket(server: Server): WebSocketServer {
   const wsServer = new WebSocketServer(server);
 
-  context.socketServer = wsServer;
+  SocketServer.server = wsServer;
 
   wsServer.use(async (socket, next) => {
     const token = socket.handshake.auth.token;
@@ -188,7 +188,7 @@ export function addWebSocket(server: Server, context: Context): WebSocketServer 
     });
 
     if (userId) {
-      const existingConnections = await context.prisma.connection.findMany({
+      const existingConnections = await prisma.connection.findMany({
         select: { id: true },
         where: { users: { some: { id: userId } } },
       });

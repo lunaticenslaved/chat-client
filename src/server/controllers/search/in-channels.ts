@@ -9,8 +9,7 @@ import { SERVICE } from '#/server/shared/constants';
 import { notReachable } from '#/shared/utils';
 
 export const searchInChannels = createOperation<SearchInChannelsResponse, SearchInChannelsRequest>(
-  async (req, requestContext) => {
-    const { search } = req.body;
+  async ({ search }, requestContext) => {
     const userId = requestContext.userId;
 
     if (!userId) {
@@ -30,7 +29,11 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
     });
 
     const { users: usersForConnection } = await schema.actions.users.list({
-      data: { take: 20, search, services: [SERVICE], userIds: oneToOneUsers, excludeIds: [userId] },
+      data: {
+        search,
+        services: [SERVICE],
+        userIds: oneToOneUsers,
+      },
       token: requestContext.token,
       config: {
         headers: {
@@ -50,7 +53,7 @@ export const searchInChannels = createOperation<SearchInChannelsResponse, Search
     });
 
     return {
-      users: users,
+      users,
       connections: await Promise.all(
         connections.map(connection =>
           connectionsPipe.fromServiceToDomain(requestContext, connection),

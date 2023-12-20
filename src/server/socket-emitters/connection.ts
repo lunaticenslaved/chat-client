@@ -6,23 +6,24 @@ import { Connection } from '#/server/service/connections';
 import { socketsService } from '#/server/service/sockets';
 import { logger } from '#/server/shared';
 import { IRequestContext } from '#/server/shared/operation';
+import { SocketServer } from '#/server/socket-server';
 
-import { SocketEventEmitter } from './_base';
+import { SocketEventEmitter } from './base-socket-emitter';
 
 // TODO: make function in schema to create operation response
 
-export class ConnectionSocketEvents extends SocketEventEmitter {
+class ConnectionsEventsEmitter extends SocketEventEmitter {
   async onConnectionCreated(request: IRequestContext, connectionBase: Connection) {
     const { users } = connectionBase;
 
     logger.info(`Emit connection created for users: ${users.length}`);
 
     for (const user of users) {
-      this.context.addUserToConnection({ userId: user.id, connectionId: connectionBase.id });
+      SocketServer.addUserToConnection({ userId: user.id, connectionId: connectionBase.id });
 
       const sockets = await socketsService.getSocketsForUser(user.id);
       const preparedConnection = await connectionsPipe.fromServiceToDomain(request, connectionBase);
-      const namespace = this.context.socketServer.of('/');
+      const namespace = SocketServer.server.of('/');
 
       const response: OperationResponse<CreateConnectionResponse> = {
         error: null,
@@ -36,3 +37,5 @@ export class ConnectionSocketEvents extends SocketEventEmitter {
     }
   }
 }
+
+export const connectionsEventsEmitter = new ConnectionsEventsEmitter();

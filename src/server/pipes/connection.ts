@@ -76,7 +76,7 @@ class ConnectionsPipe {
 
     const lastMessage = messages.length ? messages[0] : undefined;
     const author = lastMessage ? users.find(user => user.id === lastMessage.authorId) : undefined;
-    const partner = users.find(user => user.id === requestContext.userId);
+    const partner = users.find(user => user.id !== requestContext.userId);
 
     if (!partner) {
       throw new Error('Partner not found');

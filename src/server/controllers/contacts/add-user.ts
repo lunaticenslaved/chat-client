@@ -4,8 +4,7 @@ import { contactsPipe } from '#/server/pipes/contact';
 import { contactsService } from '#/server/service/contacts';
 
 export const addUser = createOperation<AddUserInContactsResponse, AddUserInContactsRequest>(
-  async (req, requestContext) => {
-    const { userId } = req.body;
+  async ({ userId }, requestContext) => {
     const ownerId = requestContext.userId;
 
     if (!ownerId) {

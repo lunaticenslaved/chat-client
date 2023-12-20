@@ -3,7 +3,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { context } from '#/server/context';
+import { connectDB } from '#/server/context';
 import { addRoutes } from '#/server/controllers';
 import { constants, logger } from '#/server/shared';
 
@@ -18,7 +18,7 @@ const CLIENT_STORE_FILE_PATH = path.resolve(SRC_PATH, 'store/index');
 const CLIENT_HTML_FILE_PATH = path.resolve(ROOT_PATH, 'index.html');
 
 export async function createApp() {
-  await context.connectDB();
+  await connectDB();
 
   const vite = await import('vite');
 
@@ -47,7 +47,7 @@ export async function createApp() {
     );
   });
 
-  addWebSocket(server, context);
+  addWebSocket(server);
   addRoutes(app);
   addSSRRoute({
     app,

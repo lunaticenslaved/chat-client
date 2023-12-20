@@ -6,8 +6,7 @@ import { contactsPipe } from '#/server/pipes/contact';
 import { contactsService } from '#/server/service/contacts';
 
 export const search = createOperation<SearchContactsResponse, SearchContactsRequest>(
-  async (request, requestContext) => {
-    const { search } = request.body;
+  async ({ search }, requestContext) => {
     const ownerId = requestContext.userId;
 
     if (!ownerId) {

@@ -4,17 +4,18 @@ import { DeleteMessageResponse, MessageServerEvent, SendMessageResponse } from '
 import { messagesPipe } from '#/server/pipes/message';
 import { Message } from '#/server/service/messages';
 import { IRequestContext } from '#/server/shared/operation';
+import { SocketServer } from '#/server/socket-server';
 
-import { SocketEventEmitter } from './_base';
+import { SocketEventEmitter } from './base-socket-emitter';
 
-export class MessageSocketEvents extends SocketEventEmitter {
+class MessagesEventsEmitter extends SocketEventEmitter {
   async onMessageCreated(request: IRequestContext, message: Message) {
     const response: OperationResponse<SendMessageResponse> = {
       data: await messagesPipe.fromServerToDomain(request, message),
       error: null,
     };
 
-    this.context.socketServer.to(message.connectionId).emit(MessageServerEvent.Created, response);
+    SocketServer.server.to(message.connectionId).emit(MessageServerEvent.Created, response);
   }
 
   onMessageDeleted(data: DeleteMessageResponse) {
@@ -23,6 +24,8 @@ export class MessageSocketEvents extends SocketEventEmitter {
       error: null,
     };
 
-    this.context.socketServer.to(data.connectionId).emit(MessageServerEvent.Deleted, response);
+    SocketServer.server.to(data.connectionId).emit(MessageServerEvent.Deleted, response);
   }
 }
+
+export const messagesEventsEmitter = new MessagesEventsEmitter();

@@ -6,8 +6,7 @@ import { contactsService } from '#/server/service/contacts';
 export const getContactForUser = createOperation<
   GetContactForUserResponse,
   GetContactForUserRequest
->(async (req, requestContext) => {
-  const { userId } = req.body;
+>(async ({ userId }, requestContext) => {
   const ownerId = requestContext.userId;
 
   if (!ownerId) {
