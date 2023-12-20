@@ -1,9 +1,10 @@
 import { Fragment } from 'react';
 
-import { Typography } from 'antd';
+import { Empty } from 'antd';
 
 import { DialogsList } from '#/client/entities/dialog';
 import { UsersList } from '#/client/entities/user';
+import { SidebarSection } from '#/client/shared/components/sidebar';
 
 import { useMessengerContext } from '../context';
 
@@ -13,17 +14,16 @@ export function SearchResults() {
 
   return (
     <Fragment>
+      {!foundUsers.length && !foundConnections.length && <Empty />}
       {!!foundUsers.length && (
-        <section>
-          <Typography.Title level={4}>Users</Typography.Title>
+        <SidebarSection title="Users">
           <UsersList users={foundUsers} onClick={setSelectedUser} />
-        </section>
+        </SidebarSection>
       )}
       {!!foundConnections.length && (
-        <section style={{ marginTop: '20px' }}>
-          <Typography.Title level={4}>Connections</Typography.Title>
+        <SidebarSection title="Connections">
           <DialogsList dialogs={foundConnections} onClick={setSelectedConnection} />
-        </section>
+        </SidebarSection>
       )}
     </Fragment>
   );

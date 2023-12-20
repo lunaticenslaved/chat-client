@@ -3,17 +3,17 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { PageLoader } from '#/client/shared/components/page-loader';
 
-import { authPages } from './auth/pages';
-import { errorPages } from './errors/pages';
-import { rootPages } from './root/pages';
+import { authRouter } from './auth/router';
+import { errorRouter } from './errors/router';
+import { rootRouter } from './root/router';
 
 export function Pages() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        {authPages}
-        {rootPages}
-        {errorPages}
+        {authRouter}
+        {rootRouter}
+        {errorRouter}
 
         <Route index element={<Navigate to="/chat" />} />
       </Routes>

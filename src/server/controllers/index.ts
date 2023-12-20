@@ -8,6 +8,7 @@ import schema from '@lunaticenslaved/schema';
 import { SocketContext } from '#/server/context';
 
 import { addConnectionsRoutes } from './connections';
+import { addContactsRoutes } from './contacts';
 import { addMessagesEvents, addMessagesRoutes } from './messages';
 import { addSearchRoutes } from './search';
 
@@ -19,6 +20,7 @@ export function addRoutes(app: Express) {
   addConnectionsRoutes(app);
   addSearchRoutes(app);
   addMessagesRoutes(app);
+  addContactsRoutes(app);
 
   function addActions(path: string, value: unknown) {
     if (typeof value === 'function' && schema.actions.isAction(value)) {

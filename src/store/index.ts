@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { Viewer } from '../domain/viewer';
 
+import { ContactsStore } from './contacts';
 import { DialogsStore } from './dialog';
 import { MessagesStore } from './messages';
 import { SearchStore } from './search';
@@ -18,6 +19,7 @@ export const createStore = (viewer?: Viewer) => {
       [ViewerStore.slice.name]: ViewerStore.slice.reducer,
       [MessagesStore.slice.name]: MessagesStore.slice.reducer,
       [SearchStore.slice.name]: SearchStore.slice.reducer,
+      [ContactsStore.slice.name]: ContactsStore.slice.reducer,
     },
     preloadedState: {
       viewer: {
@@ -38,4 +40,5 @@ export const store = {
   [ViewerStore.slice.name]: ViewerStore,
   [MessagesStore.slice.name]: MessagesStore,
   [SearchStore.slice.name]: SearchStore,
+  [ContactsStore.slice.name]: ContactsStore,
 };

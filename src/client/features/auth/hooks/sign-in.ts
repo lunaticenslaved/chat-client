@@ -12,10 +12,11 @@ import { useChatNavigation } from '#/client/pages/root/chat/navigation';
 import { fingerprint } from '#/client/shared/fingerprint';
 import { Token } from '#/client/shared/token';
 import { Handlers } from '#/client/shared/types';
+import { User } from '#/domain/user';
 
 type Values = Omit<SignInRequest, 'fingerprint'>;
 
-export type UseSignInRequest = Handlers;
+export type UseSignInRequest = Handlers<User>;
 
 export type UseSignInResponse = {
   isLoading: boolean;

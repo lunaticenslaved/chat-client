@@ -4,7 +4,7 @@ import { User } from '#/domain/user';
 
 import { UserListItem } from './list-item';
 
-export interface UsersListProps {
+interface UsersListProps {
   users: User[];
   onClick?(user: User): void;
 }

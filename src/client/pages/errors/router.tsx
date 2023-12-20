@@ -7,7 +7,7 @@ import { ErrorLayout } from './layout';
 
 const Error404 = withLoadPage(lazy(() => import('./page-404')));
 
-export const errorPages = (
+export const errorRouter = (
   <Route element={<ErrorLayout />}>
     <Route path="/404" element={<Error404 />} />
     <Route path="*" element={<Navigate to="/404" />} />

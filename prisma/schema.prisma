@@ -28,7 +28,7 @@ model Socket {
 }
 
 model Contact {
-  id      String @id @unique
+  id      String @id @default(uuid())
   ownerId String
   owner   User   @relation("OwnedContacts", fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId  String

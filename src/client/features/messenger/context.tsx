@@ -44,7 +44,7 @@ interface IMessengerContext {
 const Context = createContext<IMessengerContext | undefined>(undefined);
 
 type MessengerContextProviderProps = {
-  children(value: IMessengerContext): ReactNode;
+  children: ReactNode;
 };
 
 function getSelectedItem(user?: User, connection?: Connection): SelectedItem | undefined {
@@ -175,7 +175,7 @@ function useMessenger(): IMessengerContext {
 export function MessengerContext({ children }: MessengerContextProviderProps) {
   const value = useMessenger();
 
-  return <Context.Provider value={value}>{children(value)}</Context.Provider>;
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
 export function useMessengerContext() {

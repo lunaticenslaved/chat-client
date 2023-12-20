@@ -12,10 +12,18 @@ export interface ListItemProps {
   title: ReactNode;
   description?: ReactNode;
   isActive: boolean;
+  actions?: ReactNode[];
   onClick?(): void;
 }
 
-export function ListItem({ avatar, title, description, isActive, onClick }: ListItemProps) {
+export function ListItem({
+  avatar,
+  title,
+  description,
+  isActive,
+  actions,
+  onClick,
+}: ListItemProps) {
   const handleClick = useCallback(() => onClick?.(), [onClick]);
   const { getDesignToken } = theme;
   const token = getDesignToken();
@@ -28,6 +36,7 @@ export function ListItem({ avatar, title, description, isActive, onClick }: List
     <List.Item
       ref={itemRef}
       style={{ background }}
+      actions={actions}
       className={cn(classes.listItem, {
         [classes.listItemActive]: isActive,
       })}

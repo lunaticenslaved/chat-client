@@ -1,5 +1,5 @@
-import { LayoutOutlined } from '@ant-design/icons';
-import { Flex, Radio, Typography } from 'antd';
+import { ArrowDownOutlined, LayoutOutlined } from '@ant-design/icons';
+import { Button, Flex, Radio, Typography } from 'antd';
 
 import { OnlineStatus } from '#/client/shared/components/online-status';
 import { ConnectionType } from '#/domain/connection';
@@ -7,12 +7,12 @@ import { notReachable } from '#/shared/utils';
 
 import { useMessengerContext } from '../../context';
 import { SelectedItem } from '../../types';
+import { SelectedItemMenu } from '../selected-item-menu';
 
 import classes from './messages-area-header.module.scss';
 
 export type MessageAreaHeaderProps = {
   selectedItem: SelectedItem;
-  isOnline: boolean;
 };
 
 function getTitle(selectedItem: SelectedItem): string {
@@ -33,9 +33,10 @@ function getTitle(selectedItem: SelectedItem): string {
   }
 }
 
-export const MessageAreaHeader = ({ selectedItem, isOnline }: MessageAreaHeaderProps) => {
+export const MessageAreaHeader = ({ selectedItem }: MessageAreaHeaderProps) => {
   const title = getTitle(selectedItem);
   const { connectionInfo } = useMessengerContext();
+  const isOnline = false;
 
   return (
     <Flex align="center" justify="space-between" className={classes.chatHeader}>
@@ -55,6 +56,11 @@ export const MessageAreaHeader = ({ selectedItem, isOnline }: MessageAreaHeaderP
             <LayoutOutlined />
           </Radio.Button>
         </Radio.Group>
+
+        <SelectedItemMenu
+          selectedItem={selectedItem}
+          activator={<Button icon={<ArrowDownOutlined />} />}
+        />
       </Flex>
     </Flex>
   );

@@ -1,14 +1,16 @@
 import { Fragment, ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { PhoneOutlined } from '@ant-design/icons';
 import { Button, Divider, Flex, theme } from 'antd';
 
 import { useViewer } from '#/client/entities/viewer';
 import { LogoutButton } from '#/client/features/auth';
+import { ContactsIcon } from '#/client/features/contacts/ui/icon';
 import { MessengerIcon } from '#/client/features/messenger';
 import { SETTINGS_TITLE, SettingsIcon } from '#/client/features/settings';
 import { chatRoutes } from '#/client/pages/root/chat';
+import { contactsRoutes } from '#/client/pages/root/contacts';
 import { settingsRoutes } from '#/client/pages/root/settings';
 import { Avatar } from '#/client/shared/components/avatar';
 
@@ -27,8 +29,8 @@ const sections: Array<{
     },
     {
       title: 'Contacts',
-      to: '/',
-      icon: <UserOutlined style={{ fontSize: ICON_SIZE }} />,
+      to: contactsRoutes.contacts,
+      icon: <ContactsIcon size={ICON_SIZE} />,
     },
     {
       title: 'Phone',

@@ -4,16 +4,17 @@ import { Typography } from 'antd';
 
 import { Avatar } from '#/client/shared/components/avatar';
 import { ListItem } from '#/client/shared/list-item';
-import { User } from '#/domain/user';
+import { Contact } from '#/domain/contact';
 
-interface UserListItemProps {
-  user: User;
+interface ContactListItemProps {
+  contact: Contact;
   actions?: ReactNode[];
-  onClick?(user: User): void;
+  onClick?(contact: Contact): void;
 }
 
-export function UserListItem({ user, onClick, actions }: UserListItemProps) {
-  const handleClick = useCallback(() => onClick?.(user), [onClick, user]);
+export function ContactListItem({ contact, onClick, actions }: ContactListItemProps) {
+  const handleClick = useCallback(() => onClick?.(contact), [onClick, contact]);
+  const { user } = contact;
 
   return (
     <ListItem

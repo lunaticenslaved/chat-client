@@ -1,6 +1,3 @@
-import { SearchOutlined } from '@ant-design/icons';
-import { Divider, Input } from 'antd';
-
 import { DialogsList } from '#/client/entities/dialog';
 import { Sidebar } from '#/client/shared/components/sidebar';
 
@@ -24,18 +21,11 @@ export function MessengerSidebar() {
     useMessengerContext();
 
   return (
-    <Sidebar title={MESSENGER_TITLE} icon={({ size }) => <MessengerIcon size={size} />}>
-      <Input
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.currentTarget.value)}
-        allowClear
-        placeholder="Search"
-        style={{ height: '50px' }}
-        prefix={<SearchOutlined style={{ fontSize: '25px' }} />}
-      />
-
-      <Divider />
-
+    <Sidebar
+      title={MESSENGER_TITLE}
+      icon={({ size }) => <MessengerIcon size={size} />}
+      searchQuery={searchQuery}
+      onSearchQueryChange={setSearchQuery}>
       <div style={{ overflowY: 'auto' }}>
         {!searchQuery ? (
           <DialogsList

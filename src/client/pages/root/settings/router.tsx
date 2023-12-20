@@ -9,7 +9,7 @@ const SettingsAccount = withLoadPage(lazy(() => import('./page-account')));
 const SettingsAppearance = withLoadPage(lazy(() => import('./page-appearance')));
 const SettingsSessions = withLoadPage(lazy(() => import('./page-sessions')));
 
-export const settingsPages = (
+export const settingsRouter = (
   <Route path="/settings" element={<SettingsLayout />}>
     <Route index element={<Navigate to="/settings/account" />} />
     <Route path="account" element={<SettingsAccount />} />
