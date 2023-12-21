@@ -3,11 +3,5 @@
 .chatHeader {
   background-color: $sidebar-background;
   flex: 0 0 $header-height;
-  padding: 0 20px;
-}
-
-.onlineStatus {
-  display: flex;
-  align-items: center;
-  position: relative;
+  padding: 20px;
 }

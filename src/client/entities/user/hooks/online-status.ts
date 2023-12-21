@@ -11,7 +11,6 @@ export function useUserOnlineStatus(): IUserOnlineStatus {
 
   const getOnlineStatus = useCallback(
     (userId: string) => {
-      console.log(onlineUsers);
       return onlineUsers[userId] || false;
     },
     [onlineUsers],

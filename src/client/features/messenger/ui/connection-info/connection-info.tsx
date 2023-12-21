@@ -1,9 +1,9 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { Avatar, Button, Divider, Flex, Typography, theme } from 'antd';
-
-import { getConnectionMetadata } from '#/client/entities/dialog';
+import { Button, Divider, Flex, Typography, theme } from 'antd';
 
 import { useMessengerContext } from '../../context';
+import { getConnectionTitles } from '../../utils';
+import { ConnectionAvatar } from '../avatars';
 
 import classes from './connection-info.module.scss';
 
@@ -28,7 +28,7 @@ export function ConnectionInfo() {
   }
 
   const { connection } = connectionInfo;
-  const metadata = getConnectionMetadata(connection);
+  const { title, subtitle } = getConnectionTitles(connection);
 
   return (
     <>
@@ -47,15 +47,12 @@ export function ConnectionInfo() {
 
         <div style={{ padding: '20px' }}>
           <Flex align="center">
-            <Avatar
-              src={metadata.avatar}
-              icon={metadata.icon('30px')}
-              style={{ margin: '20px' }}
-              size={60}
-            />
+            <div style={{ margin: '20px' }}>
+              <ConnectionAvatar connection={connection} />
+            </div>
             <Flex vertical>
-              <Typography.Title level={5}>{metadata.title}</Typography.Title>
-              <Typography.Text>{metadata.subtitle}</Typography.Text>
+              <Typography.Title level={5}>{title}</Typography.Title>
+              <Typography.Text>{subtitle}</Typography.Text>
             </Flex>
           </Flex>
         </div>

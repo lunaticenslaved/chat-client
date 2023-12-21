@@ -12,4 +12,4 @@ export { ConnectionInfo } from './ui/connection-info';
 
 export { MESSENGER_TITLE } from './constants';
 
-export * from './ui/icon';
+export * from './ui/icons';
