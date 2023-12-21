@@ -11,3 +11,8 @@ export interface FindOneToOneConnectionRequest {
   userId1: string;
   userId2: string;
 }
+
+export interface CanSendMessageToConnectionRequest {
+  userId: string;
+  connectionId: string;
+}

@@ -4,27 +4,29 @@ import { SearchInChannelsRequest, SearchInChannelsResponse } from '#/api/search'
 import { ConnectionType } from '#/domain/connection';
 import { createOperation } from '#/server/context';
 import { connectionsPipe } from '#/server/pipes/connection';
-import { connectionsService } from '#/server/service/connections';
+import {
+  connectionsService,
+  isGroupConnection,
+  isOneToOneConnection,
+} from '#/server/service/connections';
 import { SERVICE } from '#/server/shared/constants';
 import { notReachable } from '#/shared/utils';
 
 export const searchInChannels = createOperation<SearchInChannelsResponse, SearchInChannelsRequest>(
   async ({ search }, requestContext) => {
-    const userId = requestContext.userId;
-
-    if (!userId) {
-      // FIXME add function to request context to get user id strict
-      throw new Error('User id not found');
-    }
-
+    const userId = requestContext.getUserIdStrict();
     const connections = await connectionsService.list({ userId });
 
     const oneToOneUsers: string[] = [];
     connections.forEach(connection => {
-      if (connection.oneToOneDialog) {
+      if (isOneToOneConnection(connection)) {
         oneToOneUsers.push(
           ...connection.users.filter(user => user.id !== userId).map(user => user.id),
         );
+      } else if (isGroupConnection(connection)) {
+        throw new Error('not implemented');
+      } else {
+        notReachable(connection);
       }
     });
 

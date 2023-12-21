@@ -4,7 +4,8 @@ import { DeleteMessageResponse, MessageServerEvent, SendMessageResponse } from '
 import { messagesPipe } from '#/server/pipes/message';
 import { Message } from '#/server/service/messages';
 import { IRequestContext } from '#/server/shared/operation';
-import { SocketServer } from '#/server/socket-server';
+
+import { SocketServer } from '../socket-server';
 
 import { SocketEventEmitter } from './base-socket-emitter';
 

@@ -1,5 +1,3 @@
-import { Errors } from '@lunaticenslaved/schema';
-
 import { SendMessageRequest } from '#/api/message';
 import { createSocketOperation, prisma } from '#/server/context';
 import { connectionsService } from '#/server/service/connections';
@@ -11,18 +9,17 @@ import { messagesEventsEmitter } from '#/server/socket-emitters/message';
 export const create = createSocketOperation<SendMessageRequest>(async (data, eventContext) => {
   logger.info(`[SOCKET][MESSAGE] Create message:\n ${JSON.stringify(data)}`);
 
-  const authorId = eventContext.userId;
-
-  if (!authorId) {
-    logger.error(`[SOCKET][MESSAGE] Not authorized`);
-
-    throw new Errors.UnauthorizedError({ messages: 'Not authorized' });
-  }
-
+  const authorId = eventContext.getUserIdStrict();
   let connectionId: string | undefined;
 
   if ('userId' in data) {
-    await prisma.$transaction(async trx => {
+    const success = await prisma.$transaction(async trx => {
+      if (
+        !(await messagesService.canSendMessageToUser({ fromUser: authorId, toUser: data.userId }))
+      ) {
+        return false;
+      }
+
       let connection = await connectionsService.findOneToOne(
         {
           userId1: authorId,
@@ -45,7 +42,11 @@ export const create = createSocketOperation<SendMessageRequest>(async (data, eve
       connectionId = connection.id;
 
       connectionsEventsEmitter.onConnectionCreated(eventContext, connection);
+
+      return true;
     });
+
+    if (!success) return;
   } else {
     connectionId = data.connectionId;
   }

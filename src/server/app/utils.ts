@@ -11,17 +11,16 @@ import { Server as WebSocketServer } from 'socket.io';
 import schema, { Errors } from '@lunaticenslaved/schema';
 import { AuthResponse } from '@lunaticenslaved/schema/dist/types/actions';
 
-import { SocketContext, prisma } from '#/server/context';
+import { SocketContext } from '#/server/context';
 import { addSocketEvents } from '#/server/controllers';
 import { addHeaders, addUser, logRequest } from '#/server/middlewares';
 import { socketsService } from '#/server/service/sockets';
 import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
 import { SERVICE } from '#/server/shared/constants';
-import { userEventsEmitter } from '#/server/socket-emitters/user';
-import { SocketServer } from '#/server/socket-server';
 
 import { AuthEventServer } from '../../api/auth/types';
+import { SocketServer } from '../socket-server';
 
 export function configureApp(app: Express) {
   app.disable('x-powered-by');
@@ -178,23 +177,12 @@ export function addWebSocket(server: Server): WebSocketServer {
 
     socket.on('disconnect', () => {
       if (userId) {
-        // FIXME await?
-        usersService.removeSocket({ socketId: socket.id });
-
-        socket.leave(userId);
-        userEventsEmitter.onUserIsOffline(userId);
+        SocketServer.onUserDisconnected(socket, userId);
       }
     });
 
     if (userId) {
-      const existingConnections = await prisma.connection.findMany({
-        select: { id: true },
-        where: { users: { some: { id: userId } } },
-      });
-
-      for (const existingConnection of existingConnections) {
-        socket.join(existingConnection.id);
-      }
+      SocketServer.onUserConnected(socket, userId);
     }
 
     const eventContext = new SocketContext({

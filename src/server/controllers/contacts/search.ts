@@ -7,13 +7,7 @@ import { contactsService } from '#/server/service/contacts';
 
 export const search = createOperation<SearchContactsResponse, SearchContactsRequest>(
   async ({ search }, requestContext) => {
-    const ownerId = requestContext.userId;
-
-    if (!ownerId) {
-      // FIXME add function to request context to get user id strict
-      throw new Error('User id not found');
-    }
-
+    const ownerId = requestContext.getUserIdStrict();
     const rawContacts = await contactsService.list({ ownerId });
     const userIdsFromContacts = rawContacts.map(({ user }) => user.id);
     const contactsUsers = await schema.actions.users

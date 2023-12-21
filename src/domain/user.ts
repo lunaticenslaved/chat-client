@@ -1,6 +1,5 @@
 export type User = {
   id: string;
-  isOnline?: boolean;
   login: string;
   email: string;
   avatar: {

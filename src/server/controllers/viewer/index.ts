@@ -1,8 +1,7 @@
+import { ViewerClientEvents } from '#/api/viewer';
 import { usersService } from '#/server/service/users';
 import { utils } from '#/server/shared';
 import { userEventsEmitter } from '#/server/socket-emitters/user';
-
-import { ViewerClientEvents } from '../../../api/viewer/types';
 
 export const addViewerEvents = utils.app.createSocketEvents(eventContext => {
   eventContext.socket.on(ViewerClientEvents.isOnline, () => {

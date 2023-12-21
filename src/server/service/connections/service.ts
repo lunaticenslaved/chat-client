@@ -1,15 +1,23 @@
 import { prisma } from '#/server/context';
 import { Transaction } from '#/server/shared/prisma';
+import { notReachable } from '#/shared/utils';
 
 import { BaseService } from '../base-service';
 
 import {
+  CanSendMessageToConnectionRequest,
   CreateOneToOneRequest,
   FindOneToOneConnectionRequest,
   GetConnectionRequest,
   ListConnectionsRequest,
 } from './types';
-import { Connection, OneToOneConnection, select } from './utils';
+import {
+  Connection,
+  OneToOneConnection,
+  isGroupConnection,
+  isOneToOneConnection,
+  select,
+} from './utils';
 
 export class ConnectionsService extends BaseService {
   async createOneToOne(
@@ -49,23 +57,27 @@ export class ConnectionsService extends BaseService {
   list(data: ListConnectionsRequest): Promise<Connection[]> {
     const { userId } = data;
 
-    return prisma.connection.findMany({
-      select,
-      where: {
-        users: {
-          some: { id: { equals: userId } },
+    return prisma.connection
+      .findMany({
+        select,
+        where: {
+          users: {
+            some: { id: { equals: userId } },
+          },
         },
-      },
-    });
+      })
+      .then(data => data as Connection[]);
   }
 
-  get(data: GetConnectionRequest): Promise<Connection> {
-    return prisma.connection.findFirstOrThrow({
-      select,
-      where: {
-        id: data.connectionId,
-      },
-    });
+  get(data: GetConnectionRequest, trx?: Transaction): Promise<Connection> {
+    return (trx || prisma).connection
+      .findFirstOrThrow({
+        select,
+        where: {
+          id: data.connectionId,
+        },
+      })
+      .then(data => data as Connection);
   }
 
   findOneToOne(
@@ -81,6 +93,35 @@ export class ConnectionsService extends BaseService {
           },
         },
       })
-      .then(data => data || undefined);
+      .then(data => (data || undefined) as Connection);
+  }
+
+  canSendMessageToConnection({
+    connectionId,
+    userId,
+  }: CanSendMessageToConnectionRequest): Promise<boolean> {
+    return prisma.$transaction(async trx => {
+      const connection = await this.get({ connectionId }, trx);
+
+      if (isOneToOneConnection(connection)) {
+        return trx.connection
+          .findFirst({
+            where: {
+              id: connectionId,
+              users: {
+                every: {
+                  blockedUsers: { none: { id: userId } },
+                  usersWhoBlockedMe: { none: { id: userId } },
+                },
+              },
+            },
+          })
+          .then(data => !!data);
+      } else if (isGroupConnection(connection)) {
+        throw new Error('Not implemented');
+      } else {
+        notReachable(connection);
+      }
+    });
   }
 }

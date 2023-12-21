@@ -3,10 +3,13 @@ import React, { KeyboardEventHandler, useCallback } from 'react';
 import { AudioOutlined, CameraOutlined, SmileOutlined } from '@ant-design/icons';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
-import { Button, Flex, Popover, Upload, UploadProps, message } from 'antd';
+import { Button, Flex, Popover, Typography, Upload, UploadProps, message } from 'antd';
 
+import { useBlockUser } from '#/client/entities/user';
 import { useMessengerContext } from '#/client/features/messenger/context';
 import { Input } from '#/client/shared/components/Input';
+
+import { getUserFromSelectedItem } from '../../utils';
 
 import classes from './message-input.module.scss';
 
@@ -30,7 +33,9 @@ const props: UploadProps = {
 
 export const MessageInput = () => {
   const [text, setText] = React.useState('');
-  const { sendMessage } = useMessengerContext();
+  const { sendMessage, selectedItem } = useMessengerContext();
+  const user = selectedItem ? getUserFromSelectedItem(selectedItem) : undefined;
+  const { isUserBlocked, isMeBlockedByUser, unblockUser } = useBlockUser(user?.id || '');
 
   const onEmojiSelect = useCallback(
     (emoji: { native: unknown }) => {
@@ -51,6 +56,24 @@ export const MessageInput = () => {
     },
     [sendMessage, text],
   );
+
+  if (isUserBlocked) {
+    return (
+      <Flex align="center" className={classes.root}>
+        <Button danger onClick={unblockUser} style={{ width: '100%' }}>
+          Unblock
+        </Button>
+      </Flex>
+    );
+  }
+
+  if (isMeBlockedByUser) {
+    return (
+      <Flex align="center" className={classes.root}>
+        <Typography.Text>You were blocked by the user</Typography.Text>
+      </Flex>
+    );
+  }
 
   return (
     <Flex align="center" className={classes.root}>

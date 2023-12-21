@@ -12,6 +12,7 @@ export interface IRequestContext {
   userId?: string;
   origin: string;
   token?: string;
+  getUserIdStrict(): string;
 }
 
 export interface ISocketContext extends IRequestContext {

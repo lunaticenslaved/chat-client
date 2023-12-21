@@ -7,11 +7,7 @@ import { messagesEventsEmitter } from '#/server/socket-emitters/message';
 
 export const remove = createSocketOperation<DeleteMessageRequest>(async (data, request) => {
   logger.info(`[SOCKET][MESSAGE] Delete message:\n ${JSON.stringify(data)}`);
-  const { userId: viewerId } = request;
-
-  if (!viewerId) {
-    throw new Error('Unknown user');
-  }
+  const viewerId = request.getUserIdStrict();
 
   await prisma.$transaction(async trx => {
     const message = await messagesService.get(data.messageId, trx);

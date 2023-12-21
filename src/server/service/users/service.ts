@@ -4,6 +4,7 @@ import { Transaction } from '#/server/shared/prisma';
 import { BaseService } from '../base-service';
 
 import {
+  BlockUserRequest,
   CreateOrUpdateUserRequest,
   CreateOrUpdateUserResponse,
   CreateUserRequest,
@@ -15,7 +16,7 @@ import {
   UpdateUserRequest,
   UpdateUserResponse,
 } from './types';
-import { select } from './utils';
+import { User, select } from './utils';
 
 export class UsersService extends BaseService {
   createUser(data: CreateUserRequest, trx?: Transaction): Promise<CreateUserResponse> {
@@ -79,6 +80,46 @@ export class UsersService extends BaseService {
     await prisma.socket.deleteMany({
       where: {
         id: data.socketId,
+      },
+    });
+  }
+
+  async blockUser({ userId, ownerId }: BlockUserRequest): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id: ownerId,
+      },
+      data: {
+        blockedUsers: { connect: { id: userId } },
+      },
+    });
+  }
+
+  async unblockUser({ userId, ownerId }: BlockUserRequest): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id: ownerId,
+      },
+      data: {
+        blockedUsers: { disconnect: { id: userId } },
+      },
+    });
+  }
+
+  listBlockedUsers(userId: string): Promise<Pick<User, 'id'>[]> {
+    return prisma.user.findMany({
+      select: { id: true },
+      where: {
+        usersWhoBlockedMe: { some: { id: userId } },
+      },
+    });
+  }
+
+  listUsersWhoBlockedMe(userId: string): Promise<Pick<User, 'id'>[]> {
+    return prisma.user.findMany({
+      select: { id: true },
+      where: {
+        blockedUsers: { some: { id: userId } },
       },
     });
   }

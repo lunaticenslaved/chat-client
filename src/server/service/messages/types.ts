@@ -9,3 +9,8 @@ export interface CreateMessageRequest {
   authorId: string;
   connectionId: string;
 }
+
+export interface CanSendMessageToUserRequest {
+  fromUser: string;
+  toUser: string;
+}

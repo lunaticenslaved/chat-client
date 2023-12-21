@@ -6,7 +6,8 @@ import { Connection } from '#/server/service/connections';
 import { socketsService } from '#/server/service/sockets';
 import { logger } from '#/server/shared';
 import { IRequestContext } from '#/server/shared/operation';
-import { SocketServer } from '#/server/socket-server';
+
+import { SocketServer } from '../socket-server';
 
 import { SocketEventEmitter } from './base-socket-emitter';
 

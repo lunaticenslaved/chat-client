@@ -5,11 +5,7 @@ import { connectionsService } from '#/server/service/connections';
 
 export const get = createOperation<GetConnectionResponse, GetConnectionRequest>(
   async ({ connectionId }, requestContext) => {
-    const userId = requestContext.userId;
-
-    if (!userId) {
-      throw new Error('Unknown user');
-    }
+    requestContext.getUserIdStrict();
 
     const connection = await connectionsService.get({ connectionId });
 

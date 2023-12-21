@@ -4,7 +4,7 @@ import { Transaction } from '#/server/shared/prisma';
 
 import { BaseService } from '../base-service';
 
-import { CreateMessageRequest, ListMessagesRequest } from './types';
+import { CanSendMessageToUserRequest, CreateMessageRequest, ListMessagesRequest } from './types';
 import { Message, select } from './utils';
 
 export class MessagesService extends BaseService {
@@ -57,5 +57,20 @@ export class MessagesService extends BaseService {
       select,
       where: { id: messageId },
     });
+  }
+
+  canSendMessageToUser({ fromUser, toUser }: CanSendMessageToUserRequest): Promise<boolean> {
+    return prisma.user
+      .findFirst({
+        where: {
+          usersWhoBlockedMe: {
+            some: { id: { in: [fromUser, toUser] } },
+          },
+          blockedUsers: {
+            some: { id: { in: [fromUser, toUser] } },
+          },
+        },
+      })
+      .then(data => !data);
   }
 }

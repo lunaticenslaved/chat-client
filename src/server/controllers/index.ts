@@ -11,6 +11,7 @@ import { addConnectionsRoutes } from './connections';
 import { addContactsRoutes } from './contacts';
 import { addMessagesEvents, addMessagesRoutes } from './messages';
 import { addSearchRoutes } from './search';
+import { addUsersRoutes } from './users';
 import { addViewerEvents } from './viewer';
 
 export function addSocketEvents(socketContext: SocketContext) {
@@ -23,6 +24,7 @@ export function addRoutes(app: Express) {
   addSearchRoutes(app);
   addMessagesRoutes(app);
   addContactsRoutes(app);
+  addUsersRoutes(app);
 
   function addActions(path: string, value: unknown) {
     if (typeof value === 'function' && schema.actions.isAction(value)) {

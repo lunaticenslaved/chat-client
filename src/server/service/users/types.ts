@@ -26,3 +26,8 @@ export type CreateOrUpdateUserResponse = User;
 
 export type UpdateUserRequest = CreateUserRequest;
 export type UpdateUserResponse = User;
+
+export interface BlockUserRequest {
+  ownerId: string;
+  userId: string;
+}

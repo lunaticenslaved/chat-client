@@ -5,13 +5,7 @@ import { contactsService } from '#/server/service/contacts';
 
 export const addUser = createOperation<AddUserInContactsResponse, AddUserInContactsRequest>(
   async ({ userId }, requestContext) => {
-    const ownerId = requestContext.userId;
-
-    if (!ownerId) {
-      // FIXME add function to request context to get user id strict
-      throw new Error('User id not found');
-    }
-
+    const ownerId = requestContext.getUserIdStrict();
     const rawContact = await contactsService.addUser({ ownerId, userId });
 
     return {

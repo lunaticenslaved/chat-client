@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import { ViewerEventsListener } from '#/api/viewer';
+import { UserEventsListener } from '#/api/user';
 import { socket } from '#/client/shared/socket-context';
 import { store, useAppDispatch } from '#/store';
 
-const userEventsListener = new ViewerEventsListener(socket);
+const userEventsListener = new UserEventsListener(socket);
 
 export function useListenUsersOnlineStatus() {
   const dispatch = useAppDispatch();

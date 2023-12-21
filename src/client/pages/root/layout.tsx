@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import { Flex } from 'antd';
 
-import { useListenUsersOnlineStatus } from '#/client/entities/user';
+import { useFetchUsersStatuses, useListenUsersOnlineStatus } from '#/client/entities/user';
 import { useViewer } from '#/client/entities/viewer';
 import { useIsActivatedCheck, useIsAuthorizedCheck } from '#/client/features/auth';
 import { Divider } from '#/client/shared/components/divider';
@@ -14,6 +14,7 @@ export const RootLayout = () => {
   useIsAuthorizedCheck();
   useIsActivatedCheck();
   useListenUsersOnlineStatus();
+  useFetchUsersStatuses();
 
   if (!viewer.user) return;
 

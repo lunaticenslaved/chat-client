@@ -5,11 +5,7 @@ import { connectionsService } from '#/server/service/connections';
 
 export const list = createOperation<ListConnectionsResponse, ListConnectionsRequest>(
   async (_, requestContext) => {
-    const userId = requestContext.userId;
-
-    if (!userId) {
-      throw new Error('User id not found');
-    }
+    const userId = requestContext.getUserIdStrict();
 
     const connections = await connectionsService.list({ userId });
 

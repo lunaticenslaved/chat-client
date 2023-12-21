@@ -7,7 +7,7 @@ interface IUserOnlineStatus {
 }
 
 export function useUserOnlineStatus(): IUserOnlineStatus {
-  const onlineUsers = useAppSelector(store.users.selectors.selectUsers);
+  const onlineUsers = useAppSelector(store.users.selectors.selectOnlineUsers);
 
   const getOnlineStatus = useCallback(
     (userId: string) => {

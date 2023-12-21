@@ -31,4 +31,12 @@ export class RequestContext<TResponse = void, TRequest = void>
     this.userId = data.userId;
     this.token = data.token;
   }
+
+  getUserIdStrict(): string {
+    if (!this.userId) {
+      throw new Error('User id not found');
+    }
+
+    return this.userId;
+  }
 }
