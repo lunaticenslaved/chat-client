@@ -23,6 +23,19 @@ const slice = createSlice({
     removeContact(state, action: PayloadAction<Pick<Contact, 'id'>>) {
       state.contacts = state.contacts.filter(contact => contact.id !== action.payload.id);
     },
+    replaceContact(state, action: PayloadAction<Contact>) {
+      const index = state.contacts.findIndex(({ id }) => action.payload.id === id);
+
+      console.log('replaceContact', action.payload);
+
+      if (index > -1) {
+        state.contacts = state.contacts.map((contact, idx) => {
+          return index === idx ? action.payload : contact;
+        });
+      } else {
+        state.contacts = [...state.contacts, action.payload];
+      }
+    },
   },
 });
 

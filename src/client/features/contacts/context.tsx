@@ -1,16 +1,21 @@
-import { ReactNode, createContext, useContext, useEffect, useMemo } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { contactsActions } from '#/api/contact';
+import { message } from 'antd';
+
+import { UpdateContactRequest, contactsActions } from '#/api/contact';
 import { useAddContact, useRemoveContact } from '#/client/entities/contact';
 import { Contact } from '#/domain/contact';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
 import { IContactsSearch, useSearch } from './hooks/search';
 
+export type UpdateContactData = Omit<UpdateContactRequest, 'contactId'>;
+
 interface IContactsContext {
   contacts: Contact[];
   removeContact(contactId: string): Promise<void>;
+  updateContact(contactId: string, data: UpdateContactData): Promise<void>;
   addContact(userId: string): Promise<Contact>;
   search: IContactsSearch;
   refetch(): void;
@@ -45,6 +50,24 @@ export function ContactsContext({ children }: ContactsContextProps) {
     [dispatch, isFetched],
   );
 
+  const updateContact: IContactsContext['updateContact'] = useCallback(
+    async (contactId, data) => {
+      await contactsActions
+        .updateContact({
+          data: { ...data, contactId },
+        })
+        .then(({ contact }) => {
+          dispatch(store.contacts.actions.replaceContact(contact));
+        })
+        .catch(() => {
+          message.error('Cannot update contact');
+          refetch();
+        });
+      return Promise.resolve();
+    },
+    [dispatch, refetch],
+  );
+
   const { removeContact } = useRemoveContact({
     onSuccess(contactId) {
       if (!isFetched) return;
@@ -71,8 +94,9 @@ export function ContactsContext({ children }: ContactsContextProps) {
       addContact,
       removeContact,
       refetch,
+      updateContact,
     }),
-    [search, contacts, addContact, removeContact, refetch],
+    [search, contacts, addContact, removeContact, refetch, updateContact],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

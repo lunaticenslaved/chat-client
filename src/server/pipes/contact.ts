@@ -12,6 +12,7 @@ class ContactsPipe {
   ): Promise<DomainContact> {
     return {
       id: contact.id,
+      name: contact.name || undefined,
       user: await usersPipe.fromServerToDomain(request, contact.user),
     };
   }

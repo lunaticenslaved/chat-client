@@ -9,6 +9,8 @@ import {
   RemoveContactRequest,
   SearchContactsRequest,
   SearchContactsResponse,
+  UpdateContactRequest,
+  UpdateContactResponse,
 } from './types';
 
 export const actions = {
@@ -31,5 +33,9 @@ export const actions = {
   search: client.createAction<SearchContactsResponse, SearchContactsRequest>({
     endpoint: 'chat-api',
     path: 'contacts/search',
+  }),
+  updateContact: client.createAction<UpdateContactResponse, UpdateContactRequest>({
+    endpoint: 'chat-api',
+    path: 'contacts/update',
   }),
 };

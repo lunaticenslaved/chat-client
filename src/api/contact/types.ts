@@ -30,3 +30,11 @@ export interface GetContactForUserResponse {
 export interface GetContactForUserRequest {
   userId: string;
 }
+
+export interface UpdateContactRequest {
+  contactId: string;
+  name: string;
+}
+export interface UpdateContactResponse {
+  contact: Contact;
+}

@@ -16,3 +16,8 @@ export interface FindContactForUserRequest {
   ownerId: string;
   userId: string;
 }
+
+export interface UpdateContactRequest {
+  contactId: string;
+  name: string;
+}

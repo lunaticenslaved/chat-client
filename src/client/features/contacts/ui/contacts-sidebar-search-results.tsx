@@ -1,4 +1,4 @@
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { Button, Empty, List } from 'antd';
 
 import { ContactListItem } from '#/client/entities/contact';
@@ -40,22 +40,11 @@ export function SidebarSearchResults() {
         </SidebarSection>
       )}
       {!!search.myContacts.length && (
-        <SidebarSection title="Contacts">
+        <SidebarSection title="My contacts">
           <List
             dataSource={search.myContacts}
             renderItem={contact => (
-              <ContactListItem
-                actions={[
-                  <Button
-                    key="remove"
-                    size="small"
-                    type="text"
-                    onClick={() => removeContact(contact.id)}
-                    icon={<DeleteOutlined />}
-                  />,
-                ]}
-                contact={contact}
-              />
+              <ContactListItem onDelete={contact => removeContact(contact.id)} contact={contact} />
             )}
           />
         </SidebarSection>

@@ -7,6 +7,7 @@ import {
   FindContactForUserRequest,
   IsUserInContactsCheckRequest,
   ListContactsRequest,
+  UpdateContactRequest,
 } from './types';
 import { Contact, select } from './utils';
 
@@ -52,5 +53,15 @@ export class ContactsService extends BaseService {
         },
       })
       .then(data => data || undefined);
+  }
+
+  update({ contactId, name }: UpdateContactRequest): Promise<Contact> {
+    return prisma.contact.update({
+      select,
+      where: { id: contactId },
+      data: {
+        name: { set: name },
+      },
+    });
   }
 }
