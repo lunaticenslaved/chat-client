@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { ContactsContent, useContactsContext } from '#/client/features/contacts';
+import { ContactsContent, ContactsSidebar, useContactsContext } from '#/client/features/contacts';
 
 const ContactsPage = () => {
   const { refetch } = useContactsContext();
@@ -10,7 +10,15 @@ const ContactsPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <ContactsContent />;
+  return (
+    <>
+      <ContactsSidebar />
+
+      <div style={{ flex: '1 1 auto' }}>
+        <ContactsContent />
+      </div>
+    </>
+  );
 };
 
 export default ContactsPage;

@@ -106,18 +106,18 @@ export class UsersService extends BaseService {
     });
   }
 
-  listBlockedUsers(userId: string): Promise<Pick<User, 'id'>[]> {
+  listBlockedUsers(userId: string): Promise<User[]> {
     return prisma.user.findMany({
-      select: { id: true },
+      select,
       where: {
         usersWhoBlockedMe: { some: { id: userId } },
       },
     });
   }
 
-  listUsersWhoBlockedMe(userId: string): Promise<Pick<User, 'id'>[]> {
+  listUsersWhoBlockedMe(userId: string): Promise<User[]> {
     return prisma.user.findMany({
-      select: { id: true },
+      select,
       where: {
         blockedUsers: { some: { id: userId } },
       },

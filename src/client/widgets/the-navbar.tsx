@@ -6,7 +6,7 @@ import { Button, Divider, Flex, theme } from 'antd';
 
 import { useViewer } from '#/client/entities/viewer';
 import { LogoutButton } from '#/client/features/auth';
-import { ContactsIcon } from '#/client/features/contacts/ui/icon';
+import { ContactsIcon } from '#/client/features/contacts';
 import { MessengerIcon } from '#/client/features/messenger';
 import { SETTINGS_TITLE, SettingsIcon } from '#/client/features/settings';
 import { chatRoutes } from '#/client/pages/root/chat';

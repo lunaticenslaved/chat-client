@@ -1,3 +1,5 @@
+import { User } from '#/domain/user';
+
 interface UserId {
   userId: string;
 }
@@ -26,8 +28,12 @@ export type BlockUserResponse = UserId;
 export type UnblockUserResponse = UserId;
 
 export interface ListUsersStatusesResponse {
-  // TODO add here online users and list them
+  // TODO add here online users and list them. Or move to another handler
   // usersOnline: { id: string }[];
   blockedUsers: { id: string }[];
   usersWhoBlockedMe: { id: string }[];
+}
+
+export interface ListBlockedUsersResponse {
+  users: User[];
 }

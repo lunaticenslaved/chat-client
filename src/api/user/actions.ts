@@ -1,6 +1,6 @@
 import { client } from '../client';
 
-import { BlockUserRequest, ListUsersStatusesResponse } from './types';
+import { BlockUserRequest, ListBlockedUsersResponse, ListUsersStatusesResponse } from './types';
 
 export const actions = {
   blockUser: client.createAction<void, BlockUserRequest>({
@@ -14,5 +14,9 @@ export const actions = {
   listUsersStatuses: client.createAction<ListUsersStatusesResponse, void>({
     endpoint: 'chat-api',
     path: '/users/list-statuses',
+  }),
+  listBlockedUsers: client.createAction<ListBlockedUsersResponse, void>({
+    endpoint: 'chat-api',
+    path: '/users/list-blocked',
   }),
 };

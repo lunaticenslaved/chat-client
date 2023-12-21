@@ -8,7 +8,7 @@ type IconProps = {
 };
 
 export type SidebarProps = {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
   icon(props: IconProps): ReactNode;
   searchQuery?: string;
