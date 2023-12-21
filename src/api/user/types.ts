@@ -28,8 +28,7 @@ export type BlockUserResponse = UserId;
 export type UnblockUserResponse = UserId;
 
 export interface ListUsersStatusesResponse {
-  // TODO add here online users and list them. Or move to another handler
-  // usersOnline: { id: string }[];
+  onlineUsers: { id: string }[];
   blockedUsers: { id: string }[];
   usersWhoBlockedMe: { id: string }[];
 }

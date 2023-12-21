@@ -34,9 +34,8 @@ export class SocketServer {
 
   static async onUserDisconnected(socket: Socket, userId: string) {
     if (userId) {
-      // FIXME await?
-      usersService.removeSocket({ socketId: socket.id });
-
+      await usersService.updateUser({ id: userId, isOnline: false });
+      await usersService.removeSocket({ socketId: socket.id });
       socket.leave(userId);
       userEventsEmitter.onUserIsOffline(userId);
     }

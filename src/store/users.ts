@@ -16,6 +16,15 @@ const slice = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    setOnlineUsers(state, action: PayloadAction<{ id: string }[]>) {
+      const users: Record<string, boolean> = {};
+
+      for (const { id } of action.payload) {
+        users[id] = true;
+      }
+
+      state.onlineUsers = users;
+    },
     setBlockedUsers(state, action: PayloadAction<{ id: string }[]>) {
       const users: Record<string, boolean> = {};
 

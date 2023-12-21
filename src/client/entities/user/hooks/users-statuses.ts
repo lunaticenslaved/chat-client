@@ -37,7 +37,8 @@ export function useFetchUsersStatuses() {
   useEffect(() => {
     userActions
       .listUsersStatuses({ data: undefined })
-      .then(({ blockedUsers, usersWhoBlockedMe }) => {
+      .then(({ blockedUsers, usersWhoBlockedMe, onlineUsers }) => {
+        dispatch(store.users.actions.setOnlineUsers(onlineUsers));
         dispatch(store.users.actions.setBlockedUsers(blockedUsers));
         dispatch(store.users.actions.setUsersWhoBlockedMe(usersWhoBlockedMe));
       });
