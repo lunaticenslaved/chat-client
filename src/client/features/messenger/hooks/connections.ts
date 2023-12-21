@@ -23,7 +23,6 @@ export function useConnections(): UseConnections {
   const connections = useAppSelector(store.dialogs.selectors.selectDialogs);
   const isLoading = useToggle();
   const isLoadingError = useToggle();
-
   const dispatch = useAppDispatch();
 
   const { addConnection, setConnections, setCurrentConnection, updateLastMessage } = useMemo(

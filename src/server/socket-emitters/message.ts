@@ -15,7 +15,7 @@ class MessagesEventsEmitter extends SocketEventEmitter {
       error: null,
     };
 
-    SocketServer.server.to(message.connectionId).emit(MessageServerEvent.Created, response);
+    SocketServer.emitToConnection(message.connectionId, MessageServerEvent.Created, response);
   }
 
   onMessageDeleted(data: DeleteMessageResponse) {
@@ -24,7 +24,7 @@ class MessagesEventsEmitter extends SocketEventEmitter {
       error: null,
     };
 
-    SocketServer.server.to(data.connectionId).emit(MessageServerEvent.Deleted, response);
+    SocketServer.emitToConnection(data.connectionId, MessageServerEvent.Deleted, response);
   }
 }
 

@@ -31,7 +31,7 @@ export function DialogListItem({ dialog, isActive, onClick }: DialogListItemProp
     <ListItem
       isActive={isActive}
       onClick={onClick ? handleClick : undefined}
-      avatar={<Avatar url={partner.avatar?.link} name={partner.login} />}
+      avatar={<Avatar src={partner.avatar?.link} name={partner.login} />}
       title={
         <Flex justify="space-between" wrap="nowrap">
           <Typography.Text

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import { Store } from '@reduxjs/toolkit';
 
-import { useViewer } from '#/client/entities/viewer';
+import { useListenOnline, useViewer } from '#/client/entities/viewer';
 import { useLogout } from '#/client/features/auth';
 import { ErrorBoundary } from '#/client/shared/components/error-boundary';
 import { PageLoader } from '#/client/shared/components/page-loader';
@@ -29,6 +29,8 @@ type ContentProps = {
 function Content({ isLoading }: ContentProps) {
   const { logout } = useLogout();
   const { isAuthorized } = useViewer();
+
+  useListenOnline();
 
   return (
     <ErrorBoundary>

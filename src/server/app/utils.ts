@@ -18,6 +18,7 @@ import { socketsService } from '#/server/service/sockets';
 import { usersService } from '#/server/service/users';
 import { logger } from '#/server/shared';
 import { SERVICE } from '#/server/shared/constants';
+import { userEventsEmitter } from '#/server/socket-emitters/user';
 import { SocketServer } from '#/server/socket-server';
 
 import { AuthEventServer } from '../../api/auth/types';
@@ -145,8 +146,7 @@ export function addWebSocket(server: Server): WebSocketServer {
         config: { headers: { origin } },
       });
 
-      // await?
-      usersService.createOrUpdate({
+      await usersService.createOrUpdate({
         id: user.id,
         socketId: socket.id,
         isOnline: true,
@@ -182,9 +182,8 @@ export function addWebSocket(server: Server): WebSocketServer {
         usersService.removeSocket({ socketId: socket.id });
 
         socket.leave(userId);
+        userEventsEmitter.onUserIsOffline(userId);
       }
-
-      console.log('USER DISCONNECTED');
     });
 
     if (userId) {

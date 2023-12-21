@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 import cn from 'classnames';
 import tinycolor from 'tinycolor2';
 
@@ -7,9 +9,10 @@ import classes from './avatar.module.scss';
 
 export interface AvatarProps {
   name: string;
-  url?: string | null;
+  src?: string | null;
   isOnline?: boolean;
   className?: string;
+  style?: CSSProperties;
 }
 
 const stringToColor = function (str: string) {
@@ -26,11 +29,11 @@ const stringToColor = function (str: string) {
   return tinycolor(color);
 };
 
-export const Avatar = ({ url, name, className, isOnline }: AvatarProps) => {
+export const Avatar = ({ src, name, className, isOnline, style }: AvatarProps) => {
   let image: JSX.Element | null = null;
 
-  if (url) {
-    image = <img src={url} alt={'Аватар ' + name} />;
+  if (src) {
+    image = <img src={src} alt={'Аватар ' + name} style={style} />;
   } else {
     const color = stringToColor(name);
     const c1 = color.toHex();
@@ -44,7 +47,7 @@ export const Avatar = ({ url, name, className, isOnline }: AvatarProps) => {
     image = (
       <div
         className={classes.gradientContainer}
-        style={{ background: `linear-gradient(135deg, #${c1}, #${c2})` }}>
+        style={{ background: `linear-gradient(135deg, #${c1}, #${c2})`, ...style }}>
         <span>
           {l1?.toUpperCase()}
           {l2?.toUpperCase()}

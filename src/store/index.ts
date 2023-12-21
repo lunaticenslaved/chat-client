@@ -8,6 +8,7 @@ import { ContactsStore } from './contacts';
 import { DialogsStore } from './dialog';
 import { MessagesStore } from './messages';
 import { SearchStore } from './search';
+import { UsersStore } from './users';
 import { ViewerStore } from './viewer';
 
 export const createStore = (viewer?: Viewer) => {
@@ -20,6 +21,7 @@ export const createStore = (viewer?: Viewer) => {
       [MessagesStore.slice.name]: MessagesStore.slice.reducer,
       [SearchStore.slice.name]: SearchStore.slice.reducer,
       [ContactsStore.slice.name]: ContactsStore.slice.reducer,
+      [UsersStore.slice.name]: UsersStore.slice.reducer,
     },
     preloadedState: {
       viewer: {
@@ -41,4 +43,5 @@ export const store = {
   [MessagesStore.slice.name]: MessagesStore,
   [SearchStore.slice.name]: SearchStore,
   [ContactsStore.slice.name]: ContactsStore,
+  [UsersStore.slice.name]: UsersStore,
 };

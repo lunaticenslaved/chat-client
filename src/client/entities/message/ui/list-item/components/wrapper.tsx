@@ -35,7 +35,7 @@ export const MessageWrapper = (props: MessageProps) => {
 
   return (
     <div className={rootClassName}>
-      <Avatar className={classes.avatar} url={props.avatarSrc} name={props.ownerName} />
+      <Avatar className={classes.avatar} src={props.avatarSrc} name={props.ownerName} />
       <div>
         <div className={classes.content}>
           {props.children}

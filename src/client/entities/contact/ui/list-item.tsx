@@ -21,7 +21,7 @@ export function ContactListItem({ contact, onClick, actions }: ContactListItemPr
       onClick={onClick ? handleClick : undefined}
       isActive={false}
       actions={actions}
-      avatar={<Avatar url={user.avatar?.link} name={user.login} />}
+      avatar={<Avatar src={user.avatar?.link} name={user.login} />}
       title={<Typography.Text style={{ fontWeight: 'bold' }}>{user.login}</Typography.Text>}
       description={<Typography.Text>{user.email}</Typography.Text>}
     />

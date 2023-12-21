@@ -64,7 +64,7 @@ export function TheNavbar() {
         width: '90px',
         padding: '20px 0',
       }}>
-      <Avatar name={viewer.login} url={viewer.avatar?.link} />
+      <Avatar name={viewer.login} src={viewer.avatar?.link} />
 
       <Flex vertical align="center" flex="1 1 auto" style={{ padding: '40px 0', width: '100%' }}>
         {sections.map((section, index) => {

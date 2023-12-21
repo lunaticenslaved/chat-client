@@ -11,9 +11,11 @@ import { addConnectionsRoutes } from './connections';
 import { addContactsRoutes } from './contacts';
 import { addMessagesEvents, addMessagesRoutes } from './messages';
 import { addSearchRoutes } from './search';
+import { addViewerEvents } from './viewer';
 
 export function addSocketEvents(socketContext: SocketContext) {
   addMessagesEvents(socketContext);
+  addViewerEvents(socketContext);
 }
 
 export function addRoutes(app: Express) {

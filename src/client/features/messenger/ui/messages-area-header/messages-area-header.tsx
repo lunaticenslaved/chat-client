@@ -1,9 +1,14 @@
 import { ArrowDownOutlined, LayoutOutlined } from '@ant-design/icons';
 import { Button, Flex, Radio, Typography } from 'antd';
 
+import { useUserOnlineStatus } from '#/client/entities/user';
+import {
+  getAvatarLinkFromSelectedItem,
+  getTitleFromSelectedItem,
+  getUserFromSelectedItem,
+} from '#/client/features/messenger/utils';
+import { Avatar } from '#/client/shared/components/avatar';
 import { OnlineStatus } from '#/client/shared/components/online-status';
-import { ConnectionType } from '#/domain/connection';
-import { notReachable } from '#/shared/utils';
 
 import { useMessengerContext } from '../../context';
 import { SelectedItem } from '../../types';
@@ -15,39 +20,29 @@ export type MessageAreaHeaderProps = {
   selectedItem: SelectedItem;
 };
 
-function getTitle(selectedItem: SelectedItem): string {
-  if (selectedItem.type === 'user') {
-    return selectedItem.user.login;
-  } else if (selectedItem.type === 'connection') {
-    const connection = selectedItem.connection;
-
-    if (connection.type === ConnectionType.OneToOne) {
-      return connection.oneToOneDialog.partner.login;
-    } else if (connection.type === ConnectionType.Group) {
-      return 'Not implemented';
-    } else {
-      notReachable(connection);
-    }
-  } else {
-    notReachable(selectedItem);
-  }
-}
-
 export const MessageAreaHeader = ({ selectedItem }: MessageAreaHeaderProps) => {
-  const title = getTitle(selectedItem);
   const { connectionInfo } = useMessengerContext();
-  const isOnline = false;
+  const { getOnlineStatus } = useUserOnlineStatus();
+  const title = getTitleFromSelectedItem(selectedItem);
+  const user = getUserFromSelectedItem(selectedItem);
+  const avatarLink = getAvatarLinkFromSelectedItem(selectedItem);
+  const isOnline = user ? getOnlineStatus(user.id) : false;
+
+  console.log(isOnline);
 
   return (
     <Flex align="center" justify="space-between" className={classes.chatHeader}>
-      <Flex align="flex-start" justify="center" vertical>
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          {title}
-        </Typography.Title>
-        <div className={classes.onlineStatus}>
-          <OnlineStatus isOnline={isOnline} />
-          <Typography.Text>{isOnline ? 'онлайн' : 'оффлайн'}</Typography.Text>
-        </div>
+      <Flex>
+        <Avatar src={avatarLink} name={title} isOnline={isOnline} />
+        <Flex align="flex-start" justify="center" vertical style={{ marginLeft: '20px' }}>
+          <Typography.Title level={5} style={{ margin: 0 }}>
+            {title}
+          </Typography.Title>
+          <div className={classes.onlineStatus}>
+            <OnlineStatus isOnline={isOnline} />
+            <Typography.Text>{isOnline ? 'онлайн' : 'оффлайн'}</Typography.Text>
+          </div>
+        </Flex>
       </Flex>
 
       <Flex align="center">
