@@ -1,6 +1,5 @@
 import cn from 'classnames';
 
-import { Avatar } from '#/client/shared/components/avatar';
 import { ReadStatusIcon } from '#/client/shared/components/read-status-icon';
 import dayjs from '#/client/shared/lib/dayjs';
 
@@ -11,6 +10,7 @@ const getStatus = ({ isRead, isMe }: { isRead: boolean; isMe: boolean }) =>
   isMe ? <ReadStatusIcon isRead={isRead} /> : null;
 
 export const MessageWrapper = (props: MessageProps) => {
+  const { avatar, isMe } = props;
   const status = getStatus({
     isMe: props.isMe,
     isRead: !!props.isRead,
@@ -35,7 +35,14 @@ export const MessageWrapper = (props: MessageProps) => {
 
   return (
     <div className={rootClassName}>
-      <Avatar className={classes.avatar} src={props.avatarSrc} name={props.ownerName} />
+      <div
+        style={{
+          marginBottom: '10px',
+          marginRight: isMe ? undefined : '10px',
+          marginLeft: !isMe ? undefined : '10px',
+        }}>
+        {avatar({ size: '40px' })}
+      </div>
       <div>
         <div className={classes.content}>
           {props.children}

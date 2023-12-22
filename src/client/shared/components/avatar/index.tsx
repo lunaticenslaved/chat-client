@@ -47,7 +47,7 @@ export const Avatar = ({ src, name, className, isOnline, style }: AvatarProps) =
     image = (
       <div
         className={classes.gradientContainer}
-        style={{ background: `linear-gradient(135deg, #${c1}, #${c2})`, ...style }}>
+        style={{ background: `linear-gradient(135deg, #${c1}, #${c2})` }}>
         <span>
           {l1?.toUpperCase()}
           {l2?.toUpperCase()}
@@ -57,7 +57,7 @@ export const Avatar = ({ src, name, className, isOnline, style }: AvatarProps) =
   }
 
   return (
-    <div className={cn(classes.root, className)}>
+    <div className={cn(classes.root, className)} style={style}>
       <div className={classes.image}>{image}</div>
       <div className={classes.status}>
         <OnlineStatus isOnline={!!isOnline} />

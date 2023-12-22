@@ -2,8 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button, Divider, Flex, Typography, theme } from 'antd';
 
 import { useMessengerContext } from '../../context';
-import { getConnectionTitles } from '../../utils';
-import { ConnectionAvatar } from '../avatars';
+import { ConnectionAvatar, ConnectionSubtitle, ConnectionTitle } from '../common';
 
 import classes from './connection-info.module.scss';
 
@@ -28,7 +27,6 @@ export function ConnectionInfo() {
   }
 
   const { connection } = connectionInfo;
-  const { title, subtitle } = getConnectionTitles(connection);
 
   return (
     <>
@@ -51,8 +49,12 @@ export function ConnectionInfo() {
               <ConnectionAvatar connection={connection} />
             </div>
             <Flex vertical>
-              <Typography.Title level={5}>{title}</Typography.Title>
-              <Typography.Text>{subtitle}</Typography.Text>
+              <Typography.Title level={5}>
+                <ConnectionTitle connection={connection} />
+              </Typography.Title>
+              <Typography.Text>
+                <ConnectionSubtitle connection={connection} />
+              </Typography.Text>
             </Flex>
           </Flex>
         </div>

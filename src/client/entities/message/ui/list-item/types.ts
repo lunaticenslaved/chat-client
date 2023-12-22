@@ -7,7 +7,7 @@ export type MessageProps = Pick<Message, 'createdAt' | 'attachments'> &
     children?: ReactNode;
     isMe: boolean;
     ownerName: string;
-    avatarSrc?: string;
+    avatar(props: { size: string }): ReactNode;
     isTyping?: boolean;
   };
 

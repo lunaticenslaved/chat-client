@@ -6,9 +6,9 @@ import Picker from '@emoji-mart/react';
 import { Button, Flex, Popover, Typography, Upload, UploadProps, message } from 'antd';
 
 import { useBlockUser } from '#/client/entities/user';
-import { useMessengerContext } from '#/client/features/messenger/context';
 import { Input } from '#/client/shared/components/Input';
 
+import { useMessengerContext } from '../../context';
 import { getUserFromSelectedItem } from '../../utils';
 
 import classes from './message-input.module.scss';

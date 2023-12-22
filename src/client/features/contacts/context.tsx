@@ -18,7 +18,6 @@ interface IContactsContext {
   updateContact(contactId: string, data: UpdateContactData): Promise<void>;
   addContact(userId: string): Promise<Contact>;
   search: IContactsSearch;
-  refetch(): void;
 }
 
 const Context = createContext<IContactsContext | null>(null);
@@ -30,12 +29,8 @@ interface ContactsContextProps {
 export function ContactsContext({ children }: ContactsContextProps) {
   const contacts = useAppSelector(store.contacts.selectors.selectContacts);
   const dispatch = useAppDispatch();
-  const { data, refetch, isFetched } = useQuery(
-    ['contacts/list'],
-    () => contactsActions.listContacts({ data: undefined }),
-    {
-      enabled: false,
-    },
+  const { data, refetch, isFetched } = useQuery(['contacts/list'], () =>
+    contactsActions.listContacts({ data: undefined }),
   );
 
   const search = useSearch();
@@ -93,10 +88,9 @@ export function ContactsContext({ children }: ContactsContextProps) {
       contacts,
       addContact,
       removeContact,
-      refetch,
       updateContact,
     }),
-    [search, contacts, addContact, removeContact, refetch, updateContact],
+    [search, contacts, addContact, removeContact, updateContact],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

@@ -2,14 +2,11 @@ import { ArrowDownOutlined, LayoutOutlined } from '@ant-design/icons';
 import { Button, Flex, Radio, Typography } from 'antd';
 
 import { useUserOnlineStatus } from '#/client/entities/user';
-import {
-  getTitleFromSelectedItem,
-  getUserFromSelectedItem,
-} from '#/client/features/messenger/utils';
 
 import { useMessengerContext } from '../../context';
 import { SelectedItem } from '../../types';
-import { SelectedItemAvatar } from '../avatars';
+import { getUserFromSelectedItem } from '../../utils';
+import { SelectedItemAvatar, SelectedItemTitle } from '../common';
 import { SelectedItemMenu } from '../selected-item-menu';
 
 import classes from './messages-area-header.module.scss';
@@ -21,7 +18,6 @@ export type MessageAreaHeaderProps = {
 export const MessageAreaHeader = ({ selectedItem }: MessageAreaHeaderProps) => {
   const { connectionInfo } = useMessengerContext();
   const { getOnlineStatus } = useUserOnlineStatus();
-  const title = getTitleFromSelectedItem(selectedItem);
   const user = getUserFromSelectedItem(selectedItem);
   const isOnline = user ? getOnlineStatus(user.id) : false;
 
@@ -32,7 +28,7 @@ export const MessageAreaHeader = ({ selectedItem }: MessageAreaHeaderProps) => {
 
         <Flex align="flex-start" justify="center" vertical style={{ marginLeft: '20px' }}>
           <Typography.Title level={5} style={{ margin: 0 }}>
-            {title}
+            <SelectedItemTitle selectedItem={selectedItem} />
           </Typography.Title>
           <Typography.Text>{isOnline ? 'онлайн' : 'оффлайн'}</Typography.Text>
         </Flex>

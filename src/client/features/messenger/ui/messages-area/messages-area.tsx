@@ -15,6 +15,7 @@ import { useViewer } from '#/client/entities/viewer';
 import { canDeleteMessage } from '#/domain/message';
 
 import { useMessengerContext } from '../../context';
+import { MessageItemInfo } from '../common';
 
 import { HasErrorView } from './views/has-error/has-error';
 import { LoadingMessagesView } from './views/loading-messages';
@@ -136,12 +137,16 @@ export const MessagesArea = () => {
                     : undefined
                 }
                 placement={isMe ? 'right' : 'left'}>
-                <MessageListItem
-                  {...message}
-                  avatarSrc={message.author.avatar?.link}
-                  ownerName={message.author.login}
-                  isMe={isMe}
-                />
+                <MessageItemInfo message={message}>
+                  {({ avatar, ownerName }) => (
+                    <MessageListItem
+                      {...message}
+                      avatar={avatar}
+                      ownerName={ownerName}
+                      isMe={isMe}
+                    />
+                  )}
+                </MessageItemInfo>
               </MessageMenu>
             );
           })}

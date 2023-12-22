@@ -4,9 +4,7 @@ import { ListItem } from '#/client/shared/list-item';
 import { Connection } from '#/domain/connection';
 import { formatMessageTime } from '#/domain/message';
 
-import { getConnectionTitles } from '../utils';
-
-import { ConnectionAvatar } from './avatars';
+import { ConnectionAvatar, ConnectionTitle } from './common';
 
 interface ConnectionsListProps {
   selectedConnectionId?: string;
@@ -24,7 +22,6 @@ export function ConnectionsList({
       dataSource={connections}
       renderItem={connection => {
         const isActive = selectedConnectionId === connection.id;
-        const { title } = getConnectionTitles(connection);
         const lastMessage = connection.lastMessage;
 
         return (
@@ -41,7 +38,7 @@ export function ConnectionsList({
                     overflow: 'hidden',
                     paddingRight: '15px',
                   }}>
-                  {title}
+                  <ConnectionTitle connection={connection} />
                 </Typography.Text>
                 {!!lastMessage && (
                   <Tooltip title={formatMessageTime(lastMessage.createdAt, 'exact')}>
