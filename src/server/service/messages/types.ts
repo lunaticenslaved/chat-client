@@ -14,3 +14,8 @@ export interface CanSendMessageToUserRequest {
   fromUser: string;
   toUser: string;
 }
+
+export interface MarkMessageAsReadRequest {
+  messageId: string;
+  userId: string;
+}

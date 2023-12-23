@@ -45,7 +45,7 @@ export class ConnectionsService extends BaseService {
       },
     });
 
-    const { oneToOneDialog, ...otherData } = connection;
+    const { oneToOneDialog, ...otherData } = connection as unknown as Connection;
 
     if (!oneToOneDialog) {
       throw new Error('Not one to one connection');
@@ -66,7 +66,7 @@ export class ConnectionsService extends BaseService {
           },
         },
       })
-      .then(data => data as Connection[]);
+      .then(data => data as unknown as Connection[]);
   }
 
   get(data: GetConnectionRequest, trx?: Transaction): Promise<Connection> {
@@ -77,7 +77,7 @@ export class ConnectionsService extends BaseService {
           id: data.connectionId,
         },
       })
-      .then(data => data as Connection);
+      .then(data => data as unknown as Connection);
   }
 
   findOneToOne(
@@ -93,7 +93,7 @@ export class ConnectionsService extends BaseService {
           },
         },
       })
-      .then(data => (data || undefined) as Connection);
+      .then(data => (data || undefined) as unknown as Connection);
   }
 
   canSendMessageToConnection({

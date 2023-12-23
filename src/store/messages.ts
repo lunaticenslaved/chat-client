@@ -27,6 +27,17 @@ const slice = createSlice({
 
       state.messages = state.messages.filter(({ id }) => id !== action.payload.messageId);
     },
+    replaceMessage(state, action: PayloadAction<Message>) {
+      console.log('MESSAGE REPLACED', action.payload);
+
+      state.messages = state.messages.map(message => {
+        if (message.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return message;
+      });
+    },
     prependMessages(state, action: PayloadAction<Message[]>) {
       console.log('PREPEND MESSAGES', action.payload);
 

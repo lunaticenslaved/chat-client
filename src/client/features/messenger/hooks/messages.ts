@@ -19,9 +19,11 @@ export interface UseMessages {
   isLoading: boolean;
   isLoadingError: boolean;
   hasMoreMessages: boolean;
+  isFetchingMoreMessages: boolean;
   fetchMoreMessages(): void;
   sendMessage(text: string): boolean;
   addMessage(message: Message): void;
+  replaceMessage(message: Message): void;
   removeMessageFromList(data: DeleteMessageResponse): void;
 }
 
@@ -39,7 +41,7 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
   const isFetchingMore = useToggle();
   const isFetchingMoreError = useToggle();
 
-  const { setMessages, addMessage, prependMessages, removeMessage } = useMemo(
+  const { setMessages, addMessage, prependMessages, removeMessage, replaceMessage } = useMemo(
     () => ({
       setMessages(messages: Message[]) {
         dispatch(store.messages.actions.setMessages(messages));
@@ -49,6 +51,9 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
       },
       addMessage(message: Message) {
         dispatch(store.messages.actions.addMessage(message));
+      },
+      replaceMessage(message: Message) {
+        dispatch(store.messages.actions.replaceMessage(message));
       },
       removeMessage(messageId: string) {
         dispatch(store.messages.actions.removeMessage({ messageId }));
@@ -180,7 +185,9 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
     messages,
     fetchMoreMessages,
     addMessage,
+    replaceMessage,
     removeMessageFromList,
+    isFetchingMoreMessages: isFetchingMore.value,
     isLoading: isLoading.value,
     isLoadingError: isLoadingError.value,
     hasMoreMessages: hasMoreMessages.value,

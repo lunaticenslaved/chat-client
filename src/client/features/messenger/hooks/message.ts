@@ -11,6 +11,7 @@ import { SelectedItem } from '../types';
 export type IMessage = {
   sendMessage(text: string): boolean;
   deleteMessage(message: Message): void;
+  markMessageAsRead(messageId: string): void;
 };
 
 type UseMessageProps = {
@@ -42,6 +43,10 @@ export function useMessage({ selectedItem }: UseMessageProps): IMessage {
     [selectedItem],
   );
 
+  const markMessageAsRead = useCallback((messageId: string) => {
+    messagesEmitter.readMessage({ messageId });
+  }, []);
+
   const deleteMessage = useCallback(
     (message: Message) => {
       if (!viewer) return false;
@@ -56,5 +61,6 @@ export function useMessage({ selectedItem }: UseMessageProps): IMessage {
   return {
     sendMessage,
     deleteMessage,
+    markMessageAsRead,
   };
 }

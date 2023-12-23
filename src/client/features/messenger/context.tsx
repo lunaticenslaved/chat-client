@@ -29,8 +29,10 @@ interface IMessengerContext {
   isLoadingMessagesError: boolean;
   hasMoreMessages: boolean;
   fetchMoreMessages(): void;
+  isFetchingMoreMessages: boolean;
   deleteMessage: IMessage['deleteMessage'];
   sendMessage: IMessage['sendMessage'];
+  markMessageAsRead(messageId: string): void;
 
   // Connections
   connections: Connection[];
@@ -87,9 +89,11 @@ function useMessenger(): IMessengerContext {
     hasMoreMessages,
     addMessage,
     removeMessageFromList,
+    replaceMessage,
+    isFetchingMoreMessages,
   } = useMessages({ selectedItem });
 
-  const { sendMessage, deleteMessage } = useMessage({ selectedItem });
+  const { sendMessage, deleteMessage, markMessageAsRead } = useMessage({ selectedItem });
 
   const connectionInfo = useConnectionInfo(selectedItem);
 
@@ -111,15 +115,17 @@ function useMessenger(): IMessengerContext {
     messagesListener.on('created', addMessage);
     messagesListener.on('created', updateLastMessage);
     messagesListener.on('deleted', removeMessageFromList);
+    messagesListener.on('updated', replaceMessage);
     connectionsListener.on('created', onConnectionCreated);
 
     return () => {
       messagesListener.off('created', addMessage);
       messagesListener.off('created', updateLastMessage);
       messagesListener.off('deleted', removeMessageFromList);
+      messagesListener.off('updated', replaceMessage);
       connectionsListener.off('created', onConnectionCreated);
     };
-  }, [addMessage, onConnectionCreated, removeMessageFromList, updateLastMessage]);
+  }, [addMessage, onConnectionCreated, removeMessageFromList, replaceMessage, updateLastMessage]);
 
   return useMemo(
     (): IMessengerContext => ({
@@ -139,6 +145,8 @@ function useMessenger(): IMessengerContext {
       hasMoreMessages,
       sendMessage,
       deleteMessage,
+      markMessageAsRead,
+      isFetchingMoreMessages,
 
       // Connections
       connections,
@@ -159,8 +167,10 @@ function useMessenger(): IMessengerContext {
       foundConnections,
       foundUsers,
       hasMoreMessages,
+      isFetchingMoreMessages,
       isLoadingMessages,
       isLoadingMessagesError,
+      markMessageAsRead,
       messages,
       searchQuery,
       selectedItem,

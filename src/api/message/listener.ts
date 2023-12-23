@@ -6,6 +6,7 @@ import { SocketEventListener } from '../socket-listener';
 type MessageEvents = {
   created: Message;
   deleted: DeleteMessageResponse;
+  updated: Message;
 };
 
 export class MessageEventsListener extends SocketEventListener<
@@ -16,5 +17,6 @@ export class MessageEventsListener extends SocketEventListener<
   override eventsMap = {
     created: MessageServerEvent.Created,
     deleted: MessageServerEvent.Deleted,
+    updated: MessageServerEvent.Updated,
   };
 }

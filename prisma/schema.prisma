@@ -17,6 +17,7 @@ model User {
   connections        Connection[]
   blockedUsers       User[]       @relation("blockedUsers")
   usersWhoBlockedMe  User[]       @relation("blockedUsers")
+  readedMessages     Message[]    @relation("readedMessages")
 
   @@map("users")
 }
@@ -89,6 +90,8 @@ model Message {
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  isReadByUsers User[] @relation("readedMessages")
 
   @@map(name: "messages")
 }

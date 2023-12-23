@@ -25,6 +25,7 @@ export const createStore = (viewer?: Viewer) => {
     },
     preloadedState: {
       viewer: {
+        isOnline: false,
         viewer,
       },
     },

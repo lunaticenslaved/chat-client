@@ -8,15 +8,17 @@ import { useViewer } from './viewer';
 const viewerEventsEmitter = new ViewerEventsEmitter(socket);
 
 export function useListenOnline() {
-  const { user } = useViewer();
+  const { user, setOnline } = useViewer();
 
   useEffect(() => {
     function onFocused() {
       if (!user) return;
+      setOnline(true);
       viewerEventsEmitter.isOnline();
     }
     function onBlurred() {
       if (!user) return;
+      setOnline(false);
       viewerEventsEmitter.isOffline();
     }
 
@@ -29,5 +31,5 @@ export function useListenOnline() {
       window.removeEventListener('focus', onFocused);
       window.removeEventListener('blur', onBlurred);
     };
-  }, [user]);
+  }, [setOnline, user]);
 }

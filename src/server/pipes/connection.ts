@@ -49,8 +49,8 @@ class ConnectionsPipe {
                 text: lastMessage.text,
                 connectionId: lastMessage.connectionId,
                 createdAt: lastMessage.createdAt.toISOString(),
-                isRead: false,
                 attachments: [],
+                isReadByUsers: lastMessage.isReadByUsers,
               }
             : undefined,
       };
@@ -103,7 +103,7 @@ class ConnectionsPipe {
                 text: lastMessage.text,
                 connectionId: lastMessage.connectionId,
                 createdAt: lastMessage.createdAt.toISOString(),
-                isRead: false,
+                isReadByUsers: lastMessage.isReadByUsers,
                 attachments: [],
               }
             : undefined,

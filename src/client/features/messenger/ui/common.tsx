@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { getContactName, useContactForUser } from '#/client/entities/contact';
 import { MessageListItemProps } from '#/client/entities/message';
 import { UserAvatar } from '#/client/entities/user';
+import { useViewer } from '#/client/entities/viewer';
 import { Connection, ConnectionType } from '#/domain/connection';
 import { Message } from '#/domain/message';
 import { User } from '#/domain/user';
@@ -96,14 +97,25 @@ function UserOrContactAvatar({ user, size, withoutOnlineStatus }: UserOrContactP
 
 interface MessageItemInfoProps {
   message: Message;
-  children(props: { ownerName: string; avatar: MessageListItemProps['avatar'] }): ReactNode;
+  children(props: {
+    ownerName: string;
+    avatar: MessageListItemProps['avatar'];
+    isReadByMe: boolean;
+    isMyMessageRead: boolean;
+    isMe: boolean;
+  }): ReactNode;
 }
 
 export function MessageItemInfo({ children, message }: MessageItemInfoProps) {
   const { getContactForUser } = useContactForUser();
+  const { user: viewer } = useViewer();
   const contact = getContactForUser(message.authorId);
+  const isMe = message.authorId === viewer?.id;
 
   return children({
+    isMe,
+    isMyMessageRead: !!message.isReadByUsers.find(user => user.id !== viewer?.id),
+    isReadByMe: !!message.isReadByUsers.find(user => user.id === viewer?.id),
     ownerName: contact ? getContactName(contact) : message.author.login,
     avatar: ({ size }) => (
       <UserOrContactAvatar user={message.author} size={size} withoutOnlineStatus={true} />

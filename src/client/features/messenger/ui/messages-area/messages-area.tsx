@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -12,6 +13,7 @@ import { Flex, List } from 'antd';
 
 import { MessageListItem, MessageMenu } from '#/client/entities/message';
 import { useViewer } from '#/client/entities/viewer';
+import { useToggle } from '#/client/shared/hooks';
 import { canDeleteMessage } from '#/domain/message';
 
 import { useMessengerContext } from '../../context';
@@ -31,6 +33,8 @@ export const MessagesArea = () => {
     fetchMoreMessages,
     selectedItem,
     deleteMessage,
+    markMessageAsRead,
+    isFetchingMoreMessages,
   } = useMessengerContext();
   const [scrolledToBottom, setScrolledToBottom] = useState(false);
   const { user: viewer } = useViewer();
@@ -39,6 +43,53 @@ export const MessagesArea = () => {
   const bottomElementRef = createRef<HTMLDivElement>();
   const topElementRef = createRef<HTMLDivElement>();
   const scrollBottom = useRef(0);
+
+  const isReadIntersectionObserver = useMemo(() => {
+    const io = new IntersectionObserver(
+      function (entries) {
+        for (const entry of entries) {
+          if (entry.isIntersecting === true) {
+            io.unobserve(entry.target);
+
+            {
+              const messageId = entry.target.getAttribute('data-message-id');
+
+              if (!messageId) {
+                throw new Error('Message id not provided');
+              }
+
+              markMessageAsRead(messageId);
+            }
+
+            if (entry.target.previousElementSibling) {
+              const messageId = entry.target.previousElementSibling.getAttribute('data-message-id');
+
+              if (messageId) {
+                markMessageAsRead(messageId);
+              }
+            }
+          }
+        }
+      },
+      { threshold: [0], root: scrollArea.current },
+    );
+
+    return io;
+  }, [markMessageAsRead, scrollArea]);
+
+  useEffect(() => {
+    if (!scrollArea.current) return;
+
+    const elements = scrollArea.current.querySelectorAll('[data-is-read="false"]');
+
+    for (const element of Array.from(elements)) {
+      isReadIntersectionObserver.observe(element);
+    }
+
+    return () => {
+      isReadIntersectionObserver.disconnect();
+    };
+  });
 
   useEffect(() => {
     const area = scrollArea.current;
@@ -71,18 +122,38 @@ export const MessagesArea = () => {
   useEffect(() => {
     if (!scrollArea.current) return;
 
-    const scrollTop = (scrollArea.current.scrollHeight ?? 0) - scrollBottom.current;
+    if (!isFetchingMoreMessages) {
+      const scrollTop = (scrollArea.current.scrollHeight ?? 0) - scrollBottom.current;
+      scrollArea.current.scrollTo({ top: scrollTop, behavior: 'instant' });
+      scrollArea.current.scrollTop = scrollTop;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetchingMoreMessages]);
 
-    scrollArea.current.scrollTo({ top: scrollTop, behavior: 'instant' });
-    scrollArea.current.scrollTop = scrollTop;
-  }, [scrollArea, messages]);
+  const scrolledToFirstUnreadMessage = useToggle();
 
   useLayoutEffect(() => {
+    if (!scrollArea.current) return;
+
+    if (!scrolledToFirstUnreadMessage.value) {
+      const element = scrollArea.current.querySelector('[data-is-read="false"]');
+
+      if (element) {
+        if (!scrolledToFirstUnreadMessage.value) {
+          element.scrollIntoView({ behavior: 'instant', block: 'end' });
+          scrolledToFirstUnreadMessage.setTrue();
+          setScrolledToBottom(true);
+        }
+
+        return;
+      }
+    }
+
     if (bottomElementRef.current && !scrolledToBottom) {
       bottomElementRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
       setScrolledToBottom(true);
     }
-  }, [bottomElementRef, scrolledToBottom]);
+  }, [bottomElementRef, scrollArea, scrolledToBottom, scrolledToFirstUnreadMessage]);
 
   const wrapperRef = createRef<HTMLDivElement>();
 
@@ -93,9 +164,10 @@ export const MessagesArea = () => {
     });
   }, [wrapperRef]);
 
-  const setScrollBottom: UIEventHandler<HTMLDivElement> = useCallback(event => {
-    scrollBottom.current =
-      (event.currentTarget.scrollHeight ?? 0) - (event.currentTarget.scrollTop ?? 0);
+  const setScrollBottom: UIEventHandler<HTMLElement> = useCallback(event => {
+    const element = event.currentTarget;
+
+    scrollBottom.current = (element.scrollHeight ?? 0) - (element.scrollTop ?? 0);
   }, []);
 
   if (!selectedItem) {
@@ -138,13 +210,16 @@ export const MessagesArea = () => {
                 }
                 placement={isMe ? 'right' : 'left'}>
                 <MessageItemInfo message={message}>
-                  {({ avatar, ownerName }) => (
-                    <MessageListItem
-                      {...message}
-                      avatar={avatar}
-                      ownerName={ownerName}
-                      isMe={isMe}
-                    />
+                  {({ avatar, ownerName, isMe, isMyMessageRead, isReadByMe }) => (
+                    <div data-message-id={message.id} data-is-read={isMe || isReadByMe}>
+                      <MessageListItem
+                        {...message}
+                        avatar={avatar}
+                        ownerName={ownerName}
+                        isMe={isMe}
+                        isRead={isMyMessageRead}
+                      />
+                    </div>
                   )}
                 </MessageItemInfo>
               </MessageMenu>

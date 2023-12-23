@@ -6,10 +6,10 @@ export type Message = {
   id: string;
   text: string;
   createdAt: string;
-  isRead: boolean;
   authorId: string;
   author: User;
   connectionId: string;
+  isReadByUsers: Pick<User, 'id'>[];
   attachments: MessageAttachment[];
 };
 

@@ -2,27 +2,34 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { Viewer } from '../domain/viewer';
 
+interface ViewerState {
+  isOnline: boolean;
+  viewer?: Viewer;
+}
+
+const initialState: ViewerState = {
+  isOnline: false,
+};
+
 const reducers = {
-  setViewer: (state: ViewerState, action: PayloadAction<Viewer | undefined>) => {
+  setOnline(state: ViewerState, action: PayloadAction<boolean>) {
+    state.isOnline = action.payload;
+  },
+  setViewer(state: ViewerState, action: PayloadAction<Viewer | undefined>) {
     state.viewer = action.payload || undefined;
   },
 };
 
-interface ViewerState {
-  viewer?: Viewer;
-}
-
-const initialState: ViewerState = {};
+const selectors = {
+  selectIsOnline: (state: { viewer: ViewerState }) => state.viewer.isOnline,
+  selectViewer: (state: { viewer: ViewerState }) => state.viewer.viewer,
+};
 
 const slice = createSlice({
   name: 'viewer',
   initialState,
   reducers,
 });
-
-const selectors = {
-  selectViewer: (state: { viewer: ViewerState }) => state.viewer.viewer,
-};
 
 export const ViewerStore = {
   slice,

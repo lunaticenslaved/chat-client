@@ -1,6 +1,11 @@
 import { OperationResponse } from '@lunaticenslaved/schema/dist/types/models';
 
-import { DeleteMessageResponse, MessageServerEvent, SendMessageResponse } from '#/api/message';
+import {
+  DeleteMessageResponse,
+  MessageServerEvent,
+  MessageUpdatedResponse,
+  SendMessageResponse,
+} from '#/api/message';
 import { messagesPipe } from '#/server/pipes/message';
 import { Message } from '#/server/service/messages';
 import { IRequestContext } from '#/server/shared/operation';
@@ -26,6 +31,15 @@ class MessagesEventsEmitter extends SocketEventEmitter {
     };
 
     SocketServer.emitToConnection(data.connectionId, MessageServerEvent.Deleted, response);
+  }
+
+  async onMessageUpdated(request: IRequestContext, message: Message) {
+    const response: OperationResponse<MessageUpdatedResponse> = {
+      data: await messagesPipe.fromServerToDomain(request, message),
+      error: null,
+    };
+
+    SocketServer.emitToConnection(message.connectionId, MessageServerEvent.Updated, response);
   }
 }
 

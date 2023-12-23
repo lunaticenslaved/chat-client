@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { Types } from '@prisma/client/runtime/library';
 
-import { Message } from '../messages';
+import { Message, selectMessage } from '../messages';
 
 export const select: Prisma.ConnectionSelect<Types.Extensions.DefaultArgs> = {
   id: true,
@@ -12,13 +12,7 @@ export const select: Prisma.ConnectionSelect<Types.Extensions.DefaultArgs> = {
   },
   messages: {
     take: 1,
-    select: {
-      id: true,
-      text: true,
-      createdAt: true,
-      authorId: true,
-      connectionId: true,
-    },
+    select: selectMessage,
     orderBy: { createdAt: 'desc' },
   },
   oneToOneDialog: {
@@ -48,9 +42,9 @@ export type GroupConnection = ConnectionCommon & {
 export type Connection = OneToOneConnection | GroupConnection;
 
 export function isOneToOneConnection(connection: Connection): connection is OneToOneConnection {
-  return 'oneToOneDialog' in connection && !!connection.oneToOneDialog;
+  return !!connection.oneToOneDialog;
 }
 
 export function isGroupConnection(connection: Connection): connection is GroupConnection {
-  return 'groupDialog' in connection && !!connection.groupDialog;
+  return !!connection.groupDialog;
 }

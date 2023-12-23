@@ -14,12 +14,15 @@ export interface UseViewerResponse {
   isAuthorized: boolean;
   isActivated: boolean;
   isFetching: boolean;
+  isOnline: boolean;
   fetch(): void;
+  setOnline(value: boolean): void;
   set(user?: Viewer): void;
 }
 
 export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
   const user = useAppSelector(store.viewer.selectors.selectViewer);
+  const isOnline = useAppSelector(store.viewer.selectors.selectIsOnline);
   const isAuthorized = useMemo(() => !!user, [user]);
   const isActivated = useMemo(() => !!user?.isActivated, [user?.isActivated]);
   const dispatch = useAppDispatch();
@@ -29,10 +32,15 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
     mutationFn: viewerActions.get,
   });
 
-  const set = useCallback(
-    (viewer?: Viewer) => {
-      dispatch(store.viewer.actions.setViewer(viewer));
-    },
+  const { set, setOnline } = useMemo(
+    () => ({
+      set(viewer?: Viewer) {
+        dispatch(store.viewer.actions.setViewer(viewer));
+      },
+      setOnline(value: boolean) {
+        dispatch(store.viewer.actions.setOnline(value));
+      },
+    }),
     [dispatch],
   );
 
@@ -55,8 +63,10 @@ export function useViewer(props?: UseViewerResponseRequest): UseViewerResponse {
       isActivated,
       isAuthorized,
       fetch,
+      setOnline,
+      isOnline,
       isFetching: getViewerMutation.isLoading,
     }),
-    [fetch, getViewerMutation.isLoading, isActivated, isAuthorized, set, user],
+    [fetch, getViewerMutation.isLoading, isActivated, isAuthorized, isOnline, set, setOnline, user],
   );
 }

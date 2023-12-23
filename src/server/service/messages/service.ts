@@ -4,39 +4,34 @@ import { Transaction } from '#/server/shared/prisma';
 
 import { BaseService } from '../base-service';
 
-import { CanSendMessageToUserRequest, CreateMessageRequest, ListMessagesRequest } from './types';
+import {
+  CanSendMessageToUserRequest,
+  CreateMessageRequest,
+  ListMessagesRequest,
+  MarkMessageAsReadRequest,
+} from './types';
 import { Message, select } from './utils';
 
 export class MessagesService extends BaseService {
-  async create(data: CreateMessageRequest, trx?: Transaction): Promise<Message> {
-    const rawMessage = await (trx || prisma).message.create({ select, data });
-
-    const message: Message = {
-      connectionId: data.connectionId,
-      id: rawMessage.id,
-      text: rawMessage.text,
-      authorId: rawMessage.authorId,
-      createdAt: rawMessage.createdAt,
-    };
-
-    return message;
+  create(data: CreateMessageRequest, trx?: Transaction): Promise<Message> {
+    return (trx || prisma).message.create({ select, data });
   }
 
-  async list(data: ListMessagesRequest, trx?: Transaction): Promise<Message[]> {
+  list(data: ListMessagesRequest, trx?: Transaction): Promise<Message[]> {
     const { connectionId, take, prevLoadedMessageId } = data;
 
-    const messages = await (trx || prisma).message.findMany({
-      select,
-      take,
-      skip: prevLoadedMessageId ? take : undefined,
-      cursor: prevLoadedMessageId ? { id: prevLoadedMessageId } : undefined,
-      where: { connectionId },
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
-
-    return messages;
+    return (trx || prisma).message
+      .findMany({
+        select,
+        take,
+        skip: prevLoadedMessageId ? 1 : undefined,
+        cursor: prevLoadedMessageId ? { id: prevLoadedMessageId } : undefined,
+        where: { connectionId },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      })
+      .then(data => data.reverse());
   }
 
   async delete(data: DeleteMessageRequest): Promise<void> {
@@ -72,5 +67,15 @@ export class MessagesService extends BaseService {
         },
       })
       .then(data => !data);
+  }
+
+  markAsRead({ messageId, userId }: MarkMessageAsReadRequest): Promise<Message> {
+    return prisma.message.update({
+      select,
+      where: { id: messageId },
+      data: {
+        isReadByUsers: { connect: { id: userId } },
+      },
+    });
   }
 }

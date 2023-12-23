@@ -24,10 +24,10 @@ class MessagesPipe {
       id: serviceMessage.id,
       text: serviceMessage.text,
       createdAt: serviceMessage.createdAt.toISOString(),
-      isRead: false,
       authorId: serviceMessage.authorId,
       connectionId: serviceMessage.connectionId,
       attachments: [],
+      isReadByUsers: serviceMessage.isReadByUsers,
     };
   }
 }
