@@ -1,13 +1,12 @@
 import { useCallback, useLayoutEffect, useMemo } from 'react';
 
-import { DeleteMessageResponse, MessageEventsEmitter, messagesActions } from '#/api/message';
-import { useViewer } from '#/client/entities/viewer';
+import { DeleteMessageResponse, messagesActions } from '#/api/message';
 import { useToggle } from '#/client/shared/hooks';
-import { socket } from '#/client/shared/socket-context';
 import { Message } from '#/domain/message';
 import { notReachable } from '#/shared/utils';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
+import { eventBus } from '../event-bus';
 import { SelectedItem } from '../types';
 
 export type UseMessagesProps = {
@@ -21,7 +20,6 @@ export interface UseMessages {
   hasMoreMessages: boolean;
   isFetchingMoreMessages: boolean;
   fetchMoreMessages(): void;
-  sendMessage(text: string): boolean;
   addMessage(message: Message): void;
   replaceMessage(message: Message): void;
   removeMessageFromList(data: DeleteMessageResponse): void;
@@ -29,10 +27,7 @@ export interface UseMessages {
 
 const AMOUNT = 20;
 
-const messagesEmitter = new MessageEventsEmitter(socket);
-
 export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
-  const viewer = useViewer();
   const messages = useAppSelector(store.messages.selectors.selectMessages);
   const dispatch = useAppDispatch();
   const isLoading = useToggle();
@@ -50,6 +45,7 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
         dispatch(store.messages.actions.prependMessages(messages));
       },
       addMessage(message: Message) {
+        eventBus.emit('received', message);
         dispatch(store.messages.actions.addMessage(message));
       },
       replaceMessage(message: Message) {
@@ -115,30 +111,6 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
     setMessages,
   ]);
 
-  const sendMessage = useCallback(
-    (text: string) => {
-      const userId = viewer.user?.id;
-
-      if (!selectedItem) return false;
-
-      if (!userId) return false;
-
-      switch (selectedItem.type) {
-        case 'user':
-          messagesEmitter.sendMessage({ text, userId: selectedItem.user.id });
-          break;
-        case 'connection':
-          messagesEmitter.sendMessage({ text, connectionId: selectedItem.connection.id });
-          break;
-        default:
-          notReachable(selectedItem);
-      }
-
-      return true;
-    },
-    [viewer.user?.id, selectedItem],
-  );
-
   const removeMessageFromList = useCallback(
     (data: DeleteMessageResponse) => {
       if (!selectedItem) return;
@@ -181,7 +153,6 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
   }, [selectedItem]);
 
   return {
-    sendMessage,
     messages,
     fetchMoreMessages,
     addMessage,

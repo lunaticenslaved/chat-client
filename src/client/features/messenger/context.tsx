@@ -7,6 +7,7 @@ import { Connection } from '#/domain/connection';
 import { Message } from '#/domain/message';
 import { User } from '#/domain/user';
 
+import { eventBus } from './event-bus';
 import { IConnectionInfo, useConnectionInfo } from './hooks/connection-info';
 import { useConnections } from './hooks/connections';
 import { IMessage, useMessage } from './hooks/message';
@@ -16,6 +17,7 @@ import { SelectedItem } from './types';
 
 interface IMessengerContext {
   selectedItem?: SelectedItem;
+  eventBus: typeof eventBus;
 
   // Search
   searchQuery?: string;
@@ -130,6 +132,7 @@ function useMessenger(): IMessengerContext {
   return useMemo(
     (): IMessengerContext => ({
       selectedItem,
+      eventBus,
 
       // Search
       searchQuery,

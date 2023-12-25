@@ -6,6 +6,7 @@ import { socket } from '#/client/shared/socket-context';
 import { Message, canDeleteMessage } from '#/domain/message';
 import { notReachable } from '#/shared/utils';
 
+import { eventBus } from '../event-bus';
 import { SelectedItem } from '../types';
 
 export type IMessage = {
@@ -25,7 +26,10 @@ export function useMessage({ selectedItem }: UseMessageProps): IMessage {
 
   const sendMessage = useCallback(
     (text: string) => {
+      const userId = viewer?.id;
+
       if (!selectedItem) return false;
+      if (!userId) return false;
 
       switch (selectedItem.type) {
         case 'user':
@@ -38,9 +42,11 @@ export function useMessage({ selectedItem }: UseMessageProps): IMessage {
           notReachable(selectedItem);
       }
 
+      eventBus.emit('sent', undefined);
+
       return true;
     },
-    [selectedItem],
+    [viewer?.id, selectedItem],
   );
 
   const markMessageAsRead = useCallback((messageId: string) => {

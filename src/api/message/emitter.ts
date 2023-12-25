@@ -17,8 +17,6 @@ export class MessageEventsEmitter extends SocketEventsEmitter {
   }
 
   readMessage(value: ReadMessageRequest) {
-    console.log(`EMIT MESSAGE ${MessageClientEvent.Read}`);
-
     this.socket.emit(MessageClientEvent.Read, value);
   }
 }

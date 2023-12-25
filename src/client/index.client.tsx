@@ -13,8 +13,6 @@ import 'normalize.css';
 
 const element = document.getElementById('root') as HTMLElement;
 
-console.log('index.client.tsx');
-
 if (constants.IS_SSR) {
   hydrateRoot(
     element,

@@ -43,6 +43,7 @@
     "@ant-design/icons": "^5.2.6",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
+    "@emotion/react": "^11.11.3",
     "@fingerprintjs/fingerprintjs": "^4.2.1",
     "@lunaticenslaved/schema": "^0.0.54",
     "@prisma/client": "^5.6.0",
@@ -74,6 +75,7 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.11.0",
     "@lunaticenslaved/configs": "^0.0.1",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",

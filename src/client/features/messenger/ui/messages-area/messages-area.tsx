@@ -14,7 +14,7 @@ import { Flex, List } from 'antd';
 import { MessageListItem, MessageMenu } from '#/client/entities/message';
 import { useViewer } from '#/client/entities/viewer';
 import { useToggle } from '#/client/shared/hooks';
-import { canDeleteMessage } from '#/domain/message';
+import { Message, canDeleteMessage } from '#/domain/message';
 
 import { useMessengerContext } from '../../context';
 import { MessageItemInfo } from '../common';
@@ -26,6 +26,7 @@ import { NoMessagesView } from './views/no-messages';
 
 export const MessagesArea = () => {
   const {
+    eventBus,
     messages,
     isLoadingMessages,
     isLoadingMessagesError,
@@ -43,6 +44,7 @@ export const MessagesArea = () => {
   const bottomElementRef = createRef<HTMLDivElement>();
   const topElementRef = createRef<HTMLDivElement>();
   const scrollBottom = useRef(0);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
 
   const isReadIntersectionObserver = useMemo(() => {
     const io = new IntersectionObserver(
@@ -164,11 +166,47 @@ export const MessagesArea = () => {
     });
   }, [wrapperRef]);
 
-  const setScrollBottom: UIEventHandler<HTMLElement> = useCallback(event => {
+  const onScroll: UIEventHandler<HTMLElement> = useCallback(event => {
     const element = event.currentTarget;
 
     scrollBottom.current = (element.scrollHeight ?? 0) - (element.scrollTop ?? 0);
+
+    if (element) {
+      const l1 = element.scrollTop;
+      const l2 = element.scrollHeight - element.offsetHeight;
+      setIsScrolledToBottom(Math.abs(l1 - l2) < 10);
+    } else {
+      setIsScrolledToBottom(false);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!scrollArea.current) return;
+
+    if (isScrolledToBottom) {
+      scrollArea.current.scrollTop = scrollArea.current.scrollHeight;
+    }
+  }, [isScrolledToBottom, scrollArea]);
+
+  useEffect(() => {
+    const scrollToBottom = (message?: Message) => {
+      if (!scrollArea.current) return;
+
+      if (!message) {
+        setIsScrolledToBottom(true);
+      } else if (message.authorId === viewer?.id) {
+        setIsScrolledToBottom(true);
+      }
+    };
+
+    eventBus.on('sent', scrollToBottom);
+    eventBus.on('received', scrollToBottom);
+
+    return () => {
+      eventBus.off('sent', scrollToBottom);
+      eventBus.off('received', scrollToBottom);
+    };
+  }, [eventBus, scrollArea, viewer?.id]);
 
   if (!selectedItem) {
     return <NoDialogView />;
@@ -191,7 +229,7 @@ export const MessagesArea = () => {
       vertical
       style={{ overflow: 'auto', flex: '1 1 auto' }}
       ref={scrollArea}
-      onScroll={setScrollBottom}>
+      onScroll={onScroll}>
       {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }} />}
 
       <Flex vertical justify="flex-end" ref={wrapperRef} style={{ flex: '1 1 auto' }}>

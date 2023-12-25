@@ -6,7 +6,15 @@ import svgLoader from 'vite-plugin-svgr';
 import { alias } from './vite.utils.config';
 
 export default defineConfig({
-  plugins: [react(), svgLoader()],
+  plugins: [
+    react({
+      jsxImportSource: '@emotion/react',
+      babel: {
+        plugins: ['@emotion/babel-plugin'],
+      },
+    }),
+    svgLoader(),
+  ],
   mode: process.env.NODE_ENV,
   build: {
     outDir: 'dist/client/server',
