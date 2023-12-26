@@ -6,7 +6,6 @@ import { Message } from '#/domain/message';
 import { notReachable } from '#/shared/utils';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
-import { eventBus } from '../event-bus';
 import { SelectedItem } from '../types';
 
 export type UseMessagesProps = {
@@ -45,7 +44,6 @@ export function useMessages({ selectedItem }: UseMessagesProps): UseMessages {
         dispatch(store.messages.actions.prependMessages(messages));
       },
       addMessage(message: Message) {
-        eventBus.emit('received', message);
         dispatch(store.messages.actions.addMessage(message));
       },
       replaceMessage(message: Message) {

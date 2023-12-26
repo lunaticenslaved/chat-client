@@ -10,7 +10,8 @@
     "types": ["vite/client", "vite-plugin-svgr/client"],
     "module": "ESNext",
     "moduleResolution": "Node",
-
+    "jsxImportSource": "@emotion/react",
+    
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
