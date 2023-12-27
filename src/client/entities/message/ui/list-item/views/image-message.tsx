@@ -1,4 +1,4 @@
-import { MessageWrapper } from '../components/wrapper';
+import { MessageWrapper } from '../../message-wrapper';
 import classes from '../styles.module.scss';
 import { ImageMessageProps } from '../types';
 

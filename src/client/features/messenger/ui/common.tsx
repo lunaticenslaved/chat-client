@@ -82,7 +82,7 @@ interface UserOrContactProps {
   withoutOnlineStatus?: boolean;
 }
 
-function UserOrContactAvatar({ user, size, withoutOnlineStatus }: UserOrContactProps) {
+export function UserOrContactAvatar({ user, size, withoutOnlineStatus }: UserOrContactProps) {
   const { getContactForUser } = useContactForUser();
   const contact = getContactForUser(user.id);
   return (

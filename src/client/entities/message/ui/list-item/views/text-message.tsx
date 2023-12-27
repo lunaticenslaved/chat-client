@@ -1,13 +1,10 @@
-import { MessageWrapper } from '../components/wrapper';
-import classes from '../styles.module.scss';
+import { MessageWrapper } from '../../message-wrapper';
 import { TextMessageProps } from '../types';
 
-export function TextMessage({ text, ...props }: TextMessageProps) {
+export function TextMessage({ text, isRead, ...props }: TextMessageProps) {
   return (
-    <MessageWrapper {...props} text={text}>
-      <div className={classes.bubble}>
-        <p className={classes.text}>{text}</p>
-      </div>
+    <MessageWrapper {...props} status={isRead ? 'is-read' : 'is-not-read'}>
+      <p>{text}</p>
     </MessageWrapper>
   );
 }

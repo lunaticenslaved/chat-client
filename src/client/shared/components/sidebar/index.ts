@@ -1,2 +1,2 @@
 export { Sidebar, type SidebarProps } from './sidebar';
-export { SidebarSection } from './sidebar-section';
+export { SidebarSection, SidebarFooter } from './components';

@@ -3,15 +3,17 @@ import React, { KeyboardEventHandler, useCallback } from 'react';
 import { AudioOutlined, CameraOutlined, SmileOutlined } from '@ant-design/icons';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
-import { Button, Flex, Popover, Typography, Upload, UploadProps, message } from 'antd';
+import { css } from '@emotion/react';
+import { Button, Popover, Typography, Upload, UploadProps } from 'antd';
+import { UploadChangeParam, UploadFile } from 'antd/es/upload';
 
 import { useBlockUser } from '#/client/entities/user';
 import { Input } from '#/client/shared/components/Input';
+import { Flex } from '#/client/shared/components/flex';
+import { useNotification } from '#/client/shared/notification';
 
 import { useMessengerContext } from '../../context';
 import { getUserFromSelectedItem } from '../../utils';
-
-import classes from './message-input.module.scss';
 
 const props: UploadProps = {
   name: 'file',
@@ -19,23 +21,32 @@ const props: UploadProps = {
   headers: {
     authorization: 'authorization-text',
   },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
 };
 
+const smileButtonCSS = css`
+  margin-right: 20px;
+`;
+
 export const MessageInput = () => {
+  const { showError, showSuccess } = useNotification();
   const [text, setText] = React.useState('');
   const { sendMessage, selectedItem } = useMessengerContext();
   const user = selectedItem ? getUserFromSelectedItem(selectedItem) : undefined;
   const { isUserBlocked, isMeBlockedByUser, unblockUser } = useBlockUser(user?.id || '');
+
+  const onFileUploaded = useCallback(
+    (info: UploadChangeParam<UploadFile<unknown>>) => {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        showSuccess(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        showError(`${info.file.name} file upload failed.`);
+      }
+    },
+    [showError, showSuccess],
+  );
 
   const onEmojiSelect = useCallback(
     (emoji: { native: unknown }) => {
@@ -59,7 +70,7 @@ export const MessageInput = () => {
 
   if (isUserBlocked) {
     return (
-      <Flex align="center" className={classes.root}>
+      <Flex alignItems="center">
         <Button danger onClick={unblockUser} style={{ width: '100%' }}>
           Unblock
         </Button>
@@ -69,21 +80,16 @@ export const MessageInput = () => {
 
   if (isMeBlockedByUser) {
     return (
-      <Flex align="center" className={classes.root}>
+      <Flex alignItems="center">
         <Typography.Text>You were blocked by the user</Typography.Text>
       </Flex>
     );
   }
 
   return (
-    <Flex align="center" className={classes.root}>
+    <>
       <Popover content={<Picker data={data} locale="ru" onEmojiSelect={onEmojiSelect} />}>
-        <Button
-          className={classes.smileButton}
-          size="large"
-          shape="circle"
-          icon={<SmileOutlined />}
-        />
+        <Button size="large" shape="circle" css={smileButtonCSS} icon={<SmileOutlined />} />
       </Popover>
 
       <Input
@@ -93,25 +99,15 @@ export const MessageInput = () => {
         placeholder="Введите сообщение..."
         autoFocus
         suffix={
-          <div className={classes.buttonsWrapper} onClick={e => e.stopPropagation()}>
-            <Upload {...props} multiple showUploadList={false}>
-              <Button
-                size="large"
-                shape="circle"
-                type="text"
-                icon={<CameraOutlined className={classes.icon} />}
-              />
+          <Flex alignItems="center" onClick={e => e.stopPropagation()}>
+            <Upload {...props} onChange={onFileUploaded} multiple showUploadList={false}>
+              <Button size="large" shape="circle" type="text" icon={<CameraOutlined />} />
             </Upload>
 
-            <Button
-              size="large"
-              shape="circle"
-              type="text"
-              icon={<AudioOutlined className={classes.icon} />}
-            />
-          </div>
+            <Button size="large" shape="circle" type="text" icon={<AudioOutlined />} />
+          </Flex>
         }
       />
-    </Flex>
+    </>
   );
 };

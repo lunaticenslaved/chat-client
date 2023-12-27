@@ -1,8 +1,8 @@
 import { Flex, List, Tooltip, Typography } from 'antd';
 
+import { formatMessageTime } from '#/client/entities/message';
 import { ListItem } from '#/client/shared/list-item';
 import { Connection } from '#/domain/connection';
-import { formatMessageTime } from '#/domain/message';
 
 import { ConnectionAvatar, ConnectionTitle } from './common';
 

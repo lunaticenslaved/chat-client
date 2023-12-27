@@ -10,10 +10,11 @@ import { User } from '#/domain/user';
 import { eventBus } from './event-bus';
 import { IConnectionInfo, useConnectionInfo } from './hooks/connection-info';
 import { useConnections } from './hooks/connections';
+import { IFileUpload, useFileUpload } from './hooks/file-upload';
 import { IMessage, useMessage } from './hooks/message';
 import { useMessages } from './hooks/messages';
 import { useSearch } from './hooks/search';
-import { SelectedItem } from './types';
+import { MessagePlaceholder, SelectedItem } from './types';
 
 interface IMessengerContext {
   selectedItem?: SelectedItem;
@@ -26,7 +27,7 @@ interface IMessengerContext {
   foundUsers: User[];
 
   // Messages
-  messages: Message[];
+  messages: (Message | MessagePlaceholder)[];
   isLoadingMessages: boolean;
   isLoadingMessagesError: boolean;
   hasMoreMessages: boolean;
@@ -43,6 +44,9 @@ interface IMessengerContext {
 
   // User
   setSelectedUser(user: User): void;
+
+  // Files
+  filesUpload: IFileUpload;
 }
 
 const Context = createContext<IMessengerContext | undefined>(undefined);
@@ -94,6 +98,23 @@ function useMessenger(): IMessengerContext {
     replaceMessage,
     isFetchingMoreMessages,
   } = useMessages({ selectedItem });
+
+  const onFilesUpload = useCallback(
+    (files: File[]) => {
+      console.log(files);
+      const message: MessagePlaceholder = {
+        files,
+        id: Date.now().toString(),
+        type: 'upload-files',
+        isPlaceholder: true,
+        createdAt: new Date().toISOString(),
+      };
+
+      addMessage(message);
+    },
+    [addMessage],
+  );
+  const filesUpload = useFileUpload({ onFilesUpload });
 
   const { sendMessage, deleteMessage, markMessageAsRead } = useMessage({ selectedItem });
 
@@ -161,12 +182,16 @@ function useMessenger(): IMessengerContext {
 
       // User
       setSelectedUser,
+
+      // File
+      filesUpload,
     }),
     [
       connectionInfo,
       connections,
       deleteMessage,
       fetchMoreMessages,
+      filesUpload,
       foundConnections,
       foundUsers,
       hasMoreMessages,

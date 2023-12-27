@@ -6,20 +6,20 @@ import { Message } from '#/domain/message';
 import { notReachable } from '#/shared/utils';
 import { store, useAppDispatch, useAppSelector } from '#/store';
 
-import { SelectedItem } from '../types';
+import { MessagePlaceholder, SelectedItem } from '../types';
 
 export type UseMessagesProps = {
   selectedItem?: SelectedItem;
 };
 
 export interface UseMessages {
-  messages: Message[];
+  messages: (Message | MessagePlaceholder)[];
   isLoading: boolean;
   isLoadingError: boolean;
   hasMoreMessages: boolean;
   isFetchingMoreMessages: boolean;
   fetchMoreMessages(): void;
-  addMessage(message: Message): void;
+  addMessage(message: Message | MessagePlaceholder): void;
   replaceMessage(message: Message): void;
   removeMessageFromList(data: DeleteMessageResponse): void;
 }

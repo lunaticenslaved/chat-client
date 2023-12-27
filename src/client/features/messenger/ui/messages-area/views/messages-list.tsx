@@ -11,14 +11,16 @@ import {
 
 import { List } from 'antd';
 
-import { MessageListItem, MessageMenu } from '#/client/entities/message';
+import { MessageListItem, MessageMenu, MessagePlaceholderItem } from '#/client/entities/message';
 import { useViewer } from '#/client/entities/viewer';
-import { MessageItemInfo } from '#/client/features/messenger/ui/common';
+import { isMessagePlaceholder } from '#/client/features/messenger/types';
+import { MessageItemInfo, UserOrContactAvatar } from '#/client/features/messenger/ui/common';
 import { Flex } from '#/client/shared/components/flex';
 import { useToggle } from '#/client/shared/hooks';
 import { canDeleteMessage } from '#/domain/message';
 
 import { useMessengerContext } from '../../../context';
+import { FileDrop } from '../../file-drop';
 
 export function MessagesList() {
   const {
@@ -193,53 +195,68 @@ export function MessagesList() {
     };
   }, [eventBus, scrollArea, viewer?.id]);
 
-  return (
-    <Flex
-      direction="column"
-      style={{ overflow: 'auto', flex: '1 1 auto' }}
-      ref={scrollArea}
-      onScroll={onScroll}>
-      {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }} />}
+  if (!viewer) {
+    return null;
+  }
 
+  return (
+    <FileDrop>
       <Flex
         direction="column"
-        justifyContent="flex-end"
-        ref={wrapperRef}
-        style={{ flex: '1 1 auto' }}>
-        <List>
-          {messages.map(message => {
-            const isMe = message.author.id === viewer?.id;
+        style={{ overflow: 'auto', flex: '1 1 auto' }}
+        ref={scrollArea}
+        onScroll={onScroll}>
+        {scrolledToBottom && <div ref={topElementRef} style={{ height: '10px' }} />}
 
-            return (
-              <MessageMenu
-                key={message.id}
-                message={message}
-                deleteMessage={
-                  viewer && canDeleteMessage({ viewerId: viewer?.id, authorId: message.authorId })
-                    ? deleteMessage
-                    : undefined
-                }
-                placement={isMe ? 'right' : 'left'}>
-                <MessageItemInfo message={message}>
+        <Flex
+          direction="column"
+          justifyContent="flex-end"
+          ref={wrapperRef}
+          style={{ flex: '1 1 auto' }}>
+          <List>
+            {messages.map(message => {
+              if (isMessagePlaceholder(message)) {
+                return (
+                  <MessagePlaceholderItem
+                    key={message.id}
+                    message={message}
+                    createdAt={message.createdAt}
+                    avatar={() => <UserOrContactAvatar user={viewer} />}
+                  />
+                );
+              }
+
+              return (
+                <MessageItemInfo key={message.id} message={message}>
                   {({ avatar, ownerName, isMe, isMyMessageRead, isReadByMe }) => (
-                    <div data-message-id={message.id} data-is-read={isMe || isReadByMe}>
-                      <MessageListItem
-                        {...message}
-                        avatar={avatar}
-                        ownerName={ownerName}
-                        isMe={isMe}
-                        isRead={isMyMessageRead}
-                      />
-                    </div>
+                    <MessageMenu
+                      message={message}
+                      deleteMessage={
+                        viewer &&
+                        canDeleteMessage({ viewerId: viewer?.id, authorId: message.authorId })
+                          ? deleteMessage
+                          : undefined
+                      }
+                      placement={isMe ? 'right' : 'left'}>
+                      <div data-message-id={message.id} data-is-read={isMe || isReadByMe}>
+                        <MessageListItem
+                          {...message}
+                          avatar={avatar}
+                          ownerName={ownerName}
+                          isMe={isMe}
+                          isRead={isMyMessageRead}
+                        />
+                      </div>
+                    </MessageMenu>
                   )}
                 </MessageItemInfo>
-              </MessageMenu>
-            );
-          })}
-        </List>
-      </Flex>
+              );
+            })}
+          </List>
+        </Flex>
 
-      <div ref={bottomElementRef} />
-    </Flex>
+        <div ref={bottomElementRef} />
+      </Flex>
+    </FileDrop>
   );
 }

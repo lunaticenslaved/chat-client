@@ -4,7 +4,7 @@ import PauseSvg from '#/client/shared/img/pause.svg';
 import PlaySvg from '#/client/shared/img/play.svg';
 import WaveSvg from '#/client/shared/img/wave.svg';
 
-import { MessageWrapper } from '../components/wrapper';
+import { MessageWrapper } from '../../message-wrapper';
 import classes from '../styles.module.scss';
 import { AudioMessageProps } from '../types';
 import { secondsToHms } from '../utils';
